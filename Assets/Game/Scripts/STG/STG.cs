@@ -24,5 +24,26 @@ namespace STG
         public const int LAYER_PLAYER_BULLET = 19;
         public const int LAYER_ENEMY = 20;
         public const int LAYER_PLAYER = 21;
+
+        public static int GAME_BORDER_LEFT {
+            get {
+                return 10;
+            }
+        }
+        public static int GAME_BORDER_RIGHT {
+            get {
+                return GAME_WIDTH - 10;
+            }
+        }
+        public static int GAME_BORDER_TOP {
+            get {
+                return -10;
+            }
+        }
+        public static int GAME_BORDER_BOTTOM {
+            get {
+                return -GAME_HEIGHT + 10;
+            }
+        }
     }
 }
