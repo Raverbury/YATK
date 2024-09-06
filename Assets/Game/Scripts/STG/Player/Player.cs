@@ -1,23 +1,34 @@
-using System;
 using System.Collections.Generic;
 using MEC;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(Animator))]
 public class Player : MonoBehaviour
 {
+    public static UnityAction<bool> PlayerChangeFocus;
+    public static UnityAction PlayerShoot;
+    public static UnityAction PlayerBomb;
+    public static UnityAction<float> PlayerIsInvulnerable;
+    public static UnityAction<int> PlayerSetLife;
+
     public static Player instance;
 
+    [SerializeField]
+    private PlayerData playerData = null;
+
+    [SerializeField, HideInInspector]
     private SpriteRenderer spriteRenderer;
+    [SerializeField, HideInInspector]
     private CircleCollider2D circleCollider2D;
+    [SerializeField, HideInInspector]
     private Animator animator;
 
-    public float speed = 3.7f;
-    public float focusSpeed = 1.5f;
+    private float speed = 4f;
+    private float focusSpeed = 2f;
+    private int deathBombFrames = 10;
 
-    private Vector2 moveDir;
+    private Vector2 moveDir = Vector2.zero;
 
     private int _remainingLife = 2;
     public int remainingLife
@@ -26,26 +37,53 @@ public class Player : MonoBehaviour
         {
             return _remainingLife;
         }
+        set
+        {
+            PlayerSetLife.Invoke(value);
+            _remainingLife = value;
+        }
     }
 
-    private readonly int deathBombFrames = 10;
+    private int initialBomb = 3;
+
     private int framesLeftToDeathBomb = -1;
 
     private bool shouldMiss = false;
     private bool shouldCheckMovement = true;
 
+    private void OnValidate()
+    {
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        circleCollider2D = gameObject.GetComponent<CircleCollider2D>();
+        animator = gameObject.GetComponent<Animator>();
+    }
+
     // Start is called before the first frame update
     void Awake()
     {
+        if (null == playerData)
+        {
+            throw new System.Exception("No default PlayerData attached to Player");
+        }
+        // set player data/stats
+        // TODO: retrieve player data from char select menu or something
+        speed = playerData.UNFOCUSED_SPEED;
+        focusSpeed = playerData.FOCUSED_SPEED;
+        deathBombFrames = playerData.DEATH_BOMB_WINDOW;
+        circleCollider2D.radius = (float)playerData.HITBOX_RADIUS / 100;
+        remainingLife = playerData.INITIAL_LIFE;
+        initialBomb = playerData.INITIAL_BOMB; // also add from bomb's stat if implemented
+        AnimatorOverrideController aoc = new(animator.runtimeAnimatorController);
+        aoc["front"] = playerData.FRONT_ANIMATION;
+        aoc["side"] = playerData.SIDE_ANIMATION;
+        animator.runtimeAnimatorController = aoc;
+        // playerData.Register(this);
+
         if (instance != null)
         {
             Destroy(this);
         }
         instance = this;
-        moveDir = Vector2.zero;
-        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        circleCollider2D = gameObject.GetComponent<CircleCollider2D>();
-        animator = gameObject.GetComponent<Animator>();
     }
 
     private void Update()
@@ -77,8 +115,11 @@ public class Player : MonoBehaviour
                 STG.Constant.GAME_BORDER_TOP : (newY < STG.Constant.GAME_BORDER_BOTTOM) ?
                     STG.Constant.GAME_BORDER_BOTTOM : newY;
             transform.position = pos;
-            animator.Play(0 == moveDir.x ? "Default.anim_reimu_front" : "Default.anim_reimu_side");
+            animator.Play(0 == moveDir.x ? "front" : "side");
             spriteRenderer.flipX = (moveDir.x > 0) || moveDir.x >= 0 && spriteRenderer.flipX;
+
+            // dispatch focus
+            PlayerChangeFocus?.Invoke(Input.GetButton("Focus"));
         }
     }
 
@@ -86,9 +127,6 @@ public class Player : MonoBehaviour
     {
         if (STG.Constant.LAYER_ENEMY_BULLET == other.gameObject.layer || STG.Constant.LAYER_ENEMY == other.gameObject.layer)
         {
-            // MasterHolder.PlayerMiss?.Invoke();
-            // Debug.Log("Ded");
-            // gameObject.SetActive(false);
             PlayerGetHit();
         }
     }
@@ -110,8 +148,7 @@ public class Player : MonoBehaviour
         {
             // gameover
         }
-        _remainingLife -= 1;
-        LifeCounter.SetLife?.Invoke(remainingLife);
+        remainingLife -= 1;
         shouldMiss = false;
         Timing.RunCoroutine(_SetInvulnerable(300));
         Timing.RunCoroutine(_DoRespawn());
@@ -127,7 +164,8 @@ public class Player : MonoBehaviour
             {
                 spriteRenderer.enabled = !spriteRenderer.enabled;
             }
-            BroadcastMessage("SetMagicCircleRadius", (float)__delay / duration, SendMessageOptions.DontRequireReceiver);
+            // dispatch invulnerable timer
+            PlayerIsInvulnerable.Invoke((float)__delay / duration);
             yield return Timing.WaitForOneFrame;
         }
         circleCollider2D.enabled = true;
@@ -136,7 +174,7 @@ public class Player : MonoBehaviour
 
     IEnumerator<float> _DoRespawn()
     {
-        animator.Play("Default.anim_reimu_front");
+        animator.Play("front");
         const int REVIVE_DURATION = 60;
         const int REVIVE_STEP_DISTANCE = 7;
         shouldCheckMovement = false;

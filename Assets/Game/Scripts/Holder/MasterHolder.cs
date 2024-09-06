@@ -1,4 +1,3 @@
-using Unity;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,15 +12,18 @@ public class MasterHolder : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         PlayerMiss += PlayDeadSound;
     }
 
-    private void PlayDeadSound() {
+    private void PlayDeadSound()
+    {
         GetComponent<AudioSource>().Play();
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         PlayerMiss -= PlayDeadSound;
     }
 }

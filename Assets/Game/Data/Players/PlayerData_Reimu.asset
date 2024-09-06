@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1b9a9047f9852f4092d245866f3ff75, type: 3}
+  m_Name: PlayerData_Reimu
+  m_EditorClassIdentifier: 
+  frontAnimation: {fileID: 7400000, guid: 34973ca74821a8a46a07728b2ac6b53c, type: 2}
+  sideAnimation: {fileID: 7400000, guid: f1b3ffa6ad8843a429bc19b02a238e5e, type: 2}
+  unfocusedSpeed: 4
+  focusedSpeed: 2
+  hitboxRadius: 4
+  initialLife: 2
+  initialBomb: 3
+  deathBombWindow: 10
+  methods:
+  - Skill1

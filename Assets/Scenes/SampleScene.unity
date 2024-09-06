@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 27a403a2d0a237d478a79c5055aa8d2b, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -180,7 +180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <sprite name="bomb"><sprite name="bomb"><sprite name="bomb">
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -925,6 +925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c715b097f12bd624aa5222ef46209051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 579658763}
 --- !u!1 &659650345
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,7 +984,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <sprite name="life"><sprite name="life">
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1858,8 +1859,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06f965dcb3d2c0e4c9748dfd030eaf88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
-  focusSpeed: 2
+  playerData: {fileID: 11400000, guid: c1cfff6bc780e534795a19646f353542, type: 2}
+  spriteRenderer: {fileID: 1969762547}
+  circleCollider2D: {fileID: 1969762551}
+  animator: {fileID: 1969762546}
 --- !u!58 &1969762551
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1889,7 +1892,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -2061,9 +2064,9 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
-  - {fileID: 1969762548}
+  - {fileID: 2004015004}
+  - {fileID: 1011415670}
   - {fileID: 944782076}
   - {fileID: 1981396433}
   - {fileID: 981464017}
-  - {fileID: 2004015004}
-  - {fileID: 1011415670}
+  - {fileID: 1969762548}

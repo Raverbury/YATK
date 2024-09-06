@@ -6,8 +6,19 @@ public class InvulnerableCircle : MonoBehaviour
     [SerializeField, HideInInspector]
     private SpriteRenderer spriteRenderer;
 
-    private void OnValidate() {
+    private void OnValidate()
+    {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+    }
+
+    private void OnEnable()
+    {
+        Player.PlayerIsInvulnerable += SetMagicCircleRadius;
+    }
+
+    private void OnDisable()
+    {
+        Player.PlayerIsInvulnerable -= SetMagicCircleRadius;
     }
 
     private void Update()
@@ -15,7 +26,8 @@ public class InvulnerableCircle : MonoBehaviour
         transform.eulerAngles += new Vector3(0, 0, 1f);
     }
 
-    private void SetMagicCircleRadius(float scale) {
+    private void SetMagicCircleRadius(float scale)
+    {
         scale = Mathf.Clamp01(scale);
         spriteRenderer.transform.localScale = scale * Vector3.one;
         spriteRenderer.enabled = scale > 0f;

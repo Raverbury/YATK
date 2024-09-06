@@ -9,8 +9,6 @@ public class LifeCounter : MonoBehaviour
     private TMP_Text text;
     public const string LIFE_TEXT = "<sprite name=\"life\">";
 
-    public static UnityAction<int> SetLife;
-
     private void OnValidate()
     {
         text = GetComponent<TMP_Text>();
@@ -18,7 +16,12 @@ public class LifeCounter : MonoBehaviour
 
     private void OnEnable()
     {
-        SetLife += UpdateLifeCounter;
+        Player.PlayerSetLife += UpdateLifeCounter;
+    }
+
+    private void OnDisable()
+    {
+        Player.PlayerSetLife -= UpdateLifeCounter;
     }
 
     private void UpdateLifeCounter(int life = 2)
