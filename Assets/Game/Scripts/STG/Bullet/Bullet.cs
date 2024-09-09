@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(Rigidbody2D))]
-public class EnemyBullet : MonoBehaviour
+public abstract class Bullet : MonoBehaviour
 {
     /// <summary>
     /// The speed at which the object moves each frame
@@ -40,10 +40,20 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
+        if (STG.Constant.LAYER_SCREEN_EDGE == other.gameObject.layer)
+        {
+            CrossCameraBoundary(other);
+        }
         if (STG.Constant.LAYER_PLAYABLE_AREA == other.gameObject.layer)
         {
-            gameObject.SetActive(false);
+            CrossPlayableBoundary(other);
         }
+    }
+
+    public abstract void CrossCameraBoundary(Collider2D other);
+    public virtual void CrossPlayableBoundary(Collider2D other)
+    {
+        gameObject.SetActive(false);
     }
 
     public void SetGraphic(ShotData graphic)

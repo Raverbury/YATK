@@ -119,6 +119,53 @@ public class ShotSheet : MonoBehaviour
     }
     #endregion
 
+    #region weapons
+    [Header("Weapons")]
+    [SerializeField]
+    private ShotData in_reimu_amulet_blue;
+    public static ShotData IN_REIMU_AMULET_BLUE {
+        get {
+            return instance.in_reimu_amulet_blue;
+        }
+    }
+    [SerializeField]
+    private ShotData in_reimu_amulet_red;
+    public static ShotData IN_REIMU_AMULET_RED {
+        get {
+            return instance.in_reimu_amulet_red;
+        }
+    }
+    [SerializeField]
+    private ShotData in_yukari_needle_purple;
+    public static ShotData IN_YUKARI_NEEDLE_PURPLE {
+        get {
+            return instance.in_yukari_needle_purple;
+        }
+    }
+    [SerializeField]
+    private ShotData in_yukari_needle_yellow;
+    public static ShotData IN_YUKARI_NEEDLE_YELLOW {
+        get {
+            return instance.in_yukari_needle_yellow;
+        }
+    }
+    [SerializeField]
+    private ShotData in_marisa_missile_blue;
+    public static ShotData IN_MARISA_MISSILE_BLUE {
+        get {
+            return instance.in_marisa_missile_blue;
+        }
+    }
+    [SerializeField]
+    private ShotData in_marisa_missile_red;
+    public static ShotData IN_MARISA_MISSILE_RED {
+        get {
+            return instance.in_marisa_missile_red;
+        }
+    }
+    #endregion
+
+
     private void Awake() {
         if (instance != null) {
             Destroy(this);

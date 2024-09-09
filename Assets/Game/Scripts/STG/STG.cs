@@ -45,5 +45,8 @@ namespace STG
                 return -GAME_HEIGHT + 10;
             }
         }
+
+        public static int ENEMY_BULLET_GRAZED_BIT = 0;
+        public static int ENEMY_BULLET_DELETABLE_BIT = 1;
     }
 }

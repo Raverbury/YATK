@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(SpriteRenderer), typeof(AutoRotate))]
 public class InvulnerableCircle : MonoBehaviour
 {
     [SerializeField, HideInInspector]
@@ -19,11 +19,6 @@ public class InvulnerableCircle : MonoBehaviour
     private void OnDisable()
     {
         Player.PlayerIsInvulnerable -= SetMagicCircleRadius;
-    }
-
-    private void Update()
-    {
-        transform.eulerAngles += new Vector3(0, 0, 1f);
     }
 
     private void SetMagicCircleRadius(float scale)

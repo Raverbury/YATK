@@ -4,13 +4,19 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(Animator))]
+[RequireComponent(typeof(BulletPool))]
 public class Player : MonoBehaviour
 {
-    public static UnityAction<bool> PlayerChangeFocus;
     public static UnityAction PlayerShoot;
     public static UnityAction PlayerBomb;
+    public static UnityAction<bool> PlayerSetFocus;
+
     public static UnityAction<float> PlayerIsInvulnerable;
     public static UnityAction<int> PlayerSetLife;
+    public static UnityAction<int> PlayerSetGrazeboxRadius;
+    public static UnityAction<int> PlayerSetGraze;
+    public static UnityAction<int> PlayerSetPower;
+    public static UnityAction PlayerSetMiss;
 
     public static Player instance;
 
@@ -23,6 +29,10 @@ public class Player : MonoBehaviour
     private CircleCollider2D circleCollider2D;
     [SerializeField, HideInInspector]
     private Animator animator;
+    [SerializeField, HideInInspector]
+    private BulletPool bulletPool;
+
+    public GameObject weaponOrb;
 
     private float speed = 4f;
     private float focusSpeed = 2f;
@@ -31,7 +41,7 @@ public class Player : MonoBehaviour
     private Vector2 moveDir = Vector2.zero;
 
     private int _remainingLife = 2;
-    public int remainingLife
+    public int RemainingLife
     {
         get
         {
@@ -39,8 +49,53 @@ public class Player : MonoBehaviour
         }
         set
         {
-            PlayerSetLife.Invoke(value);
+            PlayerSetLife?.Invoke(value);
             _remainingLife = value;
+        }
+    }
+
+    private int _power = 0;
+    public int Power
+    {
+        get
+        {
+            return _power;
+        }
+        set
+        {
+            PlayerSetPower?.Invoke(value);
+            _power = value;
+        }
+    }
+
+    private int _graze = 0;
+    public int Graze
+    {
+        get
+        {
+            return _graze;
+        }
+        set
+        {
+            PlayerSetGraze?.Invoke(value);
+            _graze = value;
+        }
+    }
+
+    private bool _focus = false;
+    public bool Focus
+    {
+        get
+        {
+            return _focus;
+        }
+        set
+        {
+            if (value != _focus)
+            {
+                PlayerSetFocus?.Invoke(value);
+                _focus = value;
+            }
         }
     }
 
@@ -56,11 +111,19 @@ public class Player : MonoBehaviour
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         circleCollider2D = gameObject.GetComponent<CircleCollider2D>();
         animator = gameObject.GetComponent<Animator>();
+        bulletPool = GetComponent<BulletPool>();
     }
 
     // Start is called before the first frame update
     void Awake()
     {
+        // singleton check
+        if (instance != null)
+        {
+            Destroy(this);
+        }
+        instance = this;
+
         if (null == playerData)
         {
             throw new System.Exception("No default PlayerData attached to Player");
@@ -71,19 +134,18 @@ public class Player : MonoBehaviour
         focusSpeed = playerData.FOCUSED_SPEED;
         deathBombFrames = playerData.DEATH_BOMB_WINDOW;
         circleCollider2D.radius = (float)playerData.HITBOX_RADIUS / 100;
-        remainingLife = playerData.INITIAL_LIFE;
-        initialBomb = playerData.INITIAL_BOMB; // also add from bomb's stat if implemented
+        RemainingLife = playerData.INITIAL_LIFE;
+        initialBomb = playerData.INITIAL_BOMB; // TODO: also add from bomb's stat if implemented
+        PlayerSetGrazeboxRadius(25);
+        Focus = false;
+        // change anims
         AnimatorOverrideController aoc = new(animator.runtimeAnimatorController);
         aoc["front"] = playerData.FRONT_ANIMATION;
         aoc["side"] = playerData.SIDE_ANIMATION;
         animator.runtimeAnimatorController = aoc;
-        // playerData.Register(this);
 
-        if (instance != null)
-        {
-            Destroy(this);
-        }
-        instance = this;
+        // TODO: register passive/ability or smth
+        // playerData.Register(this);
     }
 
     private void Update()
@@ -101,11 +163,15 @@ public class Player : MonoBehaviour
         // check movement
         if (shouldCheckMovement)
         {
+            // change focus
+            Focus = Input.GetButton("Focus");
+
+            // movement
             moveDir.x = Input.GetAxisRaw("Horizontal");
             moveDir.y = Input.GetAxisRaw("Vertical");
             moveDir.Normalize();
             Vector3 pos = transform.position;
-            moveDir *= Input.GetButton("Focus") ? focusSpeed : speed;
+            moveDir *= Focus ? focusSpeed : speed;
             float newX = pos.x + moveDir.x;
             float newY = pos.y + moveDir.y;
             pos.x = (newX < STG.Constant.GAME_BORDER_LEFT) ?
@@ -118,17 +184,24 @@ public class Player : MonoBehaviour
             animator.Play(0 == moveDir.x ? "front" : "side");
             spriteRenderer.flipX = (moveDir.x > 0) || moveDir.x >= 0 && spriteRenderer.flipX;
 
-            // dispatch focus
-            PlayerChangeFocus?.Invoke(Input.GetButton("Focus"));
+            // shoot
+            if (Input.GetButton("Shoot"))
+            {
+                PlayerShoot?.Invoke();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Equals)) {
+            Power += 32;
+        }
+        if (Input.GetKeyDown(KeyCode.Minus)) {
+            Power -= 32;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (STG.Constant.LAYER_ENEMY_BULLET == other.gameObject.layer || STG.Constant.LAYER_ENEMY == other.gameObject.layer)
-        {
-            PlayerGetHit();
-        }
+        PlayerGetHit();
     }
 
     private void PlayerGetHit()
@@ -139,20 +212,25 @@ public class Player : MonoBehaviour
         framesLeftToDeathBomb = deathBombFrames;
         shouldCheckMovement = false;
         // play miss sound
-        MasterHolder.PlayerMiss?.Invoke();
+        // MasterHolder.PlayerMiss?.Invoke();
     }
 
     private void PlayerMiss()
     {
-        if (0 == remainingLife)
+        if (0 == RemainingLife)
         {
-            // gameover
+            // TODO: gameover
         }
-        remainingLife -= 1;
+        RemainingLife -= 1;
+        PlayerSetMiss?.Invoke();
         shouldMiss = false;
         Timing.RunCoroutine(_SetInvulnerable(300));
         Timing.RunCoroutine(_DoRespawn());
-        // update ui
+    }
+
+    public void PlayerGraze()
+    {
+        Graze += 1;
     }
 
     IEnumerator<float> _SetInvulnerable(int duration)
@@ -189,5 +267,27 @@ public class Player : MonoBehaviour
             yield return Timing.WaitForOneFrame;
         }
         shouldCheckMovement = true;
+    }
+
+    public GameObject SpawnBulletP1(float x, float y, float speed, float angle, ShotData graphic, int delay)
+    {
+        GameObject bullet = instance.bulletPool.RequestBullet();
+        bullet.transform.position = new Vector3(x, y, 0);
+        bullet.transform.eulerAngles = new Vector3(0, 0, angle);
+        bullet.TryGetComponent(out PlayerBullet playerBullet);
+        playerBullet.speed = speed;
+        playerBullet.SetGraphic(graphic);
+        Timing.RunCoroutine(_SpawnBulletWithDelay(bullet, delay));
+        return bullet;
+    }
+
+    private IEnumerator<float> _SpawnBulletWithDelay(GameObject bullet, int delay)
+    {
+        for (int __delay = 0; __delay < delay; __delay++)
+        {
+            yield return Timing.WaitForOneFrame;
+        }
+
+        bullet.SetActive(true);
     }
 }

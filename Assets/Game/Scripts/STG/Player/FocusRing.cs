@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(SpriteRenderer), typeof(AutoRotate))]
 public class FocusRing : MonoBehaviour
 {
     [SerializeField, HideInInspector]
@@ -13,18 +13,12 @@ public class FocusRing : MonoBehaviour
 
     private void OnEnable()
     {
-        Player.PlayerChangeFocus += SetFocusVisible;
+        Player.PlayerSetFocus += SetFocusVisible;
     }
 
     private void OnDisable()
     {
-        Player.PlayerChangeFocus -= SetFocusVisible;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        transform.eulerAngles += new Vector3(0, 0, -1.5f);
+        Player.PlayerSetFocus -= SetFocusVisible;
     }
 
     private void SetFocusVisible(bool enable)

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
-public class AspectRatioUtility : MonoBehaviour
+public class AspectRatioEnforcer : MonoBehaviour
 {
     [SerializeField]
     private Vector2 aspectRatio = new(16f, 9f);

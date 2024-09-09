@@ -33,9 +33,9 @@ public class Pattern01 : MonoBehaviour
                 j = Mathf.Max(j, 1);
                 float speed = 2 + 6f * (float)j / HALF;
                 float angle = 360f / BRANCHES * i + rotation;
-                GameObject bullet = BulletPool.SpawnBulletA1(192, -60, speed, angle, ShotSheet.ARROW_BLACK, 15);
+                GameObject bullet = StageManager.SpawnBulletA1(192, -60, speed, angle, ShotSheet.ARROW_BLACK, 15);
                 Timing.RunCoroutine(_Manipulate(bullet));
-                GameObject bullet2 = BulletPool.SpawnBulletA1(192, -60, speed, -angle, ShotSheet.ARROW_WHITE, 15);
+                GameObject bullet2 = StageManager.SpawnBulletA1(192, -60, speed, -angle, ShotSheet.ARROW_WHITE, 15);
                 Timing.RunCoroutine(_Manipulate(bullet2));
             }
             rotation += 41;
