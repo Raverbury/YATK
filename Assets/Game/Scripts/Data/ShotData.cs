@@ -1,15 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ShotData", menuName = "ScriptableObjects/ShotData", order = 0)]
 public class ShotData : ScriptableObject
 {
     [SerializeField]
-    private Sprite _sprite;
-    public Sprite sprite
+    private List<Sprite> sprites;
+    public List<Sprite> SPRITES
     {
         get
         {
-            return _sprite;
+            return sprites;
         }
     }
     [SerializeField]

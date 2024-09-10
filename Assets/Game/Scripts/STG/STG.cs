@@ -2,6 +2,36 @@ using UnityEngine;
 
 namespace STG
 {
+    public enum EnemyBulletType : int
+    {
+        ARROW_BLACK = 0,
+        ARROW_DARK_RED = 1,
+        ARROW_RED = 2,
+        ARROW_DARK_PURPLE = 3,
+        ARROW_PURPLE = 4,
+        ARROW_DARK_BLUE = 5,
+        ARROW_BLUE = 6,
+        ARROW_DARK_SKY = 7,
+        ARROW_SKY = 8,
+        ARROW_DARK_GREEN = 9,
+        ARROW_GREEN = 10,
+        ARROW_DARK_YELLOW = 1,
+        ARROW_LIGHT_YELLOW = 12,
+        ARROW_YELLOW = 13,
+        ARROW_ORANGE = 14,
+        ARROW_WHITE = 15,
+    }
+
+    public enum PlayerShotType : int
+    {
+        IN_REIMU_AMULET_RED = 0,
+        IN_REIMU_AMULET_BLUE = 1,
+        IN_MARISA_MISSILE_RED = 2,
+        IN_MARISA_MISSILE_BLUE = 3,
+        IN_YUKARI_NEEDLE_PURPLE = 4,
+        IN_YUKARI_NEEDLE_YELLOW = 5,
+    }
+
     class Lifecycle
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -25,23 +55,31 @@ namespace STG
         public const int LAYER_ENEMY = 20;
         public const int LAYER_PLAYER = 21;
 
-        public static int GAME_BORDER_LEFT {
-            get {
+        public static int GAME_BORDER_LEFT
+        {
+            get
+            {
                 return 10;
             }
         }
-        public static int GAME_BORDER_RIGHT {
-            get {
+        public static int GAME_BORDER_RIGHT
+        {
+            get
+            {
                 return GAME_WIDTH - 10;
             }
         }
-        public static int GAME_BORDER_TOP {
-            get {
+        public static int GAME_BORDER_TOP
+        {
+            get
+            {
                 return -10;
             }
         }
-        public static int GAME_BORDER_BOTTOM {
-            get {
+        public static int GAME_BORDER_BOTTOM
+        {
+            get
+            {
                 return -GAME_HEIGHT + 10;
             }
         }

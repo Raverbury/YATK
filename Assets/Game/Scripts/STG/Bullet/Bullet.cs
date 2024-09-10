@@ -56,10 +56,10 @@ public abstract class Bullet : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void SetGraphic(ShotData graphic)
+    public void SetGraphic(Sprite sprite, float size, float hitboxRadius)
     {
-        spriteRenderer.sprite = graphic.sprite;
-        gameObject.transform.localScale = 12.5f * graphic.size * Vector3.one;
-        circleCollider2D.radius = graphic.hitboxRadius;
+        spriteRenderer.sprite = sprite;
+        gameObject.transform.localScale = 12.5f * size * Vector3.one;
+        circleCollider2D.radius = hitboxRadius;
     }
 }

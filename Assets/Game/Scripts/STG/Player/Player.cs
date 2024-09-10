@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MEC;
+using STG;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -191,10 +192,12 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Equals)) {
+        if (Input.GetKeyDown(KeyCode.Equals))
+        {
             Power += 32;
         }
-        if (Input.GetKeyDown(KeyCode.Minus)) {
+        if (Input.GetKeyDown(KeyCode.Minus))
+        {
             Power -= 32;
         }
     }
@@ -269,14 +272,15 @@ public class Player : MonoBehaviour
         shouldCheckMovement = true;
     }
 
-    public GameObject SpawnBulletP1(float x, float y, float speed, float angle, ShotData graphic, int delay)
+    public GameObject SpawnBulletP1(float x, float y, float speed, float angle, PlayerShotType playerShotType, int delay)
     {
         GameObject bullet = instance.bulletPool.RequestBullet();
         bullet.transform.position = new Vector3(x, y, 0);
         bullet.transform.eulerAngles = new Vector3(0, 0, angle);
         bullet.TryGetComponent(out PlayerBullet playerBullet);
         playerBullet.speed = speed;
-        playerBullet.SetGraphic(graphic);
+        ShotData playerShotData = ShotSheet.GetPlayerShotData((int)playerShotType);
+        playerBullet.SetGraphic(playerShotData.SPRITES[0], playerShotData.size, playerShotData.hitboxRadius);
         Timing.RunCoroutine(_SpawnBulletWithDelay(bullet, delay));
         return bullet;
     }

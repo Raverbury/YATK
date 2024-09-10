@@ -91,24 +91,24 @@ public class Shot1 : AbstractShot
             {
                 if (isFocused)
                 {
-                    player.SpawnBulletP1(transform.position.x, transform.position.y, 20, 0, ShotSheet.IN_YUKARI_NEEDLE_YELLOW, 0);
-                    player.SpawnBulletP1(transform.position.x + 2, transform.position.y, 20, 0.3f, ShotSheet.IN_YUKARI_NEEDLE_YELLOW, 0);
-                    player.SpawnBulletP1(transform.position.x - 2, transform.position.y, 20, -0.3f, ShotSheet.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    player.SpawnBulletP1(transform.position.x, transform.position.y, 20, 0, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    player.SpawnBulletP1(transform.position.x + 2, transform.position.y, 20, 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    player.SpawnBulletP1(transform.position.x - 2, transform.position.y, 20, -0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        player.SpawnBulletP1(orb.transform.position.x + 16, orb.transform.position.y, 20, 2f, ShotSheet.IN_YUKARI_NEEDLE_PURPLE, 0);
-                        player.SpawnBulletP1(orb.transform.position.x - 16, orb.transform.position.y, 20, -2f, ShotSheet.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        player.SpawnBulletP1(orb.transform.position.x + 16, orb.transform.position.y, 20, 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        player.SpawnBulletP1(orb.transform.position.x - 16, orb.transform.position.y, 20, -2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
                     }
                 }
                 else
                 {
-                    player.SpawnBulletP1(transform.position.x, transform.position.y, 20, 0, ShotSheet.IN_REIMU_AMULET_BLUE, 0);
-                    player.SpawnBulletP1(transform.position.x + 20, transform.position.y, 20, -15f, ShotSheet.IN_REIMU_AMULET_BLUE, 0);
-                    player.SpawnBulletP1(transform.position.x - 20, transform.position.y, 20, 15f, ShotSheet.IN_REIMU_AMULET_BLUE, 0);
+                    player.SpawnBulletP1(transform.position.x, transform.position.y, 20, 0, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    player.SpawnBulletP1(transform.position.x + 20, transform.position.y, 20, -15f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    player.SpawnBulletP1(transform.position.x - 20, transform.position.y, 20, 15f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        player.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, 20, 6, ShotSheet.IN_REIMU_AMULET_RED, 0);
-                        player.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, 20, -6, ShotSheet.IN_REIMU_AMULET_RED, 0);
+                        player.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, 20, 6, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                        player.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, 20, -6, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                     }
                 }
                 timeBetweenShot = 0;

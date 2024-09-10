@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc15bea7b881644496a75c597e941ad, type: 3}
   m_Name: IN_Marisa_Missile_Red
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 21300000, guid: dded72b9e2c77814e8abf6201882a482, type: 3}
+  sprites:
+  - {fileID: 21300000, guid: dded72b9e2c77814e8abf6201882a482, type: 3}
   _size: 6
   _hitboxRadius: 0.3

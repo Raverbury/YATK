@@ -1506,9 +1506,9 @@ GameObject:
   m_Component:
   - component: {fileID: 981464017}
   - component: {fileID: 981464016}
+  - component: {fileID: 981464018}
   - component: {fileID: 981464020}
   - component: {fileID: 981464019}
-  - component: {fileID: 981464018}
   m_Layer: 0
   m_Name: '@StageManager'
   m_TagString: Untagged
@@ -1566,31 +1566,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 981464015}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0662f998e6fffc54f9464ded60469d78, type: 3}
+  m_Script: {fileID: 11500000, guid: 362858297ef3b2c48840d761a624d492, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrow_black: {fileID: 11400000, guid: c0da3dc61f9389f4581a5d6b87fb7079, type: 2}
-  arrow_dark_red: {fileID: 11400000, guid: eb90112e56829e840812f96ab2bd179c, type: 2}
-  arrow_red: {fileID: 11400000, guid: 827ca363854299b4e9377047829e8cb2, type: 2}
-  arrow_dark_purple: {fileID: 11400000, guid: 97f0e9f6fe985ca48bed2566b8faff03, type: 2}
-  arrow_purple: {fileID: 11400000, guid: 02914407d556de84ba822f6ba0b13e6e, type: 2}
-  arrow_dark_blue: {fileID: 11400000, guid: a2b253bf840fb3b449440480c27256ff, type: 2}
-  arrow_blue: {fileID: 11400000, guid: f991564d07af3614d96327edb6569de1, type: 2}
-  arrow_dark_sky: {fileID: 11400000, guid: b555325d09432dd4aa94c74c46728216, type: 2}
-  arrow_sky: {fileID: 11400000, guid: a1d4ff950078b7046a20bebbc05edd6d, type: 2}
-  arrow_dark_green: {fileID: 11400000, guid: b6b43ee4636f0254f9c4753610ec14e0, type: 2}
-  arrow_green: {fileID: 11400000, guid: 93fb55d22dd500d4baab4ea798d9d229, type: 2}
-  arrow_dark_yellow: {fileID: 11400000, guid: 66d25207c8808de459ccba5652a5f8c8, type: 2}
-  arrow_light_yellow: {fileID: 11400000, guid: 564e56364553b094c9290ea9701aaf53, type: 2}
-  arrow_yellow: {fileID: 11400000, guid: 5a4330878ed073a44982c16189922049, type: 2}
-  arrow_orange: {fileID: 11400000, guid: 052b1afff309f8c489b02de06932e146, type: 2}
-  arrow_white: {fileID: 11400000, guid: 94d86b0ad18db4e409c581d162f135d5, type: 2}
-  in_reimu_amulet_blue: {fileID: 11400000, guid: 376c238c5f1dc214fabe105a99698709, type: 2}
-  in_reimu_amulet_red: {fileID: 11400000, guid: c8b38f02e3e9bec42b80c47f3e184f2e, type: 2}
-  in_yukari_needle_purple: {fileID: 11400000, guid: ec67cf7dbdf336d439c7d79dbf073c8f, type: 2}
-  in_yukari_needle_yellow: {fileID: 11400000, guid: 99275b0599754d44797c59f4bf152f86, type: 2}
-  in_marisa_missile_blue: {fileID: 11400000, guid: b3f9b9f1e389a3b4686669aa65c782c1, type: 2}
-  in_marisa_missile_red: {fileID: 11400000, guid: 36f9bc86297bb2844a4c5a9852dd6b90, type: 2}
+  bulletPool: {fileID: 981464018}
 --- !u!114 &981464020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1600,10 +1579,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 981464015}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 362858297ef3b2c48840d761a624d492, type: 3}
+  m_Script: {fileID: 11500000, guid: 0662f998e6fffc54f9464ded60469d78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPool: {fileID: 981464018}
+  spawnClouds: {fileID: 11400000, guid: 0a8cffe0be48af94cadb9db5b88097ed, type: 2}
+  enemyBullets:
+  - {fileID: 11400000, guid: e1532d1f105ae02419b0286135b3ea0d, type: 2}
+  playerWeapons:
+  - {fileID: 11400000, guid: c8b38f02e3e9bec42b80c47f3e184f2e, type: 2}
+  - {fileID: 11400000, guid: 376c238c5f1dc214fabe105a99698709, type: 2}
+  - {fileID: 11400000, guid: 36f9bc86297bb2844a4c5a9852dd6b90, type: 2}
+  - {fileID: 11400000, guid: b3f9b9f1e389a3b4686669aa65c782c1, type: 2}
+  - {fileID: 11400000, guid: ec67cf7dbdf336d439c7d79dbf073c8f, type: 2}
+  - {fileID: 11400000, guid: 99275b0599754d44797c59f4bf152f86, type: 2}
 --- !u!1 &997232594
 GameObject:
   m_ObjectHideFlags: 0
@@ -2462,7 +2450,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 352e86a73885e6f42b86767cd6bf2f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 1736824509}
+  audioSources:
+  - {fileID: 1736824509}
+  - {fileID: 1736824516}
+  - {fileID: 1736824515}
+  - {fileID: 1736824514}
+  - {fileID: 1736824513}
+  - {fileID: 1736824512}
   SFX_PLAYER_MISS: {fileID: 8300000, guid: c9e5777424eb13e47ae1459879b1cb36, type: 3}
   SFX_PLAYER_POWERUP: {fileID: 8300000, guid: 445b389e09880e844abb97d28656bfab, type: 3}
 --- !u!82 &1736824512
