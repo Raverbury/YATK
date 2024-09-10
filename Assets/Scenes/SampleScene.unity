@@ -897,7 +897,7 @@ GameObject:
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!81 &519420029
 AudioListener:
@@ -1495,7 +1495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 221f4184cc3064b4fba51206bf2311c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 14
+  rotateSpeed: 12
 --- !u!1 &981464015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1514,7 +1514,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &981464016
 MonoBehaviour:
@@ -1570,6 +1570,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPool: {fileID: 981464018}
+  enemyPrefab: {fileID: 4645258109546886645, guid: dd01063e55e54a54db600e543e7fa73c, type: 3}
 --- !u!114 &981464020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1846,7 +1847,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -102.99988, y: 18.000048}
+  m_AnchoredPosition: {x: -103, y: 18}
   m_SizeDelta: {x: 206, y: 36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1028681886
@@ -2191,7 +2192,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!82 &1612073974
 AudioSource:
@@ -2325,7 +2326,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!82 &1736824509
 AudioSource:

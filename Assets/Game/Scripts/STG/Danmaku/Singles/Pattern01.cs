@@ -3,8 +3,33 @@ using MEC;
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class Pattern01 : MonoBehaviour
+public class Pattern01 : MonoBehaviour, ISingle
 {
+    public int GetLife()
+    {
+        return 2000;
+    }
+
+    public string GetName()
+    {
+        return "Nonspell 1";
+    }
+
+    public int GetScore()
+    {
+        return 0;
+    }
+
+    public int GetTimer()
+    {
+        return 40;
+    }
+
+    public bool IsTimeout()
+    {
+        return false;
+    }
+
     private void Start()
     {
         Timing.RunCoroutine(_Loop());
@@ -12,10 +37,29 @@ public class Pattern01 : MonoBehaviour
 
     IEnumerator<float> _Loop()
     {
+        Enemy enemy;
+        if (StageManager.SpawnNamedEnemy(out GameObject enemyGameObject, -100, 100, "mokou"))
+        {
+            enemy = enemyGameObject.GetComponent<Enemy>();
+            yield return Timing.WaitUntilDone(Timing.RunCoroutine(Enemy.MoveEnemyToOver(enemy, new Vector2(192, -90), 60)));
+        }
+        enemy = enemyGameObject.GetComponent<Enemy>();
+
+        for (int __delay = 0; __delay < 30; __delay++)
+        {
+            yield return 1;
+        }
+        enemy.SetAnimState(Enemy.AnimState.Attack);
+        for (int __delay = 0; __delay < 30; __delay++)
+        {
+            yield return 1;
+        }
+        enemy.MaxHP = GetLife();
+
         const int BRANCHES = 7;
         const float HALF = (float)BRANCHES / 2f;
         int rotation = 0;
-        while (true)
+        while (!enemy.IsDead())
         {
             for (int __delay = 0; __delay < 8; __delay++)
             {
@@ -33,9 +77,9 @@ public class Pattern01 : MonoBehaviour
                 j = Mathf.Max(j, 1);
                 float speed = 2 + 6f * (float)j / HALF;
                 float angle = 360f / BRANCHES * i + rotation;
-                GameObject bullet = StageManager.SpawnBulletA1(192, -60, speed, angle, STG.EnemyBulletType.ARROW_DARK_BLUE, 60);
+                GameObject bullet = StageManager.SpawnBulletA1(enemyGameObject, speed, angle, STG.EnemyBulletType.ARROW_DARK_BLUE, 30);
                 Timing.RunCoroutine(_Manipulate(bullet));
-                GameObject bullet2 = StageManager.SpawnBulletA1(192, -60, speed, -angle, STG.EnemyBulletType.ARROW_DARK_GREEN, 60);
+                GameObject bullet2 = StageManager.SpawnBulletA1(enemyGameObject, speed, -angle, STG.EnemyBulletType.ARROW_DARK_GREEN, 30);
                 Timing.RunCoroutine(_Manipulate(bullet2));
             }
             rotation += 41;

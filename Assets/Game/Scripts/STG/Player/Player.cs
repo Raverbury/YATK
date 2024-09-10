@@ -205,6 +205,10 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         PlayerGetHit();
+        if (Constant.LAYER_ENEMY_BULLET == other.gameObject.layer)
+        {
+            other.gameObject.SetActive(false);
+        }
     }
 
     private void PlayerGetHit()
@@ -267,6 +271,7 @@ public class Player : MonoBehaviour
         {
             pos.y += REVIVE_STEP_DISTANCE;
             transform.position = pos;
+            StageManager.ClearBullet?.Invoke(false);
             yield return Timing.WaitForOneFrame;
         }
         shouldCheckMovement = true;

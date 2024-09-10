@@ -34,6 +34,17 @@ public class EnemyBullet : Bullet
     private void OnEnable()
     {
         flags = 0;
+        StageManager.ClearBullet += ClearBullet;
+    }
+
+    private void OnDisable()
+    {
+        StageManager.ClearBullet -= ClearBullet;
+    }
+
+    public void ClearBullet(bool shouldDropItem)
+    {
+        gameObject.SetActive(false);
     }
 
     public void Graze()
