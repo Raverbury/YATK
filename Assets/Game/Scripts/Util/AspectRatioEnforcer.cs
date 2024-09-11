@@ -6,7 +6,7 @@ public class AspectRatioEnforcer : MonoBehaviour
     [SerializeField]
     private Vector2 aspectRatio = new(16f, 9f);
 
-    void Start()
+    private void Update()
     {
         Adjust();
     }
