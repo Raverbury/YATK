@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: IN_Yukari_Needle_Purple
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: 21300000, guid: 967e03bca208d794aaedc18a6e8510c9, type: 3}
+  - {fileID: 21300000, guid: 9b4c0e0668aa3f644b9d739a7872ffcd, type: 3}
   _size: 6
   _hitboxRadius: 0.3

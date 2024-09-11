@@ -1,21 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-class WaitForFrames : CustomYieldInstruction
+class WaitForFrames
 {
-    private int framesElapsed = 0;
-    private int framesToWait;
-
-    public override bool keepWaiting
+    private WaitForFrames()
     {
-        get
-        {
-            return framesElapsed++ < framesToWait;
-        }
+
     }
 
-    public WaitForFrames(int framesToWait)
+    public static IEnumerator<float> Wait(int framesToWait)
     {
-        framesElapsed = 0;
-        this.framesToWait = framesToWait;
+        for (int __delay = 0; __delay < framesToWait; __delay++)
+        {
+            yield return 1;
+        }
     }
 }

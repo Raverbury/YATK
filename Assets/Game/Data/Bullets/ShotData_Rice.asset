@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc15bea7b881644496a75c597e941ad, type: 3}
+  m_Name: ShotData_Rice
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: -1279265341, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: 1199331599, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: 1378485943, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: -2056137573, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: 1807336287, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: -705134846, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: -1370611946, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: 1372038520, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: 177734829, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: -1401915914, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: 79018539, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: 1643379922, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: -488031633, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: -448080033, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: -903212361, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  - {fileID: 660329267, guid: 01d32b573d944ab4ebacb59446f80a38, type: 3}
+  _size: 8
+  _hitboxRadius: 0.03

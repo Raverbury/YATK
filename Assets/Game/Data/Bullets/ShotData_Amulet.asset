@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc15bea7b881644496a75c597e941ad, type: 3}
+  m_Name: ShotData_Amulet
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: -1952618352, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: 681318380, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: -1647049216, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: 248624345, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: -2058079201, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: -2064205895, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: 861685275, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: -1362203981, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: -416919859, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: 2002705653, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: -497982377, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: 284705841, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: -575156361, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: -1701725432, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: -510675369, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  - {fileID: 1926739852, guid: 2efbdbfb12efc2f4cabc4baa305524e4, type: 3}
+  _size: 7
+  _hitboxRadius: 0.02

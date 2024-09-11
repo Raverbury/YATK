@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MEC;
 using STG;
@@ -18,6 +19,10 @@ public class StageManager : MonoBehaviour
 
     private Dictionary<string, GameObject> enemies = new();
 
+    [SerializeField]
+    private List<Type> singles = new() { typeof(Pattern01), typeof(Nonspell2), typeof(Nonspell3) };
+    public AbstractSingle activeSingle = null;
+
     private void Awake()
     {
         if (instance != null)
@@ -28,21 +33,47 @@ public class StageManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        StartNextAvailableSingle();
+    }
+
     private void OnValidate()
     {
         bulletPool = GetComponent<BulletPool>();
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         ClearBullet += KillBulletSpawningCoroutines;
+        AbstractSingle.SingleFinish += StartNextAvailableSingle;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         ClearBullet -= KillBulletSpawningCoroutines;
+        AbstractSingle.SingleFinish -= StartNextAvailableSingle;
     }
 
-    private void KillBulletSpawningCoroutines(bool _) {
+    private void KillBulletSpawningCoroutines(bool _)
+    {
         // Timing.KillCoroutines("enemyBulletSpawning");
+    }
+
+    private void StartNextAvailableSingle()
+    {
+        if (activeSingle != null)
+        {
+            DestroyImmediate(activeSingle);
+            activeSingle = null;
+        }
+        if (singles.Count == 0)
+        {
+            return;
+        }
+        Type singleType = singles[0];
+        activeSingle = (AbstractSingle)gameObject.AddComponent(singleType);
+        singles.RemoveAt(0);
     }
 
     public static bool DestroyNamedEnemy(string name)
@@ -52,6 +83,7 @@ public class StageManager : MonoBehaviour
 
     /// <summary>
     /// Spawn a named enemy, return true if that named enemy doesn't already exists
+    /// Position is only set for newly spawned enemies (returning true)
     /// </summary>
     /// <param name="gameObject"></param>
     /// <param name="x"></param>

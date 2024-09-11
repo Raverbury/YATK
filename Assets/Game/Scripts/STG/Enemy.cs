@@ -41,16 +41,20 @@ public class Enemy : MonoBehaviour
             _hp = value;
         }
     }
+    private bool shouldTakeDamage = false;
 
     public UnityAction<int, int> EntitySetHP;
     public UnityAction EntityDie;
 
     [SerializeField, HideInInspector]
     private Animator animator;
+    [SerializeField, HideInInspector]
+    private SpriteRenderer spriteRenderer;
 
     private void OnValidate()
     {
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -68,6 +72,10 @@ public class Enemy : MonoBehaviour
 
     private void TakeDamage(int damage)
     {
+        if (!shouldTakeDamage)
+        {
+            return;
+        }
         HP -= damage;
     }
 
@@ -87,18 +95,57 @@ public class Enemy : MonoBehaviour
         animator.Play(animClipName);
     }
 
-    public static IEnumerator<float> MoveEnemyToOver(Enemy enemy, Vector2 destination, int durationInFrames)
+    public void SetEmptyHpCircle()
     {
-        Vector2 initialPos = enemy.transform.position;
+        EntitySetHP?.Invoke(0, 1);
+    }
+
+    /// <summary>
+    /// Move an enemy to destination over some frames, setting anims automatically
+    /// If already at destination on call, then don't move/wait at all
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <param name="destination"></param>
+    /// <param name="durationInFrames"></param>
+    /// <returns></returns>
+    public IEnumerator<float> _MoveEnemyToOver(Vector2 destination, int durationInFrames)
+    {
+        Vector2 initialPos = transform.position;
         float initialDistance = Vector2.Distance(initialPos, destination);
         float maxSpeed = initialDistance / durationInFrames;
-        enemy.SetAnimState(AnimState.Move);
+        if (initialPos != destination)
+        {
+            SetAnimState(AnimState.Move);
+            for (int i = 0; i < durationInFrames; i++)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, destination, maxSpeed);
+                spriteRenderer.flipX = (transform.position.x > destination.x) || transform.position.x >= destination.x && spriteRenderer.flipX;
+
+                yield return 1;
+            }
+        }
+        SetAnimState(AnimState.Idle);
+    }
+
+    /// <summary>
+    /// Refill the HP circle over some frames (for cinematic purposes), HP starts from 0
+    /// Enemy is invulnerable while doing so
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <param name="destination"></param>
+    /// <param name="durationInFrames"></param>
+    /// <returns></returns>
+    public IEnumerator<float> _RefillHPOver(int maxHP, int durationInFrames)
+    {
+        shouldTakeDamage = false;
+        MaxHP = maxHP;
+        float hpStep = (float)maxHP / (durationInFrames - 1);
         for (int i = 0; i < durationInFrames; i++)
         {
-            enemy.transform.position = Vector2.MoveTowards(enemy.transform.position, destination, maxSpeed);
+            HP = Mathf.RoundToInt(hpStep * i);
 
             yield return 1;
         }
-        enemy.SetAnimState(AnimState.Idle);
+        shouldTakeDamage = true;
     }
 }
