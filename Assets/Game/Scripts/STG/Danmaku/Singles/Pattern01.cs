@@ -6,7 +6,7 @@ public class Pattern01 : AbstractSingle
 {
     public int GetHP()
     {
-        return 2000;
+        return 1600;
     }
 
     public override string GetName()
