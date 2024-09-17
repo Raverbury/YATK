@@ -28,18 +28,34 @@ public abstract class AbstractSingle : MonoBehaviour
 
     private IEnumerator<float> _RunLoop()
     {
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(_Loop()));
+        StageManager.SpawnNamedEnemy(out GameObject enemyGameObject, -100, 100, "mokou");
+        Enemy enemy = enemyGameObject.GetComponent<Enemy>();
+        enemy.SetEmptyHpCircle();
+        Timing.RunCoroutine(_Loop(enemy), "singleLoop");
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(_CheckDone(enemy)));
+        enemy.SetAnimState(Enemy.AnimState.Idle);
+        CoroutineUtil.KillSingleLoopCRT();
         SingleExplode?.Invoke();
         for (int __delay = 0; __delay < 150; __delay++)
         {
             StageManager.ClearBullet?.Invoke(true);
             yield return 1;
         }
-        if (Player.instance != null) {
+        if (Player.instance != null)
+        {
             Player.instance.Power += 32;
         }
         SingleFinish?.Invoke();
     }
 
-    protected abstract IEnumerator<float> _Loop();
+
+    protected abstract IEnumerator<float> _Loop(Enemy enemy);
+
+    private IEnumerator<float> _CheckDone(Enemy enemy)
+    {
+        while (!(enemy.IsDead() && enemy.HasRefilledHP))
+        {
+            yield return 1;
+        }
+    }
 }

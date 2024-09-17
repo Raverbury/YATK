@@ -29,11 +29,8 @@ public class Pattern01 : AbstractSingle
         return false;
     }
 
-    protected override IEnumerator<float> _Loop()
+    protected override IEnumerator<float> _Loop(Enemy enemy)
     {
-        StageManager.SpawnNamedEnemy(out GameObject enemyGameObject, -100, 100, "mokou");
-        Enemy enemy = enemyGameObject.GetComponent<Enemy>();
-        enemy.SetEmptyHpCircle();
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
         AbstractSingle.PatternStart?.Invoke();
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
@@ -42,7 +39,7 @@ public class Pattern01 : AbstractSingle
         const int BRANCHES = 7;
         const float HALF = (float)BRANCHES / 2f;
         int rotation = 0;
-        while (!enemy.IsDead())
+        while (true)
         {
             for (int __delay = 0; __delay < 8; __delay++)
             {
@@ -60,14 +57,13 @@ public class Pattern01 : AbstractSingle
                 j = Mathf.Max(j, 1);
                 float speed = 2 + 6f * (float)j / HALF;
                 float angle = 360f / BRANCHES * i + rotation;
-                GameObject bullet = StageManager.SpawnBulletA1(enemyGameObject, speed, angle, STG.EnemyBulletType.ARROW_DARK_BLUE, 30);
-                Timing.RunCoroutine(_Manipulate(bullet));
-                GameObject bullet2 = StageManager.SpawnBulletA1(enemyGameObject, speed, -angle, STG.EnemyBulletType.ARROW_DARK_GREEN, 30);
-                Timing.RunCoroutine(_Manipulate(bullet2));
+                GameObject bullet = StageManager.SpawnBulletA1(enemy.gameObject, speed, angle, STG.EnemyBulletType.ARROW_DARK_BLUE, 30);
+                CoroutineUtil.StartSingleLoopCRT(_Manipulate(bullet));
+                GameObject bullet2 = StageManager.SpawnBulletA1(enemy.gameObject, speed, -angle, STG.EnemyBulletType.ARROW_DARK_GREEN, 30);
+                CoroutineUtil.StartSingleLoopCRT(_Manipulate(bullet2));
             }
             rotation += 41;
         }
-        enemy.SetAnimState(Enemy.AnimState.Idle);
     }
 
     IEnumerator<float> _Manipulate(GameObject bullet)

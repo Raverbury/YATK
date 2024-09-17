@@ -29,10 +29,10 @@ public class Nonspell2 : AbstractSingle
         return false;
     }
 
-    protected override IEnumerator<float> _Loop()
+    protected override IEnumerator<float> _Loop(Enemy enemy)
     {
         StageManager.SpawnNamedEnemy(out GameObject enemyGameObject, -100, 100, "mokou");
-        Enemy enemy = enemyGameObject.GetComponent<Enemy>();
+        enemy = enemyGameObject.GetComponent<Enemy>();
         enemy.SetEmptyHpCircle();
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
         AbstractSingle.PatternStart?.Invoke();
@@ -42,7 +42,7 @@ public class Nonspell2 : AbstractSingle
         const int BRANCHES = 3;
         const float SPEED = 3;
         int rotation = 0;
-        while (!enemy.IsDead())
+        while (true)
         {
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(10)));
             for (int i = 0; i < BRANCHES; i++)
@@ -60,6 +60,5 @@ public class Nonspell2 : AbstractSingle
             }
             rotation -= 7;
         }
-        enemy.SetAnimState(Enemy.AnimState.Idle);
     }
 }

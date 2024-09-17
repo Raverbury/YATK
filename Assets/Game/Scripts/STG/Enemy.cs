@@ -41,7 +41,8 @@ public class Enemy : MonoBehaviour
             _hp = value;
         }
     }
-    private bool shouldTakeDamage = false;
+    private bool IsInvulnerable = false;
+    public bool HasRefilledHP = false;
 
     public UnityAction<int, int> EntitySetHP;
     public UnityAction EntityDie;
@@ -72,7 +73,7 @@ public class Enemy : MonoBehaviour
 
     private void TakeDamage(int damage)
     {
-        if (!shouldTakeDamage)
+        if (IsInvulnerable)
         {
             return;
         }
@@ -81,7 +82,7 @@ public class Enemy : MonoBehaviour
 
     public bool IsDead()
     {
-        return HP <= 0;
+        return HP == 0;
     }
 
     public void SetAnimState(AnimState state)
@@ -97,7 +98,8 @@ public class Enemy : MonoBehaviour
 
     public void SetEmptyHpCircle()
     {
-        EntitySetHP?.Invoke(0, 1);
+        EntitySetHP?.Invoke(-1, 1);
+        HasRefilledHP = false;
     }
 
     /// <summary>
@@ -137,7 +139,7 @@ public class Enemy : MonoBehaviour
     /// <returns></returns>
     public IEnumerator<float> _RefillHPOver(int maxHP, int durationInFrames)
     {
-        shouldTakeDamage = false;
+        IsInvulnerable = true;
         MaxHP = maxHP;
         float hpStep = (float)maxHP / (durationInFrames - 1);
         for (int i = 0; i < durationInFrames; i++)
@@ -146,6 +148,7 @@ public class Enemy : MonoBehaviour
 
             yield return 1;
         }
-        shouldTakeDamage = true;
+        IsInvulnerable = false;
+        HasRefilledHP = true;
     }
 }

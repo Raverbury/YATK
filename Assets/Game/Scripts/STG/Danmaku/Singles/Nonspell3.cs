@@ -34,40 +34,37 @@ public class Nonspell3 : AbstractSingle
     const int FLOWER_PETALS = 5;
     const float FLOWER_RING_RADIUS = 80f;
 
-    protected override IEnumerator<float> _Loop()
+    protected override IEnumerator<float> _Loop(Enemy enemy)
     {
-        StageManager.SpawnNamedEnemy(out GameObject enemyGameObject, -100, 100, "mokou");
-        Enemy enemy = enemyGameObject.GetComponent<Enemy>();
-        enemy.SetEmptyHpCircle();
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
         AbstractSingle.PatternStart?.Invoke();
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
 
         int state = 0;
-        while (!enemy.IsDead())
+        while (true)
         {
             if (state == 0 || state == 4)
             {
                 if (state == 4)
                 {
-                    yield return Timing.WaitUntilDone(Timing.RunCoroutine(_SpawnFlowerRing(enemy, FLOWERS, 1, EnemyBulletType.RICE_YELLOW)));
-                    yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(102, -100), 60)));
+                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_SpawnFlowerRing(enemy, FLOWERS, 1, EnemyBulletType.RICE_YELLOW)));
+                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(102, -100), 60)));
                 }
                 else
                 {
-                    yield return Timing.WaitUntilDone(Timing.RunCoroutine(_SpawnFlowerRing(enemy, FLOWERS, 1, EnemyBulletType.RICE_GREEN)));
+                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_SpawnFlowerRing(enemy, FLOWERS, 1, EnemyBulletType.RICE_GREEN)));
                 }
             }
             else if (state == 1 || state == 3)
             {
                 if (state == 1)
                 {
-                    yield return Timing.WaitUntilDone(Timing.RunCoroutine(_SpawnFlowerRing(enemy, FLOWERS, -1, EnemyBulletType.RICE_PURPLE)));
-                    yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(282, -100), 60)));
+                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_SpawnFlowerRing(enemy, FLOWERS, -1, EnemyBulletType.RICE_PURPLE)));
+                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(282, -100), 60)));
                 }
                 else
                 {
-                    yield return Timing.WaitUntilDone(Timing.RunCoroutine(_SpawnFlowerRing(enemy, FLOWERS, -1, EnemyBulletType.RICE_ORANGE)));
+                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_SpawnFlowerRing(enemy, FLOWERS, -1, EnemyBulletType.RICE_ORANGE)));
                 }
             }
             else
@@ -92,11 +89,10 @@ public class Nonspell3 : AbstractSingle
                     }
                     yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(2)));
                 }
-                yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
+                yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
             }
             state = 5 == state ? 0 : state + 1;
         }
-        enemy.SetAnimState(Enemy.AnimState.Idle);
     }
 
     private IEnumerator<float> _SpawnFlowerRing(Enemy enemy, int flowers, int direction, EnemyBulletType enemyBulletType)
@@ -116,7 +112,7 @@ public class Nonspell3 : AbstractSingle
                 float angleR = Mathf.Deg2Rad * angle;
                 Vector2 spawnPos = flowerPos + new Vector2(10 * Mathf.Cos(angleR), 10 * Mathf.Sin(angleR));
                 GameObject bullet = StageManager.SpawnBulletA1(spawnPos, 0, -rotation + angle - 90f, enemyBulletType, 10);
-                Timing.RunCoroutine(_ManipulateFlower(bullet));
+                CoroutineUtil.StartSingleLoopCRT(_ManipulateFlower(bullet));
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(2)));
         }

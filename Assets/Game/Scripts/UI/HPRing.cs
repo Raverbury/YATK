@@ -15,7 +15,8 @@ public class HPRing : MonoBehaviour
         enemy = GetComponentInParent<Enemy>();
     }
 
-    private void Awake() {
+    private void Awake()
+    {
         enemy = GetComponentInParent<Enemy>();
     }
 
@@ -31,6 +32,7 @@ public class HPRing : MonoBehaviour
 
     private void UpdateHPRing(int currentHP, int maxHP)
     {
+        currentHP = Mathf.Max(currentHP, 0);
         image.enabled = enemy.showHP;
         image.fillAmount = (float)currentHP / maxHP;
     }
