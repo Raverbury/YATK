@@ -32,7 +32,8 @@ public class Nonspell3 : AbstractSingle
 
     const int FLOWERS = 40;
     const int FLOWER_PETALS = 5;
-    const float FLOWER_RING_RADIUS = 80f;
+    const float FLOWER_RING_RADIUS = 120f;
+    const float PETAL_DISTANCE = 8f;
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
@@ -47,8 +48,8 @@ public class Nonspell3 : AbstractSingle
             {
                 if (state == 4)
                 {
-                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_SpawnFlowerRing(enemy, FLOWERS, 1, EnemyBulletType.RICE_YELLOW)));
-                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(102, -100), 60)));
+                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_SpawnFlowerRing(enemy, FLOWERS, 1, EnemyBulletType.RICE_DARK_RED)));
+                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(102, -100), 90)));
                 }
                 else
                 {
@@ -60,36 +61,38 @@ public class Nonspell3 : AbstractSingle
                 if (state == 1)
                 {
                     yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_SpawnFlowerRing(enemy, FLOWERS, -1, EnemyBulletType.RICE_PURPLE)));
-                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(282, -100), 60)));
+                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(282, -100), 90)));
                 }
                 else
                 {
-                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_SpawnFlowerRing(enemy, FLOWERS, -1, EnemyBulletType.RICE_ORANGE)));
+                    yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_SpawnFlowerRing(enemy, FLOWERS, -1, EnemyBulletType.RICE_DARK_YELLOW)));
                 }
             }
             else
             {
                 enemy.SetAnimState(Enemy.AnimState.Attack);
                 yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(150)));
+                Vector2 targetPos = new Vector2(192, -300);
                 for (int i = 0; i < 60; i++)
                 {
                     Vector2 pos = new Vector2(57, -90);
+                    targetPos.x += (state == 2) ? -1 : 1;
                     for (int j = 0; j < 4; j++)
                     {
-                        Vector2 targetPos = (Player.instance == null) ? new Vector2(192, -360) : (Vector2)Player.instance.transform.position;
+                        // Vector2 targetPos = (Player.instance == null) ? new Vector2(192, -360) : (Vector2)Player.instance.transform.position;
                         float angle = (j switch
                         {
-                            0 or 3 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x),
-                            1 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) + 0.3f,
-                            2 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) - 0.3f,
-                            _ => 180,
-                        }) * Mathf.Rad2Deg - 90;
+                            0 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) - 0.05f,
+                            1 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) + 0.6f,
+                            2 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) - 0.6f,
+                            _ => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) + 0.05f,
+                        }) * Mathf.Rad2Deg;
                         StageManager.SpawnBulletA1(pos, 9, angle, STG.EnemyBulletType.ARROW_SKY, 30);
                         pos.x += 90;
                     }
                     yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(2)));
                 }
-                yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
+                yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(192, -90), 90)));
             }
             state = 5 == state ? 0 : state + 1;
         }
@@ -101,6 +104,7 @@ public class Nonspell3 : AbstractSingle
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(10)));
         Vector2 enemyCenter = new(192, -90);
+        float r = Random.Range(0f, 360f);
         for (int i = 0; i < flowers; i++)
         {
             rotation += direction * 360f / flowers;
@@ -108,10 +112,10 @@ public class Nonspell3 : AbstractSingle
             Vector2 flowerPos = enemyCenter + new Vector2(FLOWER_RING_RADIUS * Mathf.Cos(rotationR), FLOWER_RING_RADIUS * Mathf.Sin(rotationR));
             for (int j = 0; j < FLOWER_PETALS; j++)
             {
-                float angle = 360f / FLOWER_PETALS * j;
+                float angle = rotation + 360f / FLOWER_PETALS * j + r;
                 float angleR = Mathf.Deg2Rad * angle;
-                Vector2 spawnPos = flowerPos + new Vector2(10 * Mathf.Cos(angleR), 10 * Mathf.Sin(angleR));
-                GameObject bullet = StageManager.SpawnBulletA1(spawnPos, 0, -rotation + angle - 90f, enemyBulletType, 10);
+                Vector2 spawnPos = flowerPos + new Vector2(PETAL_DISTANCE * Mathf.Cos(angleR), PETAL_DISTANCE * Mathf.Sin(angleR));
+                GameObject bullet = StageManager.SpawnBulletA1(spawnPos, 0, angle + 180f, enemyBulletType, 10);
                 CoroutineUtil.StartSingleLoopCRT(_ManipulateFlower(bullet));
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(2)));
@@ -120,7 +124,7 @@ public class Nonspell3 : AbstractSingle
 
     private IEnumerator<float> _ManipulateFlower(GameObject gameObject)
     {
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(150)));
-        gameObject.GetComponent<EnemyBullet>().speed = 3f;
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(120)));
+        gameObject.GetComponent<EnemyBullet>().speed = 2.7f;
     }
 }

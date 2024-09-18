@@ -20,7 +20,13 @@ public class StageManager : MonoBehaviour
     private Dictionary<string, GameObject> enemies = new();
 
     [SerializeField]
-    private List<Type> singles = new() { typeof(Pattern01), typeof(Nonspell2), typeof(Nonspell3), typeof(Nonspell4) };
+    private List<Type> singles = new() {
+        typeof(Pattern01),
+        typeof(Nonspell2),
+        typeof(Nonspell3),
+        typeof(Nonspell4),
+        typeof(Nonspell5),
+    };
     public AbstractSingle activeSingle = null;
 
     private void Awake()

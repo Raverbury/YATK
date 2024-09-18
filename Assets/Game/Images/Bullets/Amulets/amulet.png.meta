@@ -114,7 +114,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 240
         width: 16
         height: 16
       alignment: 0
@@ -134,8 +134,8 @@ TextureImporter:
       name: amulet_1
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
+        x: 0
+        y: 224
         width: 16
         height: 16
       alignment: 0
@@ -155,8 +155,8 @@ TextureImporter:
       name: amulet_2
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
+        x: 0
+        y: 208
         width: 16
         height: 16
       alignment: 0
@@ -176,8 +176,8 @@ TextureImporter:
       name: amulet_3
       rect:
         serializedVersion: 2
-        x: 48
-        y: 0
+        x: 0
+        y: 192
         width: 16
         height: 16
       alignment: 0
@@ -197,8 +197,8 @@ TextureImporter:
       name: amulet_4
       rect:
         serializedVersion: 2
-        x: 64
-        y: 0
+        x: 0
+        y: 176
         width: 16
         height: 16
       alignment: 0
@@ -218,8 +218,8 @@ TextureImporter:
       name: amulet_5
       rect:
         serializedVersion: 2
-        x: 80
-        y: 0
+        x: 0
+        y: 160
         width: 16
         height: 16
       alignment: 0
@@ -239,8 +239,8 @@ TextureImporter:
       name: amulet_6
       rect:
         serializedVersion: 2
-        x: 96
-        y: 0
+        x: 0
+        y: 144
         width: 16
         height: 16
       alignment: 0
@@ -260,8 +260,8 @@ TextureImporter:
       name: amulet_7
       rect:
         serializedVersion: 2
-        x: 112
-        y: 0
+        x: 0
+        y: 128
         width: 16
         height: 16
       alignment: 0
@@ -281,8 +281,8 @@ TextureImporter:
       name: amulet_8
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
+        x: 0
+        y: 112
         width: 16
         height: 16
       alignment: 0
@@ -302,8 +302,8 @@ TextureImporter:
       name: amulet_9
       rect:
         serializedVersion: 2
-        x: 144
-        y: 0
+        x: 0
+        y: 96
         width: 16
         height: 16
       alignment: 0
@@ -323,8 +323,8 @@ TextureImporter:
       name: amulet_10
       rect:
         serializedVersion: 2
-        x: 160
-        y: 0
+        x: 0
+        y: 80
         width: 16
         height: 16
       alignment: 0
@@ -344,8 +344,8 @@ TextureImporter:
       name: amulet_11
       rect:
         serializedVersion: 2
-        x: 176
-        y: 0
+        x: 0
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -365,8 +365,8 @@ TextureImporter:
       name: amulet_12
       rect:
         serializedVersion: 2
-        x: 192
-        y: 0
+        x: 0
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -386,8 +386,8 @@ TextureImporter:
       name: amulet_13
       rect:
         serializedVersion: 2
-        x: 208
-        y: 0
+        x: 0
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -407,8 +407,8 @@ TextureImporter:
       name: amulet_14
       rect:
         serializedVersion: 2
-        x: 224
-        y: 0
+        x: 0
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -428,7 +428,7 @@ TextureImporter:
       name: amulet_15
       rect:
         serializedVersion: 2
-        x: 240
+        x: 0
         y: 0
         width: 16
         height: 16

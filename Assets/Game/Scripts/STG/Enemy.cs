@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
             _hp = value;
         }
     }
-    private bool IsInvulnerable = false;
+    private bool IsInvulnerable = true;
     public bool HasRefilledHP = false;
 
     public UnityAction<int, int> EntitySetHP;
@@ -115,7 +115,7 @@ public class Enemy : MonoBehaviour
         Vector2 initialPos = transform.position;
         float initialDistance = Vector2.Distance(initialPos, destination);
         float maxSpeed = initialDistance / durationInFrames;
-        if (initialPos != destination)
+        if (Vector2.Distance(destination, initialPos) > 1f)
         {
             SetAnimState(AnimState.Move);
             for (int i = 0; i < durationInFrames; i++)

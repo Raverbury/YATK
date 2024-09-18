@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MEC;
+using STG;
 using UnityEngine;
 
 public class Pattern01 : AbstractSingle
@@ -36,33 +37,32 @@ public class Pattern01 : AbstractSingle
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
 
-        const int BRANCHES = 7;
-        const float HALF = (float)BRANCHES / 2f;
-        int rotation = 0;
+        const int SEGMENTS = 8;
+        const int BRANCHES = SEGMENTS * 11;
+        int rotation = 90;
+        bool oddWave = true;
         while (true)
         {
-            for (int __delay = 0; __delay < 8; __delay++)
-            {
-                yield return Timing.WaitForOneFrame;
-            }
             float r = Random.Range(0, 10);
             for (int i = 0; i < BRANCHES; i++)
             {
                 // GameObject bullet = pool.SpawnBulletA1(192, -60, 2 + 3 * ((-1 * Mathf.Abs(i - BRANCHES / 2)) + BRANCHES / 2) / (BRANCHES / 2), 360f / (BRANCHES / 2) * i + r, 0.5f);
-
-                float j = i - HALF;
-                j = Mathf.Abs(j);
-                j *= -1;
-                j += HALF;
-                j = Mathf.Max(j, 1);
-                float speed = 2 + 6f * (float)j / HALF;
+                int j = (i % SEGMENTS) switch
+                {
+                    0 or 7 => 1,
+                    1 or 6 => 3,
+                    2 or 5 => 5,
+                    _ => 10,
+                };
+                float speed = 2 + 0.5f * j;
                 float angle = 360f / BRANCHES * i + rotation;
-                GameObject bullet = StageManager.SpawnBulletA1(enemy.gameObject, speed, angle, STG.EnemyBulletType.ARROW_DARK_BLUE, 30);
+                EnemyBulletType color = oddWave ? STG.EnemyBulletType.ARROW_DARK_BLUE : STG.EnemyBulletType.ARROW_DARK_GREEN;
+                GameObject bullet = StageManager.SpawnBulletA1(enemy.gameObject, speed, angle, color, 30);
                 CoroutineUtil.StartSingleLoopCRT(_Manipulate(bullet));
-                GameObject bullet2 = StageManager.SpawnBulletA1(enemy.gameObject, speed, -angle, STG.EnemyBulletType.ARROW_DARK_GREEN, 30);
-                CoroutineUtil.StartSingleLoopCRT(_Manipulate(bullet2));
             }
-            rotation += 41;
+            rotation += 7;
+            oddWave = !oddWave;
+            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(45)));
         }
     }
 
