@@ -5,12 +5,8 @@ using STG;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(ShotSheet))]
-[RequireComponent(typeof(BulletPool))]
 public class StageManager : MonoBehaviour
 {
-    [SerializeField, HideInInspector]
-    private BulletPool bulletPool;
     [SerializeField]
     private GameObject enemyPrefab;
     private static StageManager instance = null;
@@ -36,7 +32,6 @@ public class StageManager : MonoBehaviour
             Destroy(this);
         }
         instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -46,7 +41,6 @@ public class StageManager : MonoBehaviour
 
     private void OnValidate()
     {
-        bulletPool = GetComponent<BulletPool>();
     }
 
     private void OnEnable()
@@ -113,43 +107,5 @@ public class StageManager : MonoBehaviour
         GameObject enemyGameObject = Instantiate(instance.enemyPrefab);
         enemyGameObject.transform.position = new Vector3(x, y, 0);
         return enemyGameObject;
-    }
-
-    public static GameObject SpawnBulletA1(GameObject gameObject, float speed, float angle, EnemyBulletType bulletType, int delay)
-    {
-        return SpawnBulletA1(gameObject.transform.position.x, gameObject.transform.position.y, speed, angle, bulletType, delay);
-    }
-
-    public static GameObject SpawnBulletA1(Vector2 position, float speed, float angle, EnemyBulletType bulletType, int delay)
-    {
-        return SpawnBulletA1(position.x, position.y, speed, angle, bulletType, delay);
-    }
-
-    public static GameObject SpawnBulletA1(float x, float y, float speed, float angle, EnemyBulletType bulletType, int delay)
-    {
-        GameObject bullet = instance.bulletPool.RequestBullet();
-        bullet.transform.position = new Vector3(x, y, 0);
-        bullet.transform.eulerAngles = new Vector3(0, 0, angle);
-        bullet.TryGetComponent(out EnemyBullet enemyBullet);
-        enemyBullet.speed = speed;
-        (Sprite realSprite, float realSize, float realHitboxRadius, Sprite spawnCloudSprite, float spawnCloudSize, float spawnCloudHitboxRadius) = ShotSheet.GetEnemyBulletData((int)bulletType);
-        enemyBullet.SetGraphic(spawnCloudSprite, spawnCloudSize, spawnCloudHitboxRadius);
-        Timing.RunCoroutine(_SpawnBulletWithDelay(bullet, enemyBullet, realSprite, realSize, realHitboxRadius, delay), "enemyBulletSpawning");
-        return bullet;
-    }
-
-    private static IEnumerator<float> _SpawnBulletWithDelay(GameObject bullet, EnemyBullet enemyBullet, Sprite realSprite, float realSize, float realHitboxRadius, int delay)
-    {
-        bullet.SetActive(true);
-        enemyBullet.enabled = false;
-
-        for (int __delay = 0; __delay < delay; __delay++)
-        {
-            yield return Timing.WaitForOneFrame;
-        }
-
-        enemyBullet.SetGraphic(realSprite, realSize, realHitboxRadius);
-        enemyBullet.enabled = true;
-        bullet.SetActive(true);
     }
 }

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using MEC;
 using UnityEngine;
 
-public class BulletPool : MonoBehaviour
+public class ObjectPool : MonoBehaviour
 {
     [SerializeField]
     private GameObject baseObj;
@@ -21,16 +20,19 @@ public class BulletPool : MonoBehaviour
             clone.SetActive(false);
             pool.Add(clone);
         }
+        AltAwake();
     }
 
-    public GameObject RequestBullet()
+    protected virtual void AltAwake() { }
+
+    public GameObject RequestObject()
     {
         return pool[GetNextInteger()];
     }
 
     private int GetNextInteger()
     {
-        currentIndex = ((currentIndex + 1) >= capacity) ? 0 : (currentIndex + 1);
+        currentIndex = (currentIndex + 1) % capacity;
         return currentIndex;
     }
 }

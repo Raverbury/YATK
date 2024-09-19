@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using STG;
 using UnityEngine;
 
 public class ShotSheet : MonoBehaviour
@@ -22,6 +23,12 @@ public class ShotSheet : MonoBehaviour
     [Header("Player weapons")]
     [SerializeField]
     private List<ShotData> playerWeapons;
+    #endregion
+
+    #region items
+    [Header("Items")]
+    [SerializeField]
+    private List<Sprite> items;
     #endregion
 
     public static (Sprite, float, float, Sprite, float, float) GetEnemyBulletData(int index)
@@ -51,6 +58,11 @@ public class ShotSheet : MonoBehaviour
     public static ShotData GetPlayerShotData(int index)
     {
         return instance.playerWeapons[index];
+    }
+
+    public static Sprite GetItemSprite(ItemType itemType)
+    {
+        return instance.items[(int)itemType];
     }
 
     private void Awake()

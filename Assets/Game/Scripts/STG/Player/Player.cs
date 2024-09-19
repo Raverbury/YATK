@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(Animator))]
-[RequireComponent(typeof(BulletPool))]
 public class Player : MonoBehaviour
 {
     public static UnityAction PlayerShoot;
@@ -17,7 +16,12 @@ public class Player : MonoBehaviour
     public static UnityAction<int> PlayerSetGrazeboxRadius;
     public static UnityAction<int> PlayerSetGraze;
     public static UnityAction<int> PlayerSetPower;
+    public static UnityAction PlayerAutoCollectItem;
     public static UnityAction PlayerSetMiss;
+
+    public static UnityAction PlayerCollectItem;
+    public static UnityAction PlayerPowerUp;
+    public static UnityAction EVPlayerGraze;
 
     public static Player instance;
 
@@ -31,7 +35,7 @@ public class Player : MonoBehaviour
     [SerializeField, HideInInspector]
     private Animator animator;
     [SerializeField, HideInInspector]
-    private BulletPool bulletPool;
+    private ObjectPool bulletPool;
 
     public GameObject weaponOrb;
 
@@ -100,6 +104,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    private bool isInvulnerable = false;
+
+    private short _pocLine = (short)(Constant.GAME_HEIGHT * -0.2);
+
     private int initialBomb = 3;
 
     private int framesLeftToDeathBomb = -1;
@@ -112,7 +120,7 @@ public class Player : MonoBehaviour
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         circleCollider2D = gameObject.GetComponent<CircleCollider2D>();
         animator = gameObject.GetComponent<Animator>();
-        bulletPool = GetComponent<BulletPool>();
+        bulletPool = GetComponent<ObjectPool>();
     }
 
     // Start is called before the first frame update
@@ -192,30 +200,43 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Equals))
+        // check above poc line
+        if (transform.position.y >= _pocLine)
         {
-            Power += 32;
-        }
-        if (Input.GetKeyDown(KeyCode.Minus))
-        {
-            Power -= 32;
+            PlayerAutoCollectItem?.Invoke();
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        PlayerGetHit();
         if (Constant.LAYER_ENEMY_BULLET == other.gameObject.layer)
         {
+            PlayerGetHit();
             other.gameObject.SetActive(false);
+        }
+        else if (Constant.LAYER_ITEM == other.gameObject.layer)
+        {
+            if (other.gameObject.TryGetComponent(out Item item))
+            {
+                item.CollectItem(this);
+            }
+            other.gameObject.SetActive(false);
+        }
+        else if (Constant.LAYER_ENEMY == other.gameObject.layer)
+        {
+            PlayerGetHit();
         }
     }
 
     private void PlayerGetHit()
     {
         // any invuln check
+        if (isInvulnerable) {
+            return;
+        }
         shouldMiss = true;
-        circleCollider2D.enabled = false;
+        isInvulnerable = true;
+        // circleCollider2D.enabled = false;
         framesLeftToDeathBomb = deathBombFrames;
         shouldCheckMovement = false;
         // play miss sound
@@ -238,11 +259,13 @@ public class Player : MonoBehaviour
     public void PlayerGraze()
     {
         Graze += 1;
+        EVPlayerGraze?.Invoke();
     }
 
     IEnumerator<float> _SetInvulnerable(int duration)
     {
-        circleCollider2D.enabled = false;
+        // circleCollider2D.enabled = false;
+        isInvulnerable = true;
         for (int __delay = duration; __delay > 0; __delay--)
         {
             if (__delay % 4 == 0)
@@ -253,7 +276,8 @@ public class Player : MonoBehaviour
             PlayerIsInvulnerable.Invoke((float)__delay / duration);
             yield return Timing.WaitForOneFrame;
         }
-        circleCollider2D.enabled = true;
+        // circleCollider2D.enabled = true;
+        isInvulnerable = false;
         spriteRenderer.enabled = true;
     }
 
@@ -275,28 +299,5 @@ public class Player : MonoBehaviour
             yield return Timing.WaitForOneFrame;
         }
         shouldCheckMovement = true;
-    }
-
-    public GameObject SpawnBulletP1(float x, float y, float speed, float angle, PlayerShotType playerShotType, int delay)
-    {
-        GameObject bullet = instance.bulletPool.RequestBullet();
-        bullet.transform.position = new Vector3(x, y, 0);
-        bullet.transform.eulerAngles = new Vector3(0, 0, angle);
-        bullet.TryGetComponent(out PlayerBullet playerBullet);
-        playerBullet.speed = speed;
-        ShotData playerShotData = ShotSheet.GetPlayerShotData((int)playerShotType);
-        playerBullet.SetGraphic(playerShotData.SPRITES[0], playerShotData.size, playerShotData.hitboxRadius);
-        Timing.RunCoroutine(_SpawnBulletWithDelay(bullet, delay));
-        return bullet;
-    }
-
-    private IEnumerator<float> _SpawnBulletWithDelay(GameObject bullet, int delay)
-    {
-        for (int __delay = 0; __delay < delay; __delay++)
-        {
-            yield return Timing.WaitForOneFrame;
-        }
-
-        bullet.SetActive(true);
     }
 }

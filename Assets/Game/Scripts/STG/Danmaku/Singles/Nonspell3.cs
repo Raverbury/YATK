@@ -87,7 +87,7 @@ public class Nonspell3 : AbstractSingle
                             2 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) - 0.6f,
                             _ => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) + 0.05f,
                         }) * Mathf.Rad2Deg;
-                        StageManager.SpawnBulletA1(pos, 9, angle, STG.EnemyBulletType.ARROW_SKY, 30);
+                        EnemyBulletPool.SpawnBulletA1(pos, 9, angle, STG.EnemyBulletType.ARROW_SKY, 30);
                         pos.x += 90;
                     }
                     yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(2)));
@@ -115,7 +115,7 @@ public class Nonspell3 : AbstractSingle
                 float angle = rotation + 360f / FLOWER_PETALS * j + r;
                 float angleR = Mathf.Deg2Rad * angle;
                 Vector2 spawnPos = flowerPos + new Vector2(PETAL_DISTANCE * Mathf.Cos(angleR), PETAL_DISTANCE * Mathf.Sin(angleR));
-                GameObject bullet = StageManager.SpawnBulletA1(spawnPos, 0, angle + 180f, enemyBulletType, 10);
+                GameObject bullet = EnemyBulletPool.SpawnBulletA1(spawnPos, 0, angle + 180f, enemyBulletType, 10);
                 CoroutineUtil.StartSingleLoopCRT(_ManipulateFlower(bullet));
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(2)));

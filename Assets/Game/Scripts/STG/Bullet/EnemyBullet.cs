@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class EnemyBullet : Bullet
 {
-    private int flags;
+    private ushort flags;
     public bool HasGrazed
     {
         private set
         {
-            int bit = STG.Constant.ENEMY_BULLET_GRAZED_BIT;
-            flags = value ? (flags | 1 << bit) : (flags & ~(1 << bit));
+            ushort bit = STG.Constant.ENEMY_BULLET_GRAZED_BIT;
+            flags = (ushort)(value ? (flags | 1 << bit) : (flags & ~(1 << bit)));
         }
         get
         {
-            int bit = STG.Constant.ENEMY_BULLET_GRAZED_BIT;
+            ushort bit = STG.Constant.ENEMY_BULLET_GRAZED_BIT;
             return 1 == (flags & (1 << bit)) >> bit;
         }
     }
@@ -20,12 +20,12 @@ public class EnemyBullet : Bullet
     {
         set
         {
-            int bit = STG.Constant.ENEMY_BULLET_DELETABLE_BIT;
-            flags = value ? (flags | 1 << bit) : (flags & ~(1 << bit));
+            ushort bit = STG.Constant.ENEMY_BULLET_DELETABLE_BIT;
+            flags = (ushort)(value ? (flags | 1 << bit) : (flags & ~(1 << bit)));
         }
         get
         {
-            int bit = STG.Constant.ENEMY_BULLET_DELETABLE_BIT;
+            ushort bit = STG.Constant.ENEMY_BULLET_DELETABLE_BIT;
             return 1 == (flags & (1 << bit)) >> bit;
         }
     }
@@ -41,9 +41,12 @@ public class EnemyBullet : Bullet
         StageManager.ClearBullet -= ClearBullet;
     }
 
-    public void ClearBullet(bool shouldDropItem)
+    public void ClearBullet(bool shouldDropStarItem)
     {
         gameObject.SetActive(false);
+        if (shouldDropStarItem) {
+            ItemPool.SpawnItemI1(gameObject, STG.ItemType.STAR_ITEM, true);
+        }
     }
 
     public void Graze()

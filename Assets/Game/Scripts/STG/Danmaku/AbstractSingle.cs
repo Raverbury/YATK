@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using MEC;
+using STG;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -36,18 +37,34 @@ public abstract class AbstractSingle : MonoBehaviour
         enemy.SetAnimState(Enemy.AnimState.Idle);
         CoroutineUtil.KillSingleLoopCRT();
         SingleExplode?.Invoke();
+        ScatterItems(enemy.transform.position);
         for (int __delay = 0; __delay < 150; __delay++)
         {
             StageManager.ClearBullet?.Invoke(true);
             yield return 1;
         }
-        if (Player.instance != null)
-        {
-            Player.instance.Power += 32;
-        }
+        // if (Player.instance != null)
+        // {
+        //     Player.instance.Power += 32;
+        // }
         SingleFinish?.Invoke();
     }
 
+    private void ScatterItems(Vector2 targetPos)
+    {
+        int randomNum = 12;
+        for (int i = 0; i < randomNum; i++)
+        {
+            ItemPool.SpawnItemI1(
+                targetPos.x + Random.Range(-50f, 50f),
+                targetPos.y + Random.Range(-30f, 30f),
+                (i % 4) switch
+                {
+                    3 => ItemType.BIG_POWER_ITEM,
+                    _ => ItemType.POWER_ITEM
+                });
+        }
+    }
 
     protected abstract IEnumerator<float> _Loop(Enemy enemy);
 

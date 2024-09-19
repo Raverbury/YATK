@@ -66,6 +66,18 @@ namespace STG
         IN_YUKARI_NEEDLE_YELLOW = 5,
     }
 
+    public enum ItemType : ushort
+    {
+        POWER_ITEM = 0,
+        POINT_ITEM = 1,
+        BIG_POWER_ITEM = 2,
+        BOMB_ITEM = 3,
+        FULL_POWER_ITEM = 4,
+        LIFE_ITEM = 5,
+        STAR_ITEM = 6,
+        TIME_ORB_ITEM = 7,
+    }
+
     class Lifecycle
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -88,6 +100,7 @@ namespace STG
         public const int LAYER_PLAYER_BULLET = 19;
         public const int LAYER_ENEMY = 20;
         public const int LAYER_PLAYER = 21;
+        public const int LAYER_ITEM = 22;
 
         public static int GAME_BORDER_LEFT
         {
@@ -118,7 +131,7 @@ namespace STG
             }
         }
 
-        public static int ENEMY_BULLET_GRAZED_BIT = 0;
-        public static int ENEMY_BULLET_DELETABLE_BIT = 1;
+        public static ushort ENEMY_BULLET_GRAZED_BIT = 0;
+        public static ushort ENEMY_BULLET_DELETABLE_BIT = 1;
     }
 }

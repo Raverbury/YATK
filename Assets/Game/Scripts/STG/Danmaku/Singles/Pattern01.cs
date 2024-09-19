@@ -33,7 +33,7 @@ public class Pattern01 : AbstractSingle
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
-        AbstractSingle.PatternStart?.Invoke();
+        PatternStart?.Invoke();
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
 
@@ -56,8 +56,8 @@ public class Pattern01 : AbstractSingle
                 };
                 float speed = 2 + 0.5f * j;
                 float angle = 360f / BRANCHES * i + rotation;
-                EnemyBulletType color = oddWave ? STG.EnemyBulletType.ARROW_DARK_BLUE : STG.EnemyBulletType.ARROW_DARK_GREEN;
-                GameObject bullet = StageManager.SpawnBulletA1(enemy.gameObject, speed, angle, color, 30);
+                EnemyBulletType color = oddWave ? EnemyBulletType.ARROW_DARK_BLUE : EnemyBulletType.ARROW_DARK_GREEN;
+                GameObject bullet = EnemyBulletPool.SpawnBulletA1(enemy.gameObject, speed, angle, color, 30);
                 CoroutineUtil.StartSingleLoopCRT(_Manipulate(bullet));
             }
             rotation += 7;

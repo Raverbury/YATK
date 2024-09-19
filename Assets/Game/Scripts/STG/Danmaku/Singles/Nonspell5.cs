@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using MEC;
 using UnityEngine;
+using STG;
 
 public class Nonspell5 : AbstractSingle
 {
@@ -54,7 +55,7 @@ public class Nonspell5 : AbstractSingle
                 for (int j = 0; j < SUBBRANCHES; j++)
                 {
                     float bulletAngle = angle - 75f - ((SUBBRANCHES - 1) / 2 * SPREAD_ANGLE) + j * SPREAD_ANGLE;
-                    StageManager.SpawnBulletA1(spawnPos, SPEED, bulletAngle, STG.EnemyBulletType.AMULET_BLUE, 10);
+                    EnemyBulletPool.SpawnBulletA1(spawnPos, SPEED, bulletAngle, EnemyBulletType.AMULET_BLUE, 10);
                 }
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(8)));
@@ -65,7 +66,7 @@ public class Nonspell5 : AbstractSingle
                 for (int j = 0; j < SUBBRANCHES; j++)
                 {
                     float bulletAngle = angle + 75f - ((SUBBRANCHES - 1) / 2 * SPREAD_ANGLE) + j * SPREAD_ANGLE;
-                    StageManager.SpawnBulletA1(spawnPos, SPEED, bulletAngle, STG.EnemyBulletType.AMULET_RED, 10);
+                    EnemyBulletPool.SpawnBulletA1(spawnPos, SPEED, bulletAngle, EnemyBulletType.AMULET_RED, 10);
                 }
             }
             rotation1 += 6;
@@ -79,7 +80,7 @@ public class Nonspell5 : AbstractSingle
         {
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(5 * 60)));
             float targetX = ((Player.instance == null) ? 192f : Player.instance.gameObject.transform.position.x) + Random.Range(-50f, 50f);
-            targetX = Mathf.Clamp(targetX, STG.Constant.GAME_BORDER_LEFT + 60, STG.Constant.GAME_BORDER_RIGHT - 60);
+            targetX = Mathf.Clamp(targetX, Constant.GAME_BORDER_LEFT + 60, Constant.GAME_BORDER_RIGHT - 60);
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(targetX, Random.Range(-60, -120)), 60)));
             enemy.SetAnimState(Enemy.AnimState.Attack);
         }

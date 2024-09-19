@@ -50,9 +50,9 @@ public class Nonspell2 : AbstractSingle
                     float modSpeed = SPEED * (1 - 0.2f * j);
                     // int delay = 30 * (BRANCHES - j);
                     int delay = 30;
-                    StageManager.SpawnBulletA1(enemy.gameObject, modSpeed, angle * i + rotation, STG.EnemyBulletType.AMULET_BLUE, delay);
-                    StageManager.SpawnBulletA1(enemy.gameObject, modSpeed, angle * i + 23 + rotation, STG.EnemyBulletType.AMULET_RED, delay);
-                    StageManager.SpawnBulletA1(enemy.gameObject, modSpeed, angle * i - 23 + rotation, STG.EnemyBulletType.AMULET_PURPLE, delay);
+                    EnemyBulletPool.SpawnBulletA1(enemy.gameObject, modSpeed, angle * i + rotation, STG.EnemyBulletType.AMULET_BLUE, delay);
+                    EnemyBulletPool.SpawnBulletA1(enemy.gameObject, modSpeed, angle * i + 23 + rotation, STG.EnemyBulletType.AMULET_RED, delay);
+                    EnemyBulletPool.SpawnBulletA1(enemy.gameObject, modSpeed, angle * i - 23 + rotation, STG.EnemyBulletType.AMULET_PURPLE, delay);
                 }
             }
             rotation -= 7;

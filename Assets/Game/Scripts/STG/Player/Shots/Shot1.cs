@@ -58,6 +58,7 @@ public class Shot1 : AbstractShot
 
     private void ConstructOrbs(int level)
     {
+        Player.PlayerPowerUp?.Invoke();
         weaponOrbs.ForEach(orb => Destroy(orb));
         weaponOrbs.Clear();
         for (int i = 0; i < level; i++)
@@ -91,24 +92,24 @@ public class Shot1 : AbstractShot
             {
                 if (isFocused)
                 {
-                    player.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
-                    player.SpawnBulletP1(transform.position.x + 2, transform.position.y, 20, 90f + 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
-                    player.SpawnBulletP1(transform.position.x - 2, transform.position.y, 20, 90f - 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x + 2, transform.position.y, 20, 90f + 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x - 2, transform.position.y, 20, 90f - 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        player.SpawnBulletP1(orb.transform.position.x + 16, orb.transform.position.y, 20, 90f + 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
-                        player.SpawnBulletP1(orb.transform.position.x - 16, orb.transform.position.y, 20, 90f - 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x + 16, orb.transform.position.y, 20, 90f + 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x - 16, orb.transform.position.y, 20, 90f - 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
                     }
                 }
                 else
                 {
-                    player.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                    player.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f - 15f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                    player.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f + 15f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f - 15f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f + 15f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        player.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, 20, 90f + 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                        player.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, 20, 90f - 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, 20, 90f + 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, 20, 90f - 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                     }
                 }
                 timeBetweenShot = 0;
