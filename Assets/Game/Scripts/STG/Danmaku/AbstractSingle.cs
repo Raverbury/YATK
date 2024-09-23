@@ -16,6 +16,10 @@ public abstract class AbstractSingle : MonoBehaviour
     public static UnityAction SingleFinish;
     public static UnityAction SingleExplode;
     public static UnityAction PatternStart;
+    public static UnityAction<ushort> PatternTimerSecondTick;
+
+    private bool hasTimedOut = false;
+    private ushort framesLeft = 0;
 
     protected void Start()
     {
@@ -32,6 +36,7 @@ public abstract class AbstractSingle : MonoBehaviour
         StageManager.SpawnNamedEnemy(out GameObject enemyGameObject, -100, 100, "mokou");
         Enemy enemy = enemyGameObject.GetComponent<Enemy>();
         enemy.SetEmptyHpCircle();
+        framesLeft = (ushort)(GetTimer() * 60);
         Timing.RunCoroutine(_Loop(enemy), "singleLoop");
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(_CheckDone(enemy)));
         enemy.SetAnimState(Enemy.AnimState.Idle);
@@ -40,7 +45,7 @@ public abstract class AbstractSingle : MonoBehaviour
         ScatterItems(enemy.transform.position);
         for (int __delay = 0; __delay < 150; __delay++)
         {
-            StageManager.ClearBullet?.Invoke(true);
+            StageManager.ClearBullet?.Invoke(!hasTimedOut);
             yield return 1;
         }
         // if (Player.instance != null)
@@ -70,8 +75,23 @@ public abstract class AbstractSingle : MonoBehaviour
 
     private IEnumerator<float> _CheckDone(Enemy enemy)
     {
-        while (!(enemy.IsDead() && enemy.HasRefilledHP))
+        while (true)
         {
+            if (enemy.IsDead() && enemy.HasRefilledHP)
+            {
+                break;
+            }
+            if (framesLeft <= 0)
+            {
+                hasTimedOut = true;
+                break;
+            }
+            if (framesLeft % 60 == 0)
+            {
+                ushort secondsLeft = (ushort)(framesLeft / 60);
+                PatternTimerSecondTick?.Invoke((ushort)(framesLeft / 60));
+            }
+            framesLeft -= 1;
             yield return 1;
         }
     }

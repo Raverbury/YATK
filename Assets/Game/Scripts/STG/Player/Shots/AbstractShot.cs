@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Player))]
-public abstract class AbstractShot : MonoBehaviour
+public abstract class AbstractShot : PausableMono
 {
     protected int currentPower = 0;
     protected Player player;

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(Rigidbody2D))]
-public class Item : MonoBehaviour
+public class Item : PausableMono
 {
     private bool shouldFlyToPlayer = false;
 
@@ -37,7 +37,7 @@ public class Item : MonoBehaviour
         collectItemCallback = CollectPowerItem;
     }
 
-    private void Update()
+    protected override void PausableUpdate()
     {
         if (shouldFlyToPlayer)
         {

@@ -82,7 +82,7 @@ public class Shot1 : AbstractShot
         this.isFocused = isFocused;
     }
 
-    private void Update()
+    protected override void PausableUpdate()
     {
         PositionOrbs();
         if (shootFrames > 0)

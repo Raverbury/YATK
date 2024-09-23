@@ -22,7 +22,7 @@ public class Nonspell4 : AbstractSingle
 
     public override int GetTimer()
     {
-        return 40;
+        return 50;
     }
 
     public override bool IsTimeout()

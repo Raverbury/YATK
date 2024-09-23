@@ -22,7 +22,7 @@ public class Pattern01 : AbstractSingle
 
     public override int GetTimer()
     {
-        return 40;
+        return 32;
     }
 
     public override bool IsTimeout()

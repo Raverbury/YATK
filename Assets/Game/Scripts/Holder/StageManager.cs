@@ -13,6 +13,8 @@ public class StageManager : MonoBehaviour
 
     public static UnityAction<bool> ClearBullet;
 
+    public static UnityAction<bool> SetPause;
+
     private Dictionary<string, GameObject> enemies = new();
 
     [SerializeField]
@@ -24,6 +26,8 @@ public class StageManager : MonoBehaviour
         typeof(Nonspell5),
     };
     public AbstractSingle activeSingle = null;
+
+    public static bool isPaused = false;
 
     private void Awake()
     {
@@ -41,6 +45,7 @@ public class StageManager : MonoBehaviour
 
     private void OnValidate()
     {
+
     }
 
     private void OnEnable()
@@ -107,5 +112,30 @@ public class StageManager : MonoBehaviour
         GameObject enemyGameObject = Instantiate(instance.enemyPrefab);
         enemyGameObject.transform.position = new Vector3(x, y, 0);
         return enemyGameObject;
+    }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Pause"))
+        {
+            TogglePause();
+        }
+    }
+
+    public static void TogglePause()
+    {
+        isPaused = !isPaused;
+        SetPause?.Invoke(isPaused);
+        PausableMono.isPaused = isPaused;
+        if (isPaused)
+        {
+            Time.timeScale = 0f;
+            Timing.PauseCoroutines();
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            Timing.ResumeCoroutines();
+        }
     }
 }

@@ -22,7 +22,7 @@ public class Nonspell5 : AbstractSingle
 
     public override int GetTimer()
     {
-        return 40;
+        return 50;
     }
 
     public override bool IsTimeout()
@@ -81,7 +81,7 @@ public class Nonspell5 : AbstractSingle
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(5 * 60)));
             float targetX = ((Player.instance == null) ? 192f : Player.instance.gameObject.transform.position.x) + Random.Range(-50f, 50f);
             targetX = Mathf.Clamp(targetX, Constant.GAME_BORDER_LEFT + 60, Constant.GAME_BORDER_RIGHT - 60);
-            yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(targetX, Random.Range(-60, -120)), 60)));
+            yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(targetX, Random.Range(-180, -60)), 60)));
             enemy.SetAnimState(Enemy.AnimState.Attack);
         }
     }

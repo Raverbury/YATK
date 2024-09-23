@@ -21,7 +21,7 @@ public class Nonspell2 : AbstractSingle
 
     public override int GetTimer()
     {
-        return 40;
+        return 35;
     }
 
     public override bool IsTimeout()

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(Rigidbody2D))]
-public abstract class Bullet : MonoBehaviour
+public abstract class Bullet : PausableMono
 {
     /// <summary>
     /// The speed at which the object moves each frame
@@ -32,7 +32,7 @@ public abstract class Bullet : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void PausableUpdate()
     {
         transform.Translate(Vector2.right * speed);
         transform.eulerAngles += Vector3.forward * rotationSpeed;

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace STG
@@ -133,5 +134,14 @@ namespace STG
 
         public static ushort ENEMY_BULLET_GRAZED_BIT = 0;
         public static ushort ENEMY_BULLET_DELETABLE_BIT = 1;
+    }
+
+    public static class MyExtensions
+    {
+        public static int Modulus(this int number, int divisor)
+        {
+            int rem = number % divisor;
+            return rem < 0 ? rem + divisor : rem;
+        }
     }
 }

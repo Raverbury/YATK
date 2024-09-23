@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(Animator))]
-public class Player : MonoBehaviour
+public class Player : PausableMono
 {
     public static UnityAction PlayerShoot;
     public static UnityAction PlayerBomb;
@@ -106,7 +106,7 @@ public class Player : MonoBehaviour
 
     private bool isInvulnerable = false;
 
-    private short _pocLine = (short)(Constant.GAME_HEIGHT * -0.2);
+    private short _pocLine = (short)(Constant.GAME_HEIGHT * -0.25);
 
     private int initialBomb = 3;
 
@@ -114,6 +114,8 @@ public class Player : MonoBehaviour
 
     private bool shouldMiss = false;
     private bool shouldCheckMovement = true;
+
+    private bool pause = false;
 
     private void OnValidate()
     {
@@ -157,7 +159,7 @@ public class Player : MonoBehaviour
         // playerData.Register(this);
     }
 
-    private void Update()
+    protected override void PausableUpdate()
     {
         // check miss
         if (framesLeftToDeathBomb > 0)
@@ -183,12 +185,12 @@ public class Player : MonoBehaviour
             moveDir *= Focus ? focusSpeed : speed;
             float newX = pos.x + moveDir.x;
             float newY = pos.y + moveDir.y;
-            pos.x = (newX < STG.Constant.GAME_BORDER_LEFT) ?
-                STG.Constant.GAME_BORDER_LEFT : (newX > STG.Constant.GAME_BORDER_RIGHT) ?
-                    STG.Constant.GAME_BORDER_RIGHT : newX;
-            pos.y = (newY > STG.Constant.GAME_BORDER_TOP) ?
-                STG.Constant.GAME_BORDER_TOP : (newY < STG.Constant.GAME_BORDER_BOTTOM) ?
-                    STG.Constant.GAME_BORDER_BOTTOM : newY;
+            pos.x = (newX < Constant.GAME_BORDER_LEFT + 5) ?
+                Constant.GAME_BORDER_LEFT + 5 : (newX > Constant.GAME_BORDER_RIGHT - 5) ?
+                    Constant.GAME_BORDER_RIGHT - 5 : newX;
+            pos.y = (newY > Constant.GAME_BORDER_TOP - 10) ?
+                Constant.GAME_BORDER_TOP - 10 : (newY < Constant.GAME_BORDER_BOTTOM + 10) ?
+                    Constant.GAME_BORDER_BOTTOM + 10 : newY;
             transform.position = pos;
             animator.Play(0 == moveDir.x ? "front" : "side");
             spriteRenderer.flipX = (moveDir.x > 0) || moveDir.x >= 0 && spriteRenderer.flipX;
@@ -231,7 +233,8 @@ public class Player : MonoBehaviour
     private void PlayerGetHit()
     {
         // any invuln check
-        if (isInvulnerable) {
+        if (isInvulnerable)
+        {
             return;
         }
         shouldMiss = true;
@@ -288,7 +291,7 @@ public class Player : MonoBehaviour
         const int REVIVE_STEP_DISTANCE = 7;
         shouldCheckMovement = false;
         Vector3 pos = transform.position;
-        pos.x = STG.Constant.GAME_CENTER_X;
+        pos.x = Constant.GAME_CENTER_X;
         pos.y = -360 - REVIVE_STEP_DISTANCE * REVIVE_DURATION;
         transform.position = pos;
         for (int __delay = 0; __delay < REVIVE_DURATION; __delay++)
