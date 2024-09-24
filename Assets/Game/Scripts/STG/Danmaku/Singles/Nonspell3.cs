@@ -32,7 +32,7 @@ public class Nonspell3 : AbstractSingle
 
     const int FLOWERS = 40;
     const int FLOWER_PETALS = 5;
-    const float FLOWER_RING_RADIUS = 120f;
+    const float FLOWER_RING_RADIUS = 90f;
     const float PETAL_DISTANCE = 8f;
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
