@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerBullet : Bullet
 {
-    public ushort damage = 1;
+    public float damage = 1f;
 
     public override void CrossCameraBoundary(Collider2D other)
     {

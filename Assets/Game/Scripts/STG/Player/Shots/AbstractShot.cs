@@ -29,4 +29,7 @@ public abstract class AbstractShot : PausableMono
     public abstract void SetFocus(bool isFocused);
 
     public abstract void SetPower(int power);
+
+    protected abstract void CalcShotInterval();
+    protected abstract void CalcShotDamage();
 }

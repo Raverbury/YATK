@@ -7,7 +7,9 @@ public class Shot1 : AbstractShot
     private readonly List<GameObject> orbs = new();
     private int shootFrames = 0;
     private const int SHOOT_FRAMES = 30;
-    private const int SHOOT_INTERVAL = 6;
+    private int shotInterval = 6;
+    private float shotDamage = 6;
+
     private int timeBetweenShot = 0;
     private bool isFocused = false;
     private int currentLevel = 0;
@@ -37,13 +39,23 @@ public class Shot1 : AbstractShot
                 {
                     new(new Vector2(-0.35f, 0), new Vector2(0.1f, 0.25f)),
                     new(new Vector2(0.35f, 0), new Vector2(-0.1f, 0.25f)),
-                    new(new Vector2(0.65f, -0.25f), new Vector2(0.3f, 0)),
-                    new(new Vector2(-0.65f, -0.25f), new Vector2(-0.3f, 0)),
+                    new(new Vector2(0.45f, -0.25f), new Vector2(0.3f, 0)),
+                    new(new Vector2(-0.45f, -0.25f), new Vector2(-0.3f, 0)),
                 }
             },
         };
 
     List<GameObject> weaponOrbs = new();
+
+    protected override void CalcShotInterval()
+    {
+        shotInterval = Mathf.CeilToInt(300f / (5f + player.playerData.RateOfFire.GetFinalStat()));
+    }
+
+    protected override void CalcShotDamage()
+    {
+        shotDamage = 0.8f * player.playerData.Attack.GetFinalStat();
+    }
 
     public override void SetPower(int power)
     {
@@ -88,35 +100,37 @@ public class Shot1 : AbstractShot
         if (shootFrames > 0)
         {
             // TODO: shoot
-            if (timeBetweenShot >= SHOOT_INTERVAL)
+            if (timeBetweenShot >= shotInterval)
             {
+                CalcShotInterval();
+                CalcShotDamage();
                 if (isFocused)
                 {
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x + 2, transform.position.y, 20, 90f + 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x - 2, transform.position.y, 20, 90f - 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x + 4, transform.position.y - 4, shotDamage, 20, 90f + 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x - 4, transform.position.y - 4, shotDamage, 20, 90f - 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x + 16, orb.transform.position.y, 20, 90f + 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x - 16, orb.transform.position.y, 20, 90f - 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x + 16, orb.transform.position.y, shotDamage, 20, 90f + 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x - 16, orb.transform.position.y, shotDamage, 20, 90f - 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
                     }
                 }
                 else
                 {
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f - 15f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, 20, 90f + 15f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f - 8f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f + 8f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, 20, 90f + 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, 20, 90f - 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 20, 90f + 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 20, 90f - 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                     }
                 }
                 timeBetweenShot = 0;
             }
             shootFrames -= 1;
         }
-        timeBetweenShot = Mathf.Min(timeBetweenShot + 1, SHOOT_INTERVAL);
+        timeBetweenShot = Mathf.Min(timeBetweenShot + 1, shotInterval);
     }
 
     private void PositionOrbs()
@@ -126,7 +140,7 @@ public class Shot1 : AbstractShot
         {
             Vector3 pos = orb.transform.localPosition;
             Tuple<Vector2, Vector2> orbPosition = ORB_POSITIONS[currentLevel][i];
-            pos = Vector3.MoveTowards(pos, isFocused ? orbPosition.Item2 : orbPosition.Item1, 0.06f);
+            pos = Vector3.MoveTowards(pos, isFocused ? orbPosition.Item2 : orbPosition.Item1, 0.08f);
             orb.transform.localPosition = pos;
             i++;
         }

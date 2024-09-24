@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -142,6 +144,39 @@ namespace STG
         {
             int rem = number % divisor;
             return rem < 0 ? rem + divisor : rem;
+        }
+    }
+
+    [Serializable]
+    public class Stat
+    {
+        public float baseStat;
+        [HideInInspector]
+        public float flatBonusStat;
+        [HideInInspector]
+        public Dictionary<string, float> percentageBonusStat = new();
+
+        public float GetFinalStat()
+        {
+            return baseStat * GetTotalMultiplier() + flatBonusStat;
+        }
+
+        public float GetTotalMultiplier()
+        {
+            float multiplier = 1f;
+            foreach (var kvp in percentageBonusStat)
+            {
+                multiplier *= 1f + kvp.Value;
+            }
+            return multiplier;
+        }
+
+        /// <summary>
+        /// Add a bonus in the form of % (i.e. 20% bonus attack)
+        /// </summary>
+        /// <param name="effectKey"></param>
+        /// <param name="bonusMultiplier"></param>
+        public void AddMultiplier(string effectKey, float bonusMultiplier) {
         }
     }
 }

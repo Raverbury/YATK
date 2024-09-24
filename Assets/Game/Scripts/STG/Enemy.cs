@@ -15,8 +15,8 @@ public class Enemy : MonoBehaviour
     }
 
     public bool showHP = true;
-    private int _maxHP = 0;
-    public int MaxHP
+    private float _maxHP = 0;
+    public float MaxHP
     {
         get
         {
@@ -28,8 +28,8 @@ public class Enemy : MonoBehaviour
             HP = value;
         }
     }
-    private int _hp = 0;
-    public int HP
+    private float _hp = 0;
+    public float HP
     {
         get
         {
@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
     private bool IsInvulnerable = true;
     public bool HasRefilledHP = false;
 
-    public UnityAction<int, int> EntitySetHP;
+    public UnityAction<float, float> EntitySetHP;
     public UnityAction EntityDie;
 
     [SerializeField, HideInInspector]
@@ -64,14 +64,14 @@ public class Enemy : MonoBehaviour
         {
             if (other.gameObject.TryGetComponent(out PlayerBullet playerBullet))
             {
-                int damage = Mathf.Clamp(playerBullet.damage, 0, HP);
+                float damage = Mathf.Clamp(playerBullet.damage, 0f, HP);
                 TakeDamage(damage);
             }
             other.gameObject.SetActive(false);
         }
     }
 
-    private void TakeDamage(int damage)
+    private void TakeDamage(float damage)
     {
         if (IsInvulnerable)
         {

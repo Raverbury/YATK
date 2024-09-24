@@ -14,11 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frontAnimation: {fileID: 7400000, guid: 34973ca74821a8a46a07728b2ac6b53c, type: 2}
   sideAnimation: {fileID: 7400000, guid: f1b3ffa6ad8843a429bc19b02a238e5e, type: 2}
-  unfocusedSpeed: 4
-  focusedSpeed: 2
-  hitboxRadius: 4
+  unfocusedSpeed:
+    baseStat: 4
+    flatBonusStat: 0
+  focusedSpeed:
+    baseStat: 2
+    flatBonusStat: 0
+  hitboxRadius:
+    baseStat: 4
+    flatBonusStat: 0
   initialLife: 2
   initialBomb: 3
-  deathBombWindow: 10
+  deathBombWindow:
+    baseStat: 10
+    flatBonusStat: 0
+  Attack:
+    baseStat: 10
+    flatBonusStat: 0
+  RateOfFire:
+    baseStat: 40
+    flatBonusStat: 0
+  CriticalHitRate:
+    baseStat: 0
+    flatBonusStat: 0
+  BombRechargeRate:
+    baseStat: 0
+    flatBonusStat: 0
+  ItemCollectionLine:
+    baseStat: 25
+    flatBonusStat: 0
   methods:
   - Skill1

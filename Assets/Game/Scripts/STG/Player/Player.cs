@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using MEC;
 using STG;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -26,7 +27,9 @@ public class Player : PausableMono
     public static Player instance;
 
     [SerializeField]
-    private PlayerData playerData = null;
+    private PlayerData editorPlayerData = null;
+    [DoNotSerialize, HideInInspector]
+    public PlayerData playerData = null;
 
     [SerializeField, HideInInspector]
     private SpriteRenderer spriteRenderer;
@@ -135,28 +138,34 @@ public class Player : PausableMono
         }
         instance = this;
 
-        if (null == playerData)
+        if (null == editorPlayerData)
         {
             throw new System.Exception("No default PlayerData attached to Player");
         }
         // set player data/stats
         // TODO: retrieve player data from char select menu or something
-        speed = playerData.UNFOCUSED_SPEED;
-        focusSpeed = playerData.FOCUSED_SPEED;
-        deathBombFrames = playerData.DEATH_BOMB_WINDOW;
-        circleCollider2D.radius = (float)playerData.HITBOX_RADIUS / 100;
-        RemainingLife = playerData.INITIAL_LIFE;
-        initialBomb = playerData.INITIAL_BOMB; // TODO: also add from bomb's stat if implemented
+        SetPlayerData(editorPlayerData);
+        speed = playerData.unfocusedSpeed.GetFinalStat();
+        focusSpeed = playerData.focusedSpeed.GetFinalStat();
+        deathBombFrames = (int)playerData.deathBombWindow.GetFinalStat();
+        circleCollider2D.radius = (float)playerData.hitboxRadius.GetFinalStat() / 100;
+        RemainingLife = playerData.initialLife;
+        initialBomb = playerData.initialBomb; // TODO: also add from bomb's stat if implemented
         PlayerSetGrazeboxRadius(25);
         Focus = false;
         // change anims
         AnimatorOverrideController aoc = new(animator.runtimeAnimatorController);
-        aoc["front"] = playerData.FRONT_ANIMATION;
-        aoc["side"] = playerData.SIDE_ANIMATION;
+        aoc["front"] = playerData.frontAnimation;
+        aoc["side"] = playerData.sideAnimation;
         animator.runtimeAnimatorController = aoc;
 
         // TODO: register passive/ability or smth
         // playerData.Register(this);
+    }
+
+    private void SetPlayerData(PlayerData playerData)
+    {
+        this.playerData = Instantiate(playerData);
     }
 
     protected override void PausableUpdate()

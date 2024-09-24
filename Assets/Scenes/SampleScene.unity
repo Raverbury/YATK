@@ -3448,6 +3448,7 @@ GameObject:
   - component: {fileID: 1969762546}
   - component: {fileID: 1969762551}
   - component: {fileID: 1969762553}
+  - component: {fileID: 1969762554}
   m_Layer: 21
   m_Name: Player
   m_TagString: Untagged
@@ -3559,7 +3560,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06f965dcb3d2c0e4c9748dfd030eaf88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: c1cfff6bc780e534795a19646f353542, type: 2}
+  editorPlayerData: {fileID: 11400000, guid: c1cfff6bc780e534795a19646f353542, type: 2}
+  playerData: {fileID: 0}
   spriteRenderer: {fileID: 1969762547}
   circleCollider2D: {fileID: 1969762551}
   animator: {fileID: 1969762546}
@@ -3607,9 +3609,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1969762545}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d1fdb345b692304eaa98b615a3977df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1969762554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969762545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f34ac69d59fc04db833c427008a919, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1981396431

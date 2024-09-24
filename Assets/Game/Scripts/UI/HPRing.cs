@@ -30,10 +30,10 @@ public class HPRing : MonoBehaviour
         enemy.EntitySetHP -= UpdateHPRing;
     }
 
-    private void UpdateHPRing(int currentHP, int maxHP)
+    private void UpdateHPRing(float currentHP, float maxHP)
     {
         currentHP = Mathf.Max(currentHP, 0);
         image.enabled = enemy.showHP;
-        image.fillAmount = (float)currentHP / maxHP;
+        image.fillAmount = currentHP / maxHP;
     }
 }

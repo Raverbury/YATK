@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MEC;
 using STG;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class StageManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject enemyPrefab;
-    private static StageManager instance = null;
+    public static StageManager instance = null;
 
     public static UnityAction<bool> ClearBullet;
 
@@ -19,11 +20,11 @@ public class StageManager : MonoBehaviour
 
     [SerializeField]
     private List<Type> singles = new() {
-        typeof(Pattern01),
-        typeof(Nonspell2),
-        typeof(Nonspell3),
-        typeof(Nonspell4),
-        typeof(Nonspell5),
+        // typeof(Pattern01),
+        // typeof(Nonspell2),
+        // typeof(Nonspell3),
+        // typeof(Nonspell4),
+        // typeof(Nonspell5),
     };
     public AbstractSingle activeSingle = null;
 
@@ -112,6 +113,19 @@ public class StageManager : MonoBehaviour
         GameObject enemyGameObject = Instantiate(instance.enemyPrefab);
         enemyGameObject.transform.position = new Vector3(x, y, 0);
         return enemyGameObject;
+    }
+
+    /// <summary>
+    /// @Nullable
+    /// </summary>
+    /// <returns></returns>
+    public GameObject GetFirstEnemy()
+    {
+        if (enemies.Count == 0)
+        {
+            return null;
+        }
+        return enemies.First().Value;
     }
 
     private void Update()
