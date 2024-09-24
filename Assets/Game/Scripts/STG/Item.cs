@@ -55,6 +55,13 @@ public class Item : PausableMono
         }
     }
 
+    private void OnTriggerExit2D(Collider2D other) {
+        if (STG.Constant.LAYER_PLAYABLE_AREA == other.gameObject.layer)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
     public void SpawnItem(ItemType itemType, bool shouldAutoCollect = false, float initialYVelocity = 1.5f)
     {
         spriteRenderer.sprite = ShotSheet.GetItemSprite(itemType);
