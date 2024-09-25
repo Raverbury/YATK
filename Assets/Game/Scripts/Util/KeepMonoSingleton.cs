@@ -1,20 +1,18 @@
 using UnityEngine;
 
-public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
+public class KeepMonoSingleton<T> : MonoBehaviour where T : KeepMonoSingleton<T>
 {
-    protected T instance = null;
+    public static T instance = null;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         if (instance != null)
         {
             Destroy(this);
+            return;
         }
         instance = (T)this;
-        AltAwake();
     }
-
-    protected virtual void AltAwake() { }
 }
 
 // NOTE: old prototype idea

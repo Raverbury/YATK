@@ -6,6 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(Canvas))]
 public class PauseMenu : MonoBehaviour
 {
+    public enum PauseResult : int
+    {
+        Resume = 0,
+        Restart = 1,
+        Quit = 2,
+    }
+
     [SerializeField]
     private List<TMP_Text> options;
 
@@ -52,8 +59,18 @@ public class PauseMenu : MonoBehaviour
         }
         if (Input.GetButtonDown("Shoot"))
         {
-            ConfirmChoice();
             SFXPlayer.EVPlayConfirmSound?.Invoke();
+            ConfirmChoice();
+        }
+        if (Input.GetButtonDown("Restart"))
+        {
+            SFXPlayer.EVPlayConfirmSound?.Invoke();
+            StageManager.ResolvePause(PauseResult.Restart);
+        }
+        if (Input.GetButtonDown("Quit"))
+        {
+            SFXPlayer.EVPlayConfirmSound?.Invoke();
+            StageManager.ResolvePause(PauseResult.Quit);
         }
         else if (Input.GetButtonDown("Up"))
         {
@@ -116,17 +133,6 @@ public class PauseMenu : MonoBehaviour
 
     private void ConfirmChoice()
     {
-        switch (currentOption)
-        {
-            case 0:
-                StageManager.TogglePause();
-                break;
-            case 1:
-                // TODO: restart
-                break;
-            case 2:
-                // TODO: quit
-                break;
-        };
+        StageManager.ResolvePause((PauseResult)currentOption);
     }
 }

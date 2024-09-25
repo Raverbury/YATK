@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(AudioSource))]
-public class SFXPlayer : MonoBehaviour
+public class BGMPlayer : MonoBehaviour
 {
     private readonly List<AudioSource> audioSources = new();
     private readonly List<AudioSource> pausedAudioSources = new();
@@ -77,7 +77,6 @@ public class SFXPlayer : MonoBehaviour
         EVPlayCancelSound += PlayCancelSound;
         EVPlayConfirmSound += PlayConfirmSound;
         EVPlaySelectSound += PlaySelectSound;
-        StageManager.EVStageDestroy += ClearPausedSounds;
     }
 
     private void OnDisable()
@@ -95,12 +94,6 @@ public class SFXPlayer : MonoBehaviour
         EVPlayCancelSound -= PlayCancelSound;
         EVPlayConfirmSound -= PlayConfirmSound;
         EVPlaySelectSound -= PlaySelectSound;
-        StageManager.EVStageDestroy -= ClearPausedSounds;
-    }
-
-    private void ClearPausedSounds()
-    {
-        pausedAudioSources.Clear();
     }
 
     private void PlaySelectSound()

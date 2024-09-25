@@ -118,8 +118,6 @@ public class Player : PausableMono
     private bool shouldMiss = false;
     private bool shouldCheckMovement = true;
 
-    private bool pause = false;
-
     private void OnValidate()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
@@ -134,7 +132,7 @@ public class Player : PausableMono
         // singleton check
         if (instance != null)
         {
-            Destroy(this);
+            Destroy(instance);
         }
         instance = this;
 

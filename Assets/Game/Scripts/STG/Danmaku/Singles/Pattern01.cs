@@ -66,6 +66,12 @@ public class Pattern01 : AbstractSingle
         }
     }
 
+    protected override void DropRewards(Vector2 targetPos)
+    {
+        base.DropRewards(targetPos);
+        ItemPool.SpawnItemI1(targetPos, ItemType.LIFE_ITEM);
+    }
+
     IEnumerator<float> _Manipulate(GameObject bullet)
     {
         for (int __delay = 0; __delay < 15; __delay++)

@@ -1,0 +1,26 @@
+fileFormatVersion: 2
+guid: e709ce73a84056340811a8b0e2dc990d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - originalAudioSource: {instanceID: 0}
+  - SFX_PLAYER_MISS: {fileID: 8300000, guid: ad60ba62b0672604e8d26e80201b8c2d, type: 3}
+  - SFX_PLAYER_POWERUP: {instanceID: 0}
+  - SFX_PLAYER_SHOOT: {instanceID: 0}
+  - SFX_SPELL_START: {instanceID: 0}
+  - SFX_EXPLODE: {instanceID: 0}
+  - SFX_ITEM_0: {instanceID: 0}
+  - SFX_ITEM_1: {instanceID: 0}
+  - SFX_PLAYER_GRAZE: {instanceID: 0}
+  - SFX_TIMEOUT_0: {instanceID: 0}
+  - SFX_TIMEOUT_1: {instanceID: 0}
+  - SFX_PAUSE: {instanceID: 0}
+  - SFX_CONFIRM: {instanceID: 0}
+  - SFX_SELECT: {instanceID: 0}
+  - SFX_CANCEL: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

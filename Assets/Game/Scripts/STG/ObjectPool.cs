@@ -16,7 +16,7 @@ public class ObjectPool : MonoBehaviour
         pool = new List<GameObject>(capacity);
         for (int i = 0; i < capacity; i++)
         {
-            GameObject clone = Object.Instantiate(baseObj);
+            GameObject clone = Instantiate(baseObj);
             clone.SetActive(false);
             pool.Add(clone);
         }

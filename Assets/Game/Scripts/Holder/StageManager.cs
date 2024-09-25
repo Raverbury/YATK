@@ -5,48 +5,40 @@ using MEC;
 using STG;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
-public class StageManager : MonoBehaviour
+public class StageManager : OverwritableMonoSingleton<StageManager>
 {
     [SerializeField]
     private GameObject enemyPrefab;
-    public static StageManager instance = null;
 
     public static UnityAction<bool> ClearBullet;
-
     public static UnityAction<bool> SetPause;
+    public static UnityAction EVStageDestroy;
 
     private Dictionary<string, GameObject> enemies = new();
 
-    [SerializeField]
     private List<Type> singles = new() {
-        // typeof(Pattern01),
-        // typeof(Nonspell2),
-        // typeof(Nonspell3),
-        // typeof(Nonspell4),
-        // typeof(Nonspell5),
+        typeof(Pattern01),
+        typeof(Nonspell2),
+        typeof(Nonspell3),
+        typeof(Nonspell4),
+        typeof(Nonspell5),
     };
     public AbstractSingle activeSingle = null;
 
     public static bool isPaused = false;
+    private bool shouldRespondToInput = true;
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (instance != null)
-        {
-            Destroy(this);
-        }
-        instance = this;
+        base.Awake();
+        TogglePause(false);
     }
 
     private void Start()
     {
         StartNextAvailableSingle();
-    }
-
-    private void OnValidate()
-    {
-
     }
 
     private void OnEnable()
@@ -59,6 +51,13 @@ public class StageManager : MonoBehaviour
     {
         ClearBullet -= KillBulletSpawningCoroutines;
         AbstractSingle.SingleFinish -= StartNextAvailableSingle;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        Timing.KillCoroutines();
+        EVStageDestroy?.Invoke();
     }
 
     private void KillBulletSpawningCoroutines(bool _)
@@ -130,15 +129,23 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Pause"))
+        if (shouldRespondToInput)
         {
-            TogglePause();
+            if (Input.GetButtonDown("Pause"))
+            {
+                TogglePause();
+            }
         }
     }
 
     public static void TogglePause()
     {
-        isPaused = !isPaused;
+        TogglePause(!isPaused);
+    }
+
+    public static void TogglePause(bool pause)
+    {
+        isPaused = pause;
         SetPause?.Invoke(isPaused);
         PausableMono.isPaused = isPaused;
         if (isPaused)
@@ -150,6 +157,27 @@ public class StageManager : MonoBehaviour
         {
             Time.timeScale = 1f;
             Timing.ResumeCoroutines();
+        }
+    }
+
+    public static void ResolvePause(PauseMenu.PauseResult pauseResult)
+    {
+        if (instance.shouldRespondToInput)
+        {
+            switch (pauseResult)
+            {
+                case PauseMenu.PauseResult.Resume:
+                    TogglePause();
+                    break;
+                case PauseMenu.PauseResult.Restart:
+                    instance.shouldRespondToInput = false;
+                    SceneUtil.LoadSceneAsync("Stage");
+                    break;
+                case PauseMenu.PauseResult.Quit:
+                    instance.shouldRespondToInput = false;
+                    SceneUtil.LoadSceneAsync("Home");
+                    break;
+            }
         }
     }
 }

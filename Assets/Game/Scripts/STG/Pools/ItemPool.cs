@@ -9,7 +9,7 @@ public class ItemPool : ObjectPool
     {
         if (instance != null)
         {
-            Destroy(this);
+            Destroy(instance);
         }
         instance = this;
     }

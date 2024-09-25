@@ -112,6 +112,7 @@ public class Item : PausableMono
 
     private void CollectLifeItem(Player player)
     {
+        player.RemainingLife += 1;
     }
 
     private void CollectFullPowerItem(Player player)

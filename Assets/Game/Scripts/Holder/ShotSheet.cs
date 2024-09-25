@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using STG;
 using UnityEngine;
 
-public class ShotSheet : MonoBehaviour
+public class ShotSheet : OverwritableMonoSingleton<ShotSheet>
 {
-    private static ShotSheet instance = null;
-
     #region spawn clouds
     [Header("Spawn clouds")]
     [SerializeField]
@@ -63,14 +61,5 @@ public class ShotSheet : MonoBehaviour
     public static Sprite GetItemSprite(ItemType itemType)
     {
         return instance.items[(int)itemType];
-    }
-
-    private void Awake()
-    {
-        if (instance != null)
-        {
-            Destroy(this);
-        }
-        instance = this;
     }
 }

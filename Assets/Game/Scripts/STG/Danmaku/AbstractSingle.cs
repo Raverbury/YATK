@@ -12,7 +12,6 @@ public abstract class AbstractSingle : MonoBehaviour
     public abstract string GetName();
     public abstract bool IsTimeout();
 
-    public static AbstractSingle instance = null;
     public static UnityAction SingleFinish;
     public static UnityAction SingleExplode;
     public static UnityAction PatternStart;
@@ -23,11 +22,6 @@ public abstract class AbstractSingle : MonoBehaviour
 
     protected void Start()
     {
-        if (instance != null)
-        {
-            Destroy(this);
-        }
-        instance = this;
         Timing.RunCoroutine(_RunLoop());
     }
 
@@ -42,7 +36,7 @@ public abstract class AbstractSingle : MonoBehaviour
         enemy.SetAnimState(Enemy.AnimState.Idle);
         CoroutineUtil.KillSingleLoopCRT();
         SingleExplode?.Invoke();
-        ScatterItems(enemy.transform.position);
+        DropRewards(enemy.transform.position);
         for (int __delay = 0; __delay < 150; __delay++)
         {
             StageManager.ClearBullet?.Invoke(!hasTimedOut);
@@ -55,7 +49,7 @@ public abstract class AbstractSingle : MonoBehaviour
         SingleFinish?.Invoke();
     }
 
-    private void ScatterItems(Vector2 targetPos)
+    protected virtual void DropRewards(Vector2 targetPos)
     {
         int randomNum = 12;
         for (int i = 0; i < randomNum; i++)

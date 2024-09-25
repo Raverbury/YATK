@@ -11,7 +11,7 @@ public class EnemyBulletPool : ObjectPool
     {
         if (instance != null)
         {
-            Destroy(this);
+            Destroy(instance);
         }
         instance = this;
     }
