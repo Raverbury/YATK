@@ -54,7 +54,7 @@ public class LoadingCanvas : MonoBehaviour
         }
         else
         {
-            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(1, 0, 1), 0.1f);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0, 1, 1), 0.1f);
         }
     }
 

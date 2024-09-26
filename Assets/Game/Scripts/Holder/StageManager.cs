@@ -167,13 +167,16 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
             switch (pauseResult)
             {
                 case PauseMenu.PauseResult.Resume:
+                    SFXPlayer.EVPlayConfirmSound?.Invoke();
                     TogglePause();
                     break;
                 case PauseMenu.PauseResult.Restart:
+                    SFXPlayer.EVPlayConfirmSound?.Invoke();
                     instance.shouldRespondToInput = false;
                     SceneUtil.LoadSceneAsync("Stage");
                     break;
                 case PauseMenu.PauseResult.Quit:
+                    SFXPlayer.EVPlayCancelSound?.Invoke();
                     instance.shouldRespondToInput = false;
                     SceneUtil.LoadSceneAsync("Home");
                     break;

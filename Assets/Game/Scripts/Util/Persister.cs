@@ -6,11 +6,9 @@ public class Persister : KeepMonoSingleton<Persister>
     {
         if (instance != null)
         {
-            Debug.Log("Purging...");
             Destroy(gameObject);
             return;
         }
-        Debug.Log("XD");
         instance = this;
         DontDestroyOnLoad(gameObject);
     }

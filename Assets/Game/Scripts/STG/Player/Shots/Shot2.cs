@@ -70,12 +70,11 @@ public class Shot2 : AbstractShot
         PositionOrbs();
         if (shootFrames > 0)
         {
-            // TODO: shoot
             if (timeBetweenShot >= shotInterval)
             {
                 CalcShotInterval();
                 CalcShotDamage();
-                float baseAmuletDamage = 1.1f * shotDamage;
+                float baseAmuletDamage = 1.6f * shotDamage;
                 PlayerBulletPool.SpawnBulletP1(transform.position.x - 10, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 91f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                 PlayerBulletPool.SpawnBulletP1(transform.position.x + 10, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 89f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                 if (isFocused)

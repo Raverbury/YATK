@@ -26,8 +26,7 @@ public class Player : PausableMono
 
     public static Player instance;
 
-    [SerializeField]
-    private PlayerData editorPlayerData = null;
+    public static PlayerData selectedPlayerData = null;
     [DoNotSerialize, HideInInspector]
     public PlayerData playerData = null;
 
@@ -136,13 +135,13 @@ public class Player : PausableMono
         }
         instance = this;
 
-        if (null == editorPlayerData)
+        if (null == selectedPlayerData)
         {
             throw new System.Exception("No default PlayerData attached to Player");
         }
         // set player data/stats
         // TODO: retrieve player data from char select menu or something
-        SetPlayerData(editorPlayerData);
+        SetPlayerData(selectedPlayerData);
         speed = playerData.unfocusedSpeed.GetFinalStat();
         focusSpeed = playerData.focusedSpeed.GetFinalStat();
         deathBombFrames = (int)playerData.deathBombWindow.GetFinalStat();
@@ -155,10 +154,22 @@ public class Player : PausableMono
         AnimatorOverrideController aoc = new(animator.runtimeAnimatorController);
         aoc["front"] = playerData.frontAnimation;
         aoc["side"] = playerData.sideAnimation;
+        // aoc.ApplyOverrides(new List<KeyValuePair<AnimationClip, AnimationClip>>(){
+        //     new(aoc["front"], playerData.frontAnimation),
+        //     new(aoc["side"], playerData.sideAnimation),
+        // });
         animator.runtimeAnimatorController = aoc;
 
         // TODO: register passive/ability or smth
         // playerData.Register(this);
+        if (playerData.playerName == "Hakurei Reimu")
+        {
+            gameObject.AddComponent<Shot2>();
+        }
+        else
+        {
+            gameObject.AddComponent<Shot1>();
+        }
     }
 
     private void SetPlayerData(PlayerData playerData)

@@ -7,6 +7,14 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObjects/PlayerData", order = 0)]
 public class PlayerData : ScriptableObject
 {
+    [Header("Metadata")]
+    #region metadata
+    [Tooltip("The name of this character.")]
+    public string playerName;
+    [Tooltip("The color of this character name, should be thematicaly in line with their character.")]
+    public Color nameColor;
+    #endregion
+
     [Header("Animations")]
     #region anims
     [Tooltip("The player animation when facing forward/idle.")]

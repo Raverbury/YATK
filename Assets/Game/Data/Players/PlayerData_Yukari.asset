@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1b9a9047f9852f4092d245866f3ff75, type: 3}
-  m_Name: PlayerData_Reimu
+  m_Name: PlayerData_Yukari
   m_EditorClassIdentifier: 
-  playerName: Hakurei Reimu
-  nameColor: {r: 1, g: 0.2, b: 0.2, a: 1}
-  frontAnimation: {fileID: 7400000, guid: 34973ca74821a8a46a07728b2ac6b53c, type: 2}
-  sideAnimation: {fileID: 7400000, guid: f1b3ffa6ad8843a429bc19b02a238e5e, type: 2}
+  playerName: Yakumo Yukari
+  nameColor: {r: 0.8, g: 0.4, b: 1, a: 1}
+  frontAnimation: {fileID: 7400000, guid: 8e39138a451ebb4469ad2575140335ae, type: 2}
+  sideAnimation: {fileID: 7400000, guid: 6bb435cd7eefb114d8fb03fd82ec31cc, type: 2}
   unfocusedSpeed:
-    baseStat: 4
+    baseStat: 3.5
     flatBonusStat: 0
   focusedSpeed:
     baseStat: 2
@@ -31,7 +31,7 @@ MonoBehaviour:
     baseStat: 10
     flatBonusStat: 0
   Attack:
-    baseStat: 10
+    baseStat: 11
     flatBonusStat: 0
   RateOfFire:
     baseStat: 40
@@ -43,7 +43,7 @@ MonoBehaviour:
     baseStat: 0
     flatBonusStat: 0
   ItemCollectionLine:
-    baseStat: 27
+    baseStat: 25
     flatBonusStat: 0
   methods:
   - Skill1

@@ -99,20 +99,20 @@ public class Shot1 : AbstractShot
         PositionOrbs();
         if (shootFrames > 0)
         {
-            // TODO: shoot
             if (timeBetweenShot >= shotInterval)
             {
                 CalcShotInterval();
                 CalcShotDamage();
                 if (isFocused)
                 {
+                    float focusedOrbDamage = 0.6f * shotDamage;
                     PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
                     PlayerBulletPool.SpawnBulletP1(transform.position.x + 4, transform.position.y - 4, shotDamage, 20, 90f + 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
                     PlayerBulletPool.SpawnBulletP1(transform.position.x - 4, transform.position.y - 4, shotDamage, 20, 90f - 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x + 16, orb.transform.position.y, shotDamage, 20, 90f + 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x - 16, orb.transform.position.y, shotDamage, 20, 90f - 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x + 16, orb.transform.position.y, focusedOrbDamage, 20, 90f + 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x - 16, orb.transform.position.y, focusedOrbDamage, 20, 90f - 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
                     }
                 }
                 else
