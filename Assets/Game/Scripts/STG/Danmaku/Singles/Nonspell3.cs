@@ -125,6 +125,9 @@ public class Nonspell3 : AbstractSingle
     private IEnumerator<float> _ManipulateFlower(GameObject gameObject)
     {
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(120)));
-        gameObject.GetComponent<EnemyBullet>().speed = 2.7f;
+        if (gameObject.activeInHierarchy)
+        {
+            gameObject.GetComponent<EnemyBullet>().speed = 2.7f;
+        }
     }
 }

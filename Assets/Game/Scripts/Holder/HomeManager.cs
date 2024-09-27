@@ -54,7 +54,6 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         if (homeSelectors.Count <= 1)
         {
             return;
-            // TODO: or select quit
         }
         AbstractHomeSelector oldSelector = homeSelectors.Last();
         homeSelectors.RemoveAt(homeSelectors.Count - 1);

@@ -104,6 +104,7 @@ namespace STG
         public const int LAYER_ENEMY = 20;
         public const int LAYER_PLAYER = 21;
         public const int LAYER_ITEM = 22;
+        public const int LAYER_PLAYER_BOMB = 23;
 
         public static int GAME_BORDER_LEFT
         {
@@ -172,11 +173,17 @@ namespace STG
         }
 
         /// <summary>
-        /// Add a bonus in the form of % (i.e. 20% bonus attack)
+        /// Add a bonus in the form of % (i.e. 20% bonus attack, or 0.2f)
+        /// Multipliers stack multiplicatively
         /// </summary>
         /// <param name="effectKey"></param>
         /// <param name="bonusMultiplier"></param>
         public void AddMultiplier(string effectKey, float bonusMultiplier) {
+            percentageBonusStat.Add(effectKey, bonusMultiplier);
+        }
+
+        public void RemoveMultiplier(string effectKey) {
+            percentageBonusStat.Remove(effectKey);
         }
     }
 }

@@ -44,7 +44,8 @@ public class EnemyBullet : Bullet
     public void ClearBullet(bool shouldDropStarItem)
     {
         gameObject.SetActive(false);
-        if (shouldDropStarItem) {
+        if (shouldDropStarItem)
+        {
             ItemPool.SpawnItemI1(gameObject, STG.ItemType.STAR_ITEM, true);
         }
     }

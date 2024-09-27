@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MEC;
 using UnityEngine;
 
 class WaitForFrames
@@ -14,5 +15,10 @@ class WaitForFrames
         {
             yield return 1;
         }
+    }
+
+    public static float WaitWrapper(int framesToWait)
+    {
+        return Timing.WaitUntilDone(Timing.RunCoroutine(Wait(framesToWait)));
     }
 }

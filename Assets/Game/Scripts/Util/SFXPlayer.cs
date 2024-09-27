@@ -26,6 +26,8 @@ public class SFXPlayer : MonoBehaviour
     public AudioClip SFX_PLAYER_GRAZE;
     public AudioClip SFX_TIMEOUT_0;
     public AudioClip SFX_TIMEOUT_1;
+    public AudioClip SFX_PLAYER_EXTEND;
+    public AudioClip SFX_MASTER_SPARK;
 
     public AudioClip SFX_PAUSE;
     public AudioClip SFX_CONFIRM;
@@ -39,6 +41,8 @@ public class SFXPlayer : MonoBehaviour
     public static UnityAction EVPlayConfirmSound;
     public static UnityAction EVPlaySelectSound;
     public static UnityAction EVPlayCancelSound;
+
+    public static UnityAction EVPlayMasterSparkSound;
 
     private void Awake()
     {
@@ -67,6 +71,7 @@ public class SFXPlayer : MonoBehaviour
         StageManager.SetPause += OnPause;
 
         Player.PlayerSetMiss += PlayMissSound;
+        Player.ResultPlayerExtend += PlayExtendSound;
         Player.PlayerPowerUp += PlayPowerUpSound;
         AbstractSingle.PatternStart += PlaySpellStartSound;
         Player.PlayerShoot += PlayPlayerShootSound;
@@ -78,6 +83,8 @@ public class SFXPlayer : MonoBehaviour
         EVPlayConfirmSound += PlayConfirmSound;
         EVPlaySelectSound += PlaySelectSound;
         StageManager.EVStageDestroy += ClearPausedSounds;
+        Player.EVBombActivate += PlaySpellStartSound2;
+        EVPlayMasterSparkSound += PlayMasterSparkSound;
     }
 
     private void OnDisable()
@@ -85,6 +92,7 @@ public class SFXPlayer : MonoBehaviour
         StageManager.SetPause -= OnPause;
 
         Player.PlayerSetMiss -= PlayMissSound;
+        Player.ResultPlayerExtend -= PlayExtendSound;
         Player.PlayerPowerUp -= PlayPowerUpSound;
         AbstractSingle.PatternStart -= PlaySpellStartSound;
         Player.PlayerShoot -= PlayPlayerShootSound;
@@ -96,6 +104,18 @@ public class SFXPlayer : MonoBehaviour
         EVPlayConfirmSound -= PlayConfirmSound;
         EVPlaySelectSound -= PlaySelectSound;
         StageManager.EVStageDestroy -= ClearPausedSounds;
+        Player.EVBombActivate -= PlaySpellStartSound2;
+        EVPlayMasterSparkSound += PlayMasterSparkSound;
+    }
+
+    private void PlayExtendSound()
+    {
+        PlayAudio(SFX_PLAYER_EXTEND);
+    }
+
+    private void PlayMasterSparkSound()
+    {
+        PlayAudio(SFX_MASTER_SPARK);
     }
 
     private void ClearPausedSounds()
@@ -137,6 +157,11 @@ public class SFXPlayer : MonoBehaviour
     }
 
     private void PlaySpellStartSound()
+    {
+        PlayAudio(SFX_SPELL_START);
+    }
+
+    private void PlaySpellStartSound2(int _)
     {
         PlayAudio(SFX_SPELL_START);
     }

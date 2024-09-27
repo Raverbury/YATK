@@ -811,6 +811,8 @@ MonoBehaviour:
   SFX_PLAYER_GRAZE: {fileID: 8300000, guid: 3b1d6880bacf61a4b9eb13c6e2480528, type: 3}
   SFX_TIMEOUT_0: {fileID: 8300000, guid: b6bd1e17f398bf2459c33a4650af5678, type: 3}
   SFX_TIMEOUT_1: {fileID: 8300000, guid: dae4d8c8f97da0342ab895d25c17b5e0, type: 3}
+  SFX_PLAYER_EXTEND: {fileID: 8300000, guid: de51349ca7a135b45bcb9641f58a5faf, type: 3}
+  SFX_MASTER_SPARK: {fileID: 8300000, guid: caeabd012f6502d4aac380bb3166c8af, type: 3}
   SFX_PAUSE: {fileID: 8300000, guid: 27249f49974350242ad8c6e394e57efe, type: 3}
   SFX_CONFIRM: {fileID: 8300000, guid: cc5c914e55967644898aaf1dac35e674, type: 3}
   SFX_SELECT: {fileID: 8300000, guid: 240305b00e8c9124388b3ffe2cce6964, type: 3}

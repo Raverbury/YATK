@@ -108,11 +108,13 @@ public class Item : PausableMono
 
     private void CollectBombItem(Player player)
     {
+        player.RemainingBomb += 1;
+        Player.PlayerCollectItem?.Invoke();
     }
 
     private void CollectLifeItem(Player player)
     {
-        player.RemainingLife += 1;
+        player.PlayerExtend();
     }
 
     private void CollectFullPowerItem(Player player)

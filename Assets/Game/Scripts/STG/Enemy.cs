@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class Enemy : MonoBehaviour
+public class Enemy : PausableMono
 {
     public enum AnimState : int
     {
@@ -52,6 +52,8 @@ public class Enemy : MonoBehaviour
     [SerializeField, HideInInspector]
     private SpriteRenderer spriteRenderer;
 
+    private Dictionary<Bomb, bool> touchingBombs = new();
+
     private void OnValidate()
     {
         animator = GetComponent<Animator>();
@@ -68,6 +70,35 @@ public class Enemy : MonoBehaviour
                 TakeDamage(damage);
             }
             other.gameObject.SetActive(false);
+        }
+        if (STG.Constant.LAYER_PLAYER_BOMB == other.gameObject.layer)
+        {
+            if (other.gameObject.TryGetComponent(out Bomb bomb))
+            {
+                touchingBombs.Add(bomb, true);
+
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (STG.Constant.LAYER_PLAYER_BOMB == other.gameObject.layer)
+        {
+            if (other.gameObject.TryGetComponent(out Bomb bomb))
+            {
+                touchingBombs.Remove(bomb);
+            }
+        }
+    }
+
+    protected override void PausableUpdate()
+    {
+        foreach (var kvp in touchingBombs)
+        {
+            Bomb bomb = kvp.Key;
+            float damage = Mathf.Clamp(bomb.damage, 0f, HP);
+            TakeDamage(damage);
         }
     }
 
@@ -150,5 +181,6 @@ public class Enemy : MonoBehaviour
         }
         IsInvulnerable = false;
         HasRefilledHP = true;
+
     }
 }

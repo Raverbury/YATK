@@ -621,6 +621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 204401765}
+  - component: {fileID: 204401768}
   - component: {fileID: 204401767}
   - component: {fileID: 204401766}
   m_Layer: 5
@@ -746,6 +747,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204401764}
   m_CullTransparentMesh: 1
+--- !u!114 &204401768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204401764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1fb2a36c824b5d49bd17f87581fadfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 204401766}
 --- !u!1 &280445797
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,9 +1332,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 32
+  m_SortingOrder: 65
   m_Sprite: {fileID: 21300000, guid: b3e35e46f7303384d8bd52bb4ead6bc0, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1467,9 +1481,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 659650346}
+  - component: {fileID: 659650349}
   - component: {fileID: 659650348}
   - component: {fileID: 659650347}
-  - component: {fileID: 659650349}
   m_Layer: 5
   m_Name: LifeCounter
   m_TagString: Untagged
@@ -3132,6 +3146,7 @@ GameObject:
   - component: {fileID: 1969762547}
   - component: {fileID: 1969762546}
   - component: {fileID: 1969762551}
+  - component: {fileID: 1969762552}
   m_Layer: 21
   m_Name: Player
   m_TagString: Untagged
@@ -3200,7 +3215,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 30
+  m_SortingOrder: 61
   m_Sprite: {fileID: -66981287, guid: 83868e8855d72664cae45cd48aab5740, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -3284,6 +3299,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.04
+--- !u!114 &1969762552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969762545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71a9390af4dc2f40ade66c35db04431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bombZone: {fileID: 3552278810015129840, guid: 7f2543150808dc84b8e105da8e66c156, type: 3}
 --- !u!1 &1981396431
 GameObject:
   m_ObjectHideFlags: 0

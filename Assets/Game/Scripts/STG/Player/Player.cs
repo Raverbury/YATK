@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MEC;
 using STG;
@@ -14,6 +15,7 @@ public class Player : PausableMono
 
     public static UnityAction<float> PlayerIsInvulnerable;
     public static UnityAction<int> PlayerSetLife;
+    public static UnityAction<int> PlayerSetBomb;
     public static UnityAction<int> PlayerSetGrazeboxRadius;
     public static UnityAction<int> PlayerSetGraze;
     public static UnityAction<int> PlayerSetPower;
@@ -23,6 +25,9 @@ public class Player : PausableMono
     public static UnityAction PlayerCollectItem;
     public static UnityAction PlayerPowerUp;
     public static UnityAction EVPlayerGraze;
+    public static UnityAction<int> EVBombActivate;
+
+    public static UnityAction ResultPlayerExtend;
 
     public static Player instance;
 
@@ -40,24 +45,35 @@ public class Player : PausableMono
     private ObjectPool bulletPool;
 
     public GameObject weaponOrb;
-
-    private float speed = 4f;
-    private float focusSpeed = 2f;
     private int deathBombFrames = 10;
 
     private Vector2 moveDir = Vector2.zero;
 
-    private int _remainingLife = 2;
+    private int remainingLife = 2;
     public int RemainingLife
     {
         get
         {
-            return _remainingLife;
+            return remainingLife;
         }
         set
         {
             PlayerSetLife?.Invoke(value);
-            _remainingLife = value;
+            remainingLife = value;
+        }
+    }
+
+    private int bomb;
+    public int RemainingBomb
+    {
+        get
+        {
+            return bomb;
+        }
+        set
+        {
+            PlayerSetBomb?.Invoke(value);
+            bomb = value;
         }
     }
 
@@ -116,6 +132,7 @@ public class Player : PausableMono
 
     private bool shouldMiss = false;
     private bool shouldCheckMovement = true;
+    private bool canBomb = true;
 
     private void OnValidate()
     {
@@ -123,6 +140,16 @@ public class Player : PausableMono
         circleCollider2D = gameObject.GetComponent<CircleCollider2D>();
         animator = gameObject.GetComponent<Animator>();
         bulletPool = GetComponent<ObjectPool>();
+    }
+
+    private void OnEnable()
+    {
+        EVBombActivate += BombActivated;
+    }
+
+    private void OnDisable()
+    {
+        EVBombActivate -= BombActivated;
     }
 
     // Start is called before the first frame update
@@ -142,12 +169,11 @@ public class Player : PausableMono
         // set player data/stats
         // TODO: retrieve player data from char select menu or something
         SetPlayerData(selectedPlayerData);
-        speed = playerData.unfocusedSpeed.GetFinalStat();
-        focusSpeed = playerData.focusedSpeed.GetFinalStat();
         deathBombFrames = (int)playerData.deathBombWindow.GetFinalStat();
         circleCollider2D.radius = (float)playerData.hitboxRadius.GetFinalStat() / 100;
         RemainingLife = playerData.initialLife;
         initialBomb = playerData.initialBomb; // TODO: also add from bomb's stat if implemented
+        RemainingBomb = initialBomb;
         PlayerSetGrazeboxRadius(25);
         Focus = false;
         // change anims
@@ -200,7 +226,7 @@ public class Player : PausableMono
             moveDir.y = Input.GetAxisRaw("Vertical");
             moveDir.Normalize();
             Vector3 pos = transform.position;
-            moveDir *= Focus ? focusSpeed : speed;
+            moveDir *= Focus ? playerData.focusedSpeed.GetFinalStat() : playerData.unfocusedSpeed.GetFinalStat();
             float newX = pos.x + moveDir.x;
             float newY = pos.y + moveDir.y;
             pos.x = (newX < Constant.GAME_BORDER_LEFT + 5) ?
@@ -217,6 +243,19 @@ public class Player : PausableMono
             if (Input.GetButton("Shoot"))
             {
                 PlayerShoot?.Invoke();
+            }
+        }
+
+
+        // bomb
+        if (Input.GetButton("Bomb"))
+        {
+            if (RemainingBomb > 0)
+            {
+                if (canBomb)
+                {
+                    PlayerBomb?.Invoke();
+                }
             }
         }
 
@@ -257,11 +296,9 @@ public class Player : PausableMono
         }
         shouldMiss = true;
         isInvulnerable = true;
-        // circleCollider2D.enabled = false;
+        PlayerSetMiss?.Invoke();
         framesLeftToDeathBomb = deathBombFrames;
         shouldCheckMovement = false;
-        // play miss sound
-        // MasterHolder.PlayerMiss?.Invoke();
     }
 
     private void PlayerMiss()
@@ -271,9 +308,9 @@ public class Player : PausableMono
             // TODO: gameover
         }
         RemainingLife -= 1;
-        PlayerSetMiss?.Invoke();
+        RemainingBomb = initialBomb;
         shouldMiss = false;
-        Timing.RunCoroutine(_SetInvulnerable(300));
+        CoroutineUtil.RunPlayerInvulnerableCoroutine(_SetInvulnerable(300));
         Timing.RunCoroutine(_DoRespawn());
     }
 
@@ -283,7 +320,28 @@ public class Player : PausableMono
         EVPlayerGraze?.Invoke();
     }
 
-    IEnumerator<float> _SetInvulnerable(int duration)
+    public void PlayerExtend()
+    {
+        RemainingLife += 1;
+        ResultPlayerExtend?.Invoke();
+    }
+
+    private void BombActivated(int invulnerableDuration)
+    {
+        shouldMiss = false;
+        shouldCheckMovement = true;
+        RemainingBomb -= 1;
+        CoroutineUtil.RunPlayerInvulnerableCoroutine(_SetBombInvulnerable(invulnerableDuration));
+    }
+
+    private IEnumerator<float> _SetBombInvulnerable(int duration)
+    {
+        canBomb = false;
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(_SetInvulnerable(duration)));
+        canBomb = true;
+    }
+
+    private IEnumerator<float> _SetInvulnerable(int duration)
     {
         // circleCollider2D.enabled = false;
         isInvulnerable = true;
@@ -304,6 +362,7 @@ public class Player : PausableMono
 
     IEnumerator<float> _DoRespawn()
     {
+        canBomb = false;
         animator.Play("front");
         const int REVIVE_DURATION = 60;
         const int REVIVE_STEP_DISTANCE = 7;
@@ -320,5 +379,6 @@ public class Player : PausableMono
             yield return Timing.WaitForOneFrame;
         }
         shouldCheckMovement = true;
+        canBomb = true;
     }
 }
