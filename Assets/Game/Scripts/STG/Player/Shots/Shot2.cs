@@ -74,14 +74,16 @@ public class Shot2 : AbstractShot
             {
                 CalcShotInterval();
                 CalcShotDamage();
-                float baseAmuletDamage = 1.6f * shotDamage;
-                PlayerBulletPool.SpawnBulletP1(transform.position.x - 10, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 91f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                PlayerBulletPool.SpawnBulletP1(transform.position.x + 10, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 89f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                float baseAmuletDamage = 0.9f * shotDamage;
+                PlayerBulletPool.SpawnBulletP1(transform.position.x - 15, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 100f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                PlayerBulletPool.SpawnBulletP1(transform.position.x + 15, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 80f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                PlayerBulletPool.SpawnBulletP1(transform.position.x - 10, transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                PlayerBulletPool.SpawnBulletP1(transform.position.x + 10, transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                 if (isFocused)
                 {
                     foreach (var orb in weaponOrbs)
                     {
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 25, 90f - 2f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 25, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                     }
                 }
                 else
