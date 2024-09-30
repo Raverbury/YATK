@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using STG;
+using TMPro;
 using UnityEngine;
 
 public class ShotSheet : OverwritableMonoSingleton<ShotSheet>
@@ -48,6 +49,16 @@ public class ShotSheet : OverwritableMonoSingleton<ShotSheet>
                 9 or 10 => 5,
                 11 or 12 or 13 or 14 => 6,
                 _ => 7,
+            };
+        }
+        else if (data.SPRITES.Count == 4)
+        {
+            spawnCloudIndex = color switch
+            {
+                0 => 1,
+                1 => 3,
+                2 => 5,
+                _ => 6,
             };
         }
         return (data.SPRITES[color], data.size, data.hitboxRadius, spawnClouds.SPRITES[spawnCloudIndex], spawnClouds.size, spawnClouds.hitboxRadius);

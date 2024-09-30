@@ -23,7 +23,10 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         typeof(Nonspell2),
         typeof(Nonspell3),
         typeof(Nonspell4),
+        typeof(Nonspell8),
         typeof(Nonspell5),
+        typeof(Nonspell6),
+        typeof(Nonspell7),
     };
     public AbstractSingle activeSingle = null;
 

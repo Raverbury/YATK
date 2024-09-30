@@ -57,6 +57,11 @@ namespace STG
         RICE_YELLOW = 45,
         RICE_ORANGE = 46,
         RICE_WHITE = 47,
+
+        BUBBLE_DARK_RED = 48,
+        BUBBLE_DARK_BLUE = 49,
+        BUBBLE_DARK_GREEN = 50,
+        BUBBLE_DARK_YELLOW = 51,
     }
 
     public enum PlayerShotType : int

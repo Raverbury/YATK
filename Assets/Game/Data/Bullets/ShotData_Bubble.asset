@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc15bea7b881644496a75c597e941ad, type: 3}
+  m_Name: ShotData_Bubble
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 91399422, guid: 481eb47ae5cc06c45b39c177012bcf8b, type: 3}
+  - {fileID: 1402142808, guid: 481eb47ae5cc06c45b39c177012bcf8b, type: 3}
+  - {fileID: -1767381730, guid: 481eb47ae5cc06c45b39c177012bcf8b, type: 3}
+  - {fileID: 1445724919, guid: 481eb47ae5cc06c45b39c177012bcf8b, type: 3}
+  _size: 8
+  _hitboxRadius: 0.12
