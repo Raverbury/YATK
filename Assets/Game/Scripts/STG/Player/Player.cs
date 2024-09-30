@@ -10,7 +10,7 @@ using UnityEngine.Events;
 public class Player : PausableMono
 {
     public static UnityAction PlayerShoot;
-    public static UnityAction PlayerBomb;
+    public static UnityAction<bool> PlayerBomb;
     public static UnityAction<bool> PlayerSetFocus;
 
     public static UnityAction<float> PlayerIsInvulnerable;
@@ -41,8 +41,6 @@ public class Player : PausableMono
     private CircleCollider2D circleCollider2D;
     [SerializeField, HideInInspector]
     private Animator animator;
-    [SerializeField, HideInInspector]
-    private ObjectPool bulletPool;
 
     public GameObject weaponOrb;
     private int deathBombFrames = 10;
@@ -139,7 +137,6 @@ public class Player : PausableMono
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         circleCollider2D = gameObject.GetComponent<CircleCollider2D>();
         animator = gameObject.GetComponent<Animator>();
-        bulletPool = GetComponent<ObjectPool>();
     }
 
     private void OnEnable()
@@ -254,7 +251,7 @@ public class Player : PausableMono
             {
                 if (canBomb)
                 {
-                    PlayerBomb?.Invoke();
+                    PlayerBomb?.Invoke(shouldMiss);
                 }
             }
         }
@@ -298,6 +295,9 @@ public class Player : PausableMono
         isInvulnerable = true;
         PlayerSetMiss?.Invoke();
         framesLeftToDeathBomb = deathBombFrames;
+        if (RemainingBomb == 0) {
+            framesLeftToDeathBomb = 1;
+        }
         shouldCheckMovement = false;
     }
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MEC;
+using STG;
 using UnityEngine;
 
 public class MasterSparkBomb : AbstractBombWeapon
@@ -7,14 +8,14 @@ public class MasterSparkBomb : AbstractBombWeapon
     [SerializeField]
     private GameObject bombZone;
 
-    public override void Bomb()
+    public override void Bomb(bool isDeathBomb)
     {
-        Timing.RunCoroutine(_FireMasterSpark());
+        Timing.RunCoroutine(_FireMasterSpark(isDeathBomb));
         Player.EVBombActivate?.Invoke(IFrameDuration());
         SFXPlayer.EVPlayMasterSparkSound?.Invoke();
     }
 
-    private IEnumerator<float> _FireMasterSpark()
+    private IEnumerator<float> _FireMasterSpark(bool isDeathBomb)
     {
         player.playerData.focusedSpeed.AddMultiplier("bomb", -0.5f);
         player.playerData.unfocusedSpeed.AddMultiplier("bomb", -0.5f);
@@ -22,8 +23,14 @@ public class MasterSparkBomb : AbstractBombWeapon
         masterSparkLaser.transform.localPosition = new(0f, 0.25f, 0f);
         masterSparkLaser.transform.localEulerAngles = new(0f, 0f, 90f);
         masterSparkLaser.transform.localScale = new(0f, 0.05f, 0f);
-        if (masterSparkLaser.TryGetComponent(out Bomb bomb)) {
-            bomb.damage = 10f;
+        if (masterSparkLaser.TryGetComponent(out Bomb bomb))
+        {
+            if (isDeathBomb) {
+                bomb.SetBombData(BombType.MASTER_SPARK_LASER_RAGE, 12f);
+            }
+            else {
+                bomb.SetBombData(BombType.MASTER_SPARK_LASER, 10f);
+            }
         }
 
         const int LASER_SHOOT_DURATION = 15;
@@ -56,6 +63,7 @@ public class MasterSparkBomb : AbstractBombWeapon
         // yield return WaitForFrames.WaitWrapper(60);
         player.playerData.focusedSpeed.RemoveMultiplier("bomb");
         player.playerData.unfocusedSpeed.RemoveMultiplier("bomb");
+
     }
 
     public override int IFrameDuration()

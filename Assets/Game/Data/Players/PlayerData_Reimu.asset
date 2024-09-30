@@ -28,7 +28,7 @@ MonoBehaviour:
   initialLife: 2
   initialBomb: 3
   deathBombWindow:
-    baseStat: 10
+    baseStat: 30
     flatBonusStat: 0
   Attack:
     baseStat: 10

@@ -826,6 +826,9 @@ MonoBehaviour:
   - {fileID: 2119279572, guid: 37337388eee3f3546a93decc47506d17, type: 3}
   - {fileID: -1960138332, guid: 37337388eee3f3546a93decc47506d17, type: 3}
   - {fileID: -1384709272, guid: 37337388eee3f3546a93decc47506d17, type: 3}
+  bombs:
+  - {fileID: 21300000, guid: dfcb5630345e6294d96772df4aab37e7, type: 3}
+  - {fileID: 21300000, guid: 85d01b42135cd824ead80cb650fba876, type: 3}
 --- !u!1 &353955842
 GameObject:
   m_ObjectHideFlags: 0
@@ -3263,7 +3266,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1969762547}
   circleCollider2D: {fileID: 1969762551}
   animator: {fileID: 1969762546}
-  bulletPool: {fileID: 0}
   weaponOrb: {fileID: 5152321037105530819, guid: e5228d1c3728456499a3cf8ef03fd5ab, type: 3}
 --- !u!58 &1969762551
 CircleCollider2D:

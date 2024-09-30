@@ -17,6 +17,6 @@ public abstract class AbstractBombWeapon : PausableMono
         Player.PlayerBomb -= Bomb;
     }
 
-    public abstract void Bomb();
+    public abstract void Bomb(bool isDeathBomb);
     public abstract int IFrameDuration();
 }

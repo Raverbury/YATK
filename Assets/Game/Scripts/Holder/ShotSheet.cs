@@ -30,6 +30,12 @@ public class ShotSheet : OverwritableMonoSingleton<ShotSheet>
     private List<Sprite> items;
     #endregion
 
+    #region bombs
+    [Header("Bombs")]
+    [SerializeField]
+    private List<Sprite> bombs;
+    #endregion
+
     public static (Sprite, float, float, Sprite, float, float) GetEnemyBulletData(int index)
     {
         int type = index / 16;
@@ -72,5 +78,10 @@ public class ShotSheet : OverwritableMonoSingleton<ShotSheet>
     public static Sprite GetItemSprite(ItemType itemType)
     {
         return instance.items[(int)itemType];
+    }
+
+    public static Sprite GetBombSprite(BombType bombType)
+    {
+        return instance.bombs[(int)bombType];
     }
 }

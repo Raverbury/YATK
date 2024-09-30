@@ -86,6 +86,12 @@ namespace STG
         TIME_ORB_ITEM = 7,
     }
 
+    public enum BombType : ushort
+    {
+        MASTER_SPARK_LASER = 0,
+        MASTER_SPARK_LASER_RAGE = 1,
+    }
+
     class Lifecycle
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
