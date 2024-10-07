@@ -15,18 +15,19 @@ public class Bomb : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (STG.Constant.LAYER_ENEMY_BULLET == other.gameObject.layer)
-        {
-            if (other.TryGetComponent(out EnemyBullet enemyBullet))
-            {
-                enemyBullet.ClearBullet(true);
-            }
-        }
+        // if (STG.Constant.LAYER_ENEMY_BULLET == other.gameObject.layer)
+        // {
+        //     if (other.TryGetComponent(out EnemyBullet enemyBullet))
+        //     {
+        //         enemyBullet.ClearBullet(true);
+        //     }
+        // }
     }
 
     private void Update()
     {
         Player.PlayerAutoCollectItem?.Invoke();
+        StageManager.ClearBullet?.Invoke(true, false);
     }
 
     public void SetBombData(BombType bombType, float damage)

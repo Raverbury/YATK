@@ -43,7 +43,8 @@ public class EnemyBullet : Bullet
 
     public void ClearBullet(bool shouldDropStarItem, bool forceClear = false)
     {
-        if (!Deletable && !forceClear) {
+        if (!Deletable && !forceClear)
+        {
             return;
         }
         gameObject.SetActive(false);
@@ -58,7 +59,8 @@ public class EnemyBullet : Bullet
         HasGrazed = true;
     }
 
-    public void SetClearable(bool clearable) {
+    public void SetClearable(bool clearable)
+    {
         Deletable = clearable;
     }
 
@@ -69,6 +71,10 @@ public class EnemyBullet : Bullet
 
     public override void CrossCameraBoundary(Collider2D other)
     {
-        // throw new System.NotImplementedException();
+        HitScreenEdgeCallback?.Invoke(this);
+        HitScreenEdgeCallback = null;
     }
+
+    public delegate void CrossCameraCallBack(EnemyBullet enemyBullet);
+    public CrossCameraCallBack HitScreenEdgeCallback = null;
 }

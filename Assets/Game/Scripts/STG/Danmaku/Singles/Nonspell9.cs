@@ -8,7 +8,7 @@ public class Nonspell9 : AbstractSingle
 {
     public int GetHP()
     {
-        return 11500;
+        return 15000;
     }
 
     public override string GetName()
@@ -23,7 +23,7 @@ public class Nonspell9 : AbstractSingle
 
     public override int GetTimer()
     {
-        return 30;
+        return 45;
     }
 
     public override bool IsTimeout()
@@ -40,9 +40,11 @@ public class Nonspell9 : AbstractSingle
 
         CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_BLUE, 2, 180, -0.2f, 0.4f, 0.1f));
         yield return WaitForFrames.WaitWrapper(60 * 8);
-        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_GREEN, 3, 190, 0.1f, -0.2f, -0.3f));
+        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_GREEN, 3, 190, 0.1f, -0.2f, -0.27f));
         yield return WaitForFrames.WaitWrapper(60 * 8);
-        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_RED, 4, 200, -0.2f, -0.5f, 0.4f));
+        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_RED, 4, 200, -0.2f, -0.3f, 0.22f));
+        yield return WaitForFrames.WaitWrapper(60 * 8);
+        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_YELLOW, 3, 170, 0.14f, 0.1f, -0.2f));
 
         while (true)
         {

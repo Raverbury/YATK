@@ -41,11 +41,15 @@ public class Nonspell6 : AbstractSingle
         float[] xPositions = { 30, 111, 192, 273, 354 };
         int i = 0;
         int iVel = 1;
-        int wait = 45;
+        int wait = 55;
         int count = xPositions.Count();
         while (true)
         {
-            CoroutineUtil.StartSingleLoopCRT(_SpawnFromBubble(EnemyBulletPool.SpawnBulletA1(xPositions[i] + Random.Range(-20f, 20f), Constant.GAME_BORDER_TOP, 2.5f, 270f, EnemyBulletType.BUBBLE_DARK_GREEN, 30)));
+            GameObject bubbleBullet = EnemyBulletPool.SpawnBulletA1(xPositions[i] + Random.Range(-20f, 20f), Constant.GAME_BORDER_TOP, 2.5f, 270f, EnemyBulletType.BUBBLE_DARK_GREEN, 30);
+            if (bubbleBullet.TryGetComponent(out EnemyBullet enemyBullet)) {
+                enemyBullet.HitScreenEdgeCallback = Bounce;
+            }
+            CoroutineUtil.StartSingleLoopCRT(_SpawnFromBubble(bubbleBullet));
             if (i == count - 1)
             {
                 iVel = -1;
@@ -64,15 +68,16 @@ public class Nonspell6 : AbstractSingle
     private IEnumerator<float> _SpawnFromBubble(GameObject bubbleBullet)
     {
         yield return WaitForFrames.WaitWrapper(Random.Range(40, 100));
-        while (bubbleBullet.activeInHierarchy && bubbleBullet.transform.position.y > Constant.GAME_BORDER_BOTTOM)
+        const int BRANCHES = 3;
+        float rot = 360f / BRANCHES;
+        while (bubbleBullet.activeInHierarchy)
         {
-            const int BRANCHES = 2;
-            float rot = 360f / BRANCHES;
+            float r = Random.Range(-20f, 20f);
             for (int i = 0; i < BRANCHES; i++)
             {
-                CoroutineUtil.StartSingleLoopCRT(_AccelerateBullet(EnemyBulletPool.SpawnBulletA1(bubbleBullet, 0f, rot * i, EnemyBulletType.AMULET_RED, 30)));
+                CoroutineUtil.StartSingleLoopCRT(_AccelerateBullet(EnemyBulletPool.SpawnBulletA1(bubbleBullet, 0f, r + rot * i, EnemyBulletType.AMULET_RED, 30)));
             }
-            yield return WaitForFrames.WaitWrapper(Random.Range(40, 100));
+            yield return WaitForFrames.WaitWrapper(Random.Range(100, 200));
         }
     }
 
@@ -91,6 +96,17 @@ public class Nonspell6 : AbstractSingle
                 enemyBullet.speed = Mathf.Min(enemyBullet.speed + 0.1f, 2f);
                 yield return Timing.WaitForOneFrame;
             }
+        }
+    }
+
+    private void Bounce(EnemyBullet enemyBullet)
+    {
+        if (enemyBullet.transform.position.y <= Constant.GAME_BORDER_BOTTOM)
+        {
+            enemyBullet.transform.eulerAngles = new Vector3(0f, 0f, 90f);
+            (var sprite, var radius, var hitbox, var _1, var _2, var _3) = ShotSheet.GetEnemyBulletData((int)EnemyBulletType.BUBBLE_DARK_YELLOW);
+            enemyBullet.SetGraphic(sprite, radius, hitbox);
+            enemyBullet.speed *= 2f;
         }
     }
 }

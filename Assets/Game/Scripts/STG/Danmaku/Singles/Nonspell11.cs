@@ -39,7 +39,7 @@ public class Nonspell11 : AbstractSingle
         enemy.SetAnimState(Enemy.AnimState.Attack);
 
         const int BURSTS = 7;
-        const int BRANCHES = 30;
+        const int BRANCHES = 20;
         // int i = 0;
         float branchRotation = 360f / BRANCHES;
         float halfBranchRotation = branchRotation / 2f;
@@ -59,7 +59,8 @@ public class Nonspell11 : AbstractSingle
             {
                 for (int j = 0; j < BURSTS; j++)
                 {
-                    EnemyBulletPool.SpawnBulletA1(enemy.gameObject, 3.5f + 0.3f * j, (oddWave ? j : -j) + angleToPlayer + branchRotation * i, j switch {
+                    EnemyBulletPool.SpawnBulletA1(enemy.gameObject, 3.5f + 0.3f * j, 2f * (oddWave ? j : -j) + angleToPlayer + branchRotation * i, j switch
+                    {
                         0 => EnemyBulletType.ICE_RED,
                         1 => EnemyBulletType.ICE_PURPLE,
                         2 => EnemyBulletType.ICE_BLUE,
@@ -70,7 +71,7 @@ public class Nonspell11 : AbstractSingle
                     }, 10);
                 }
             }
-            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(60)));
+            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(oddWave ? 20 : 60)));
             oddWave = !oddWave;
         }
     }
