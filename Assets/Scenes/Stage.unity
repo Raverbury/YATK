@@ -810,6 +810,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2a77aa18ca333694db41452e1452bd75, type: 2}
   - {fileID: 11400000, guid: d1a25e0cb3b6e9946adb26ce5cdb72b6, type: 2}
   - {fileID: 11400000, guid: cbe0ffde48fd8a54696476def8163f1a, type: 2}
+  - {fileID: 11400000, guid: e3ce441cd05c10b41a26667668012955, type: 2}
+  - {fileID: 11400000, guid: a65af85f62b324145b33001ec6d8cfeb, type: 2}
   playerWeapons:
   - {fileID: 11400000, guid: c8b38f02e3e9bec42b80c47f3e184f2e, type: 2}
   - {fileID: 11400000, guid: 376c238c5f1dc214fabe105a99698709, type: 2}

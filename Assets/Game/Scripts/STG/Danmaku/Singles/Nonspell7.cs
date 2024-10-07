@@ -23,19 +23,21 @@ public class Nonspell7 : AbstractSingle
 
     public override int GetTimer()
     {
-        return 42;
+        return 47;
     }
 
     public override bool IsTimeout()
     {
-        return false;
+        return true;
     }
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
+        yield return WaitForFrames.WaitWrapper(30);
         AbstractSingle.PatternStart?.Invoke();
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
+        yield return WaitForFrames.WaitWrapper(30);
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, 200), 60)));
+        // yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
 
         float[] xPositions = { 48, 144, 240, 336 };
@@ -59,7 +61,7 @@ public class Nonspell7 : AbstractSingle
                 {
                     for (int k = 0; k < BRANCHES; k++)
                     {
-                        CoroutineUtil.StartSingleLoopCRT(_InitialSpawnMotion(EnemyBulletPool.SpawnBulletA1(xPositions[i], -300f + 30 * j, 6, 90, bulletTypes[i], 10), branchRotation * k));
+                        CoroutineUtil.StartSingleLoopCRT(_InitialSpawnMotion(EnemyBulletPool.SpawnBulletA1(xPositions[i], -330f + 20 * j, 6, 90, bulletTypes[i], 10), branchRotation * k));
                     }
                     yield return WaitForFrames.WaitWrapper(wait / BURSTS);
                 }

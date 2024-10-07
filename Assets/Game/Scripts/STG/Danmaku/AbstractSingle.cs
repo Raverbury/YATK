@@ -30,6 +30,7 @@ public abstract class AbstractSingle : MonoBehaviour
         StageManager.SpawnNamedEnemy(out GameObject enemyGameObject, -100, 100, "mokou");
         Enemy enemy = enemyGameObject.GetComponent<Enemy>();
         enemy.SetEmptyHpCircle();
+        enemy.IsInvulnerable = IsTimeout();
         framesLeft = (ushort)(GetTimer() * 60);
         Timing.RunCoroutine(_Loop(enemy), "singleLoop");
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(_CheckDone(enemy)));
@@ -39,7 +40,7 @@ public abstract class AbstractSingle : MonoBehaviour
         DropRewards(enemy.transform.position);
         for (int __delay = 0; __delay < 150; __delay++)
         {
-            StageManager.ClearBullet?.Invoke(!hasTimedOut);
+            StageManager.ClearBullet?.Invoke(!hasTimedOut, true);
             yield return 1;
         }
         // if (Player.instance != null)

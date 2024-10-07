@@ -268,7 +268,12 @@ public class Player : PausableMono
         if (Constant.LAYER_ENEMY_BULLET == other.gameObject.layer)
         {
             PlayerGetHit();
-            other.gameObject.SetActive(false);
+            if (other.gameObject.TryGetComponent(out EnemyBullet enemyBullet)) {
+                enemyBullet.ClearBullet(false);
+            }
+            else {
+                other.gameObject.SetActive(false);
+            }
         }
         else if (Constant.LAYER_ITEM == other.gameObject.layer)
         {
@@ -375,7 +380,7 @@ public class Player : PausableMono
         {
             pos.y += REVIVE_STEP_DISTANCE;
             transform.position = pos;
-            StageManager.ClearBullet?.Invoke(false);
+            StageManager.ClearBullet?.Invoke(false, false);
             yield return Timing.WaitForOneFrame;
         }
         shouldCheckMovement = true;

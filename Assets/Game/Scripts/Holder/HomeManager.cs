@@ -87,7 +87,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
             case HomeMenuSelector.HomeMenuResult.Quit:
                 SFXPlayer.EVPlayCancelSound?.Invoke();
 #if UNITY_EDITOR
-                Debug.Log("Quit confirmed.");
+                Debug.Log("Can't quit in editor, idiot.");
 #else
                 Application.Quit();
 #endif

@@ -83,16 +83,14 @@ public class Shot2 : AbstractShot
                 {
                     foreach (var orb in weaponOrbs)
                     {
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 25, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 25, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
                     }
                 }
                 else
                 {
-                    // Timing.RunCoroutine(_Manipulate(b1));
-                    // Timing.RunCoroutine(_Manipulate(b2));
                     foreach (var orb in weaponOrbs)
                     {
-                        GameObject bulletGameObject = PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 8, 90f - 6f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                        GameObject bulletGameObject = PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 8, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
                         Timing.RunCoroutine(_DoHoming(bulletGameObject));
                     }
                 }

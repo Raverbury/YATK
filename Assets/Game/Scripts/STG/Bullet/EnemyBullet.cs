@@ -32,7 +32,7 @@ public class EnemyBullet : Bullet
 
     private void OnEnable()
     {
-        flags = 0;
+        HasGrazed = false;
         StageManager.ClearBullet += ClearBullet;
     }
 
@@ -41,8 +41,11 @@ public class EnemyBullet : Bullet
         StageManager.ClearBullet -= ClearBullet;
     }
 
-    public void ClearBullet(bool shouldDropStarItem)
+    public void ClearBullet(bool shouldDropStarItem, bool forceClear = false)
     {
+        if (!Deletable && !forceClear) {
+            return;
+        }
         gameObject.SetActive(false);
         if (shouldDropStarItem)
         {
@@ -53,6 +56,15 @@ public class EnemyBullet : Bullet
     public void Graze()
     {
         HasGrazed = true;
+    }
+
+    public void SetClearable(bool clearable) {
+        Deletable = clearable;
+    }
+
+    public override void CrossPlayableBoundary(Collider2D other)
+    {
+        ClearBullet(false);
     }
 
     public override void CrossCameraBoundary(Collider2D other)

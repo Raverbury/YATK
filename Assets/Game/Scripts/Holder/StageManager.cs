@@ -12,7 +12,7 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     [SerializeField]
     private GameObject enemyPrefab;
 
-    public static UnityAction<bool> ClearBullet;
+    public static UnityAction<bool, bool> ClearBullet;
     public static UnityAction<bool> SetPause;
     public static UnityAction EVStageDestroy;
 
@@ -25,8 +25,11 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         typeof(Nonspell4),
         typeof(Nonspell8),
         typeof(Nonspell5),
+        typeof(Nonspell10),
         typeof(Nonspell6),
+        typeof(Nonspell11),
         typeof(Nonspell7),
+        typeof(Nonspell9),
     };
     public AbstractSingle activeSingle = null;
 
@@ -63,7 +66,7 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         EVStageDestroy?.Invoke();
     }
 
-    private void KillBulletSpawningCoroutines(bool _)
+    private void KillBulletSpawningCoroutines(bool _, bool _2)
     {
         // Timing.KillCoroutines("enemyBulletSpawning");
     }
@@ -127,7 +130,21 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         {
             return null;
         }
-        return enemies.First().Value;
+        try
+        {
+            return enemies.First(kvp =>
+            {
+                if (kvp.Value.TryGetComponent(out Enemy enemy))
+                {
+                    return !enemy.IsInvulnerable;
+                }
+                return false;
+            }).Value;
+        }
+        catch (InvalidOperationException _)
+        {
+            return null;
+        }
     }
 
     private void Update()

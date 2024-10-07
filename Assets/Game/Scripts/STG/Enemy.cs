@@ -41,7 +41,7 @@ public class Enemy : PausableMono
             _hp = value;
         }
     }
-    private bool IsInvulnerable = true;
+    public bool IsInvulnerable = true;
     public bool HasRefilledHP = false;
 
     public UnityAction<float, float> EntitySetHP;

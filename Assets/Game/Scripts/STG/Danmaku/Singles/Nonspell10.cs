@@ -4,7 +4,7 @@ using UnityEngine;
 using STG;
 using System.Linq;
 
-public class Nonspell8 : AbstractSingle
+public class Nonspell10 : AbstractSingle
 {
     public int GetHP()
     {
@@ -13,7 +13,7 @@ public class Nonspell8 : AbstractSingle
 
     public override string GetName()
     {
-        return "Nonspell 8";
+        return "Nonspell 10";
     }
 
     public override int GetScore()
@@ -38,10 +38,11 @@ public class Nonspell8 : AbstractSingle
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
 
-        const int BURSTS = 2;
-        const int BRANCHES = 70;
+        const int BURSTS = 3;
+        const int BRANCHES = 50;
         // int i = 0;
         float branchRotation = 360f / BRANCHES;
+        float halfBranchRotation = branchRotation / 2f;
         CoroutineUtil.StartSingleLoopCRT(_MoveEnemy(enemy));
         while (true)
         {
@@ -57,10 +58,10 @@ public class Nonspell8 : AbstractSingle
             {
                 for (int j = 0; j < BURSTS; j++)
                 {
-                    EnemyBulletPool.SpawnBulletA1(enemy.gameObject, 1.5f + 5f * j, angleToPlayer + branchRotation * i, EnemyBulletType.RICE_SKY, 10);
+                    EnemyBulletPool.SpawnBulletA1(enemy.gameObject, 4f + 1.5f * j, halfBranchRotation * j + angleToPlayer + branchRotation * i, EnemyBulletType.ICE_PURPLE, 10);
                 }
             }
-            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(80)));
+            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(90)));
         }
     }
 

@@ -64,7 +64,7 @@ public class Nonspell6 : AbstractSingle
     private IEnumerator<float> _SpawnFromBubble(GameObject bubbleBullet)
     {
         yield return WaitForFrames.WaitWrapper(Random.Range(40, 100));
-        while (bubbleBullet.transform.position.y > Constant.GAME_BORDER_BOTTOM)
+        while (bubbleBullet.activeInHierarchy && bubbleBullet.transform.position.y > Constant.GAME_BORDER_BOTTOM)
         {
             const int BRANCHES = 2;
             float rot = 360f / BRANCHES;

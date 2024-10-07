@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc15bea7b881644496a75c597e941ad, type: 3}
+  m_Name: ShotData_Ice
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: -699802272, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: 1961379463, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: 468226551, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: -830453350, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: 1830656645, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: -1354349327, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: 324517334, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: -1740177257, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: -1630298507, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: 1983834603, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: -2101337398, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: 1127298624, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: -1225995923, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: -388265043, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: 1630726415, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  - {fileID: 1078697317, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
+  _size: 8
+  _hitboxRadius: 0.02
