@@ -131,7 +131,7 @@ namespace STG
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void OnLoad()
         {
-            Application.targetFrameRate = 60;
+            // Application.targetFrameRate = 60;
         }
     }
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using MEC;
 using STG;
 using UnityEngine;
+using Unity.Entities;
 
 public class EnemyBulletPool : ObjectPool
 {
