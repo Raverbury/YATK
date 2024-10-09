@@ -1,17 +1,33 @@
+using System;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Entities.UniversalDelegates;
 using Unity.Transforms;
 
-[BurstCompile]
 public partial struct BulletSpawnerSystem : ISystem
 {
-    [BurstCompile]
     private void OnUpdate(ref SystemState systemState)
     {
-        EntityManager entityManager = systemState.EntityManager;
-        Entity bulletSpawnerEntity = SystemAPI.GetSingletonEntity<BulletSpawnerComponent>();
-        BulletSpawnerComponent bulletSpawnerComponent = entityManager.GetComponentData<BulletSpawnerComponent>(bulletSpawnerEntity);
+        EntityManager entityManager;
+        Entity bulletSpawnerEntity;
+        BulletSpawnerComponent bulletSpawnerComponent;
+
+        try
+        {
+            entityManager = systemState.EntityManager;
+            bulletSpawnerEntity = SystemAPI.GetSingletonEntity<BulletSpawnerComponent>();
+            bulletSpawnerComponent = entityManager.GetComponentData<BulletSpawnerComponent>(bulletSpawnerEntity);
+        }
+        catch (Exception _)
+        {
+            return;
+        }
+
+        if (!bulletSpawnerComponent.UseEcs)
+        {
+            return;
+        }
 
         if (bulletSpawnerComponent.TimeBetweenShot <= 0)
         {
@@ -20,6 +36,9 @@ public partial struct BulletSpawnerSystem : ISystem
                 EntityCommandBuffer ECB = new EntityCommandBuffer(Allocator.Temp);
 
                 Entity bulletEntity = entityManager.Instantiate(bulletSpawnerComponent.BulletPrefab);
+#if UNITY_EDITOR
+                entityManager.SetName(bulletEntity, "Generated bullet");
+#endif
                 ECB.AddComponent(bulletEntity, new BulletComponent
                 {
                     Speed = 2f,

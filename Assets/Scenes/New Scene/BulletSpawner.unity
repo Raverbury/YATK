@@ -153,8 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 7197914987545117293, guid: 3951d058d1662ba4d9bf48bdd4ffa817, type: 3}
-  ShotInterval: 10
+  ShotInterval: 5
   Branches: 30
+  UseECS: 1
 --- !u!4 &264532673
 Transform:
   m_ObjectHideFlags: 0

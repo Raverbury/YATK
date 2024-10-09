@@ -5,4 +5,5 @@ public struct BulletSpawnerComponent : IComponentData {
     public int TimeBetweenShot;
     public int ShotInterval;
     public int Branches;
+    public bool UseEcs;
 }
