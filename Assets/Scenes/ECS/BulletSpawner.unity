@@ -153,9 +153,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 7197914987545117293, guid: 3951d058d1662ba4d9bf48bdd4ffa817, type: 3}
-  ShotInterval: 5
-  Branches: 30
+  bullets: []
+  playerGO: {fileID: 0}
+  AmountToAdd: 1000
   UseECS: 1
+  DoMath: 1
 --- !u!4 &264532673
 Transform:
   m_ObjectHideFlags: 0

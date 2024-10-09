@@ -84,6 +84,9 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
                 SFXPlayer.EVPlayConfirmSound?.Invoke();
                 PushNextSelector(playerSelector);
                 break;
+            case HomeMenuSelector.HomeMenuResult.Settings:
+                SceneUtil.LoadSceneAsync("ECS");
+                break;
             case HomeMenuSelector.HomeMenuResult.Quit:
                 SFXPlayer.EVPlayCancelSound?.Invoke();
 #if UNITY_EDITOR

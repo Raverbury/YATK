@@ -1,14 +1,10 @@
 using UnityEngine;
 
 public class BruhBullet : MonoBehaviour {
-    public float Speed;
-    public int FramesToLive;
-
     private void Update() {
-        transform.Translate(Vector3.right * Speed);
-        FramesToLive -= 1;
-        if (FramesToLive <= 0) {
-            gameObject.SetActive(false);
+        if (transform.position.y < -448) {
+            transform.position += new Vector3(0f, 500f, 0f);
         }
+        transform.position += transform.right * 2f;
     }
 }

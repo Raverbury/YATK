@@ -3,11 +3,10 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
+using UnityEngine;
 
-[BurstCompile]
 public partial struct BulletSystem : ISystem
 {
-    [BurstCompile]
     public readonly void OnUpdate(ref SystemState state)
     {
         EntityManager entityManager = state.EntityManager; ;
@@ -17,20 +16,16 @@ public partial struct BulletSystem : ISystem
             Entity entity = allEntities[i];
             if (entityManager.HasComponent<BulletComponent>(entity))
             {
-                BulletComponent bulletComponent = entityManager.GetComponentData<BulletComponent>(entity);
                 LocalTransform localTransform = entityManager.GetComponentData<LocalTransform>(entity);
+                if (localTransform.Position.y < -448)
+                {
+                    localTransform.Position += new Unity.Mathematics.float3(0f, 500f, 0f);
+                    entityManager.GetComponentObject<SpriteRenderer>(entity).sprite = ShotSheet.GetItemSprite(STG.ItemType.POWER_ITEM);
+                }
 
-                localTransform.Position += bulletComponent.Speed * localTransform.Right();
+                localTransform.Position += 2f * localTransform.Right();
 
                 entityManager.SetComponentData(entity, localTransform);
-
-                bulletComponent.FramesToLive -= 1;
-                if (bulletComponent.FramesToLive <= 0)
-                {
-                    entityManager.DestroyEntity(entity);
-                    continue;
-                }
-                entityManager.SetComponentData(entity, bulletComponent);
             }
         }
     }

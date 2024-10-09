@@ -1,67 +1,48 @@
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
-using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
 [BurstCompile]
 public class BulletSpawnerAuthoring : MonoBehaviour
 {
     public GameObject BulletPrefab;
-    public int ShotInterval;
-    public int Branches;
+    public GameObject[] bullets;
 
-    public bool UseECS;
+    public GameObject playerGO;
 
-    private GameObject[] pool;
-    private int timeBetweenShot = 0;
+    public int AmountToAdd = 500;
 
-    private const int POOL_SIZE = 1000;
-    private int internalPoolIndex = 0;
+    public bool UseECS = true;
+
+    public bool DoMath = true;
 
     private void Start()
     {
-        if (UseECS)
+        bullets = new GameObject[AmountToAdd];
+        for (int i = 0; i < AmountToAdd; i++)
         {
-            return;
-        }
-
-
-        pool = new GameObject[1000];
-        for (int i = 0; i < POOL_SIZE; i++)
-        {
-            GameObject newBullet = Instantiate(BulletPrefab);
-            newBullet.AddComponent(typeof(BruhBullet));
-            pool[i] = newBullet;
+            GameObject cloned = Instantiate(BulletPrefab);
+            cloned.AddComponent<BruhBullet>();
+            cloned.transform.position = new Vector2(192f, -334f) + Random.insideUnitCircle * 120f;
+            bullets[i] = cloned;
         }
     }
 
     private void Update()
     {
-        if (timeBetweenShot <= 0)
+        if (!DoMath)
         {
-            Vector3 pos = new Vector3(192f, -224f, 0f);
-            for (int i = 0; i < Branches; i++)
-            {
-                Quaternion rotation = Quaternion.Euler(new UnityEngine.Vector3(0f, 0f, 360f / Branches * i));
-                GameObject bullet = SpawnBullet(pos, rotation, 2, 60);
-                bullet.SetActive(true);
-            }
-            timeBetweenShot = ShotInterval;
             return;
         }
-        timeBetweenShot -= 1;
-    }
-
-    private GameObject SpawnBullet(Vector3 position, Quaternion rotation, float speed, int framesToLive)
-    {
-        GameObject result = pool[internalPoolIndex];
-        BruhBullet bruhBullet = result.GetComponent<BruhBullet>();
-        bruhBullet.Speed = speed;
-        bruhBullet.FramesToLive = framesToLive;
-        result.transform.position = position;
-        result.transform.rotation = rotation;
-        internalPoolIndex = (internalPoolIndex + 1) % POOL_SIZE;
-        return result;
+        for (int i = 0; i < AmountToAdd; i++)
+        {
+            float dist = Vector2.Distance(new Vector2(192, -360), bullets[i].transform.position);
+            if (dist < 0.1f)
+            {
+                break;
+            }
+        }
     }
 
     public class BulletSpawnerBaker : Baker<BulletSpawnerAuthoring>
@@ -70,16 +51,16 @@ public class BulletSpawnerAuthoring : MonoBehaviour
         {
             if (!authoring.UseECS)
             {
+                Instantiate(authoring.gameObject);
                 return;
             }
             Entity spawnerEntity = GetEntity(TransformUsageFlags.None);
             AddComponent(spawnerEntity, new BulletSpawnerComponent
             {
                 BulletPrefab = GetEntity(authoring.BulletPrefab, TransformUsageFlags.None),
-                TimeBetweenShot = 0,
-                ShotInterval = authoring.ShotInterval,
-                Branches = authoring.Branches,
-                UseEcs = authoring.UseECS,
+                AmountToAdd = authoring.AmountToAdd,
+                HasInitialized = false,
+                DoMath = authoring.DoMath,
             });
         }
     }

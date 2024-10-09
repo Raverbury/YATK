@@ -1,66 +1,75 @@
-using System;
-using Unity.Burst;
+using Unity.Mathematics;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Entities.UniversalDelegates;
 using Unity.Transforms;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public partial struct BulletSpawnerSystem : ISystem
 {
+    private void OnCreate(ref SystemState _systemState)
+    {
+        TestBruh.FreeCandy += ReceiveCandy;
+    }
+
+    private void OnDestroy(ref SystemState _systemState)
+    {
+        TestBruh.FreeCandy -= ReceiveCandy;
+    }
+
     private void OnUpdate(ref SystemState systemState)
     {
-        EntityManager entityManager;
-        Entity bulletSpawnerEntity;
-        BulletSpawnerComponent bulletSpawnerComponent;
-
-        try
-        {
-            entityManager = systemState.EntityManager;
-            bulletSpawnerEntity = SystemAPI.GetSingletonEntity<BulletSpawnerComponent>();
-            bulletSpawnerComponent = entityManager.GetComponentData<BulletSpawnerComponent>(bulletSpawnerEntity);
-        }
-        catch (Exception _)
-        {
+        Debug.Log("System update");
+        if (SceneManager.GetActiveScene().name != "ECS") {
+            Debug.Log("Not in ECS, calm your shit");
             return;
         }
-
-        if (!bulletSpawnerComponent.UseEcs)
+        EntityManager entityManager = systemState.EntityManager;
+        if (SystemAPI.TryGetSingletonEntity<BulletSpawnerComponent>(out Entity spawnerEntity))
         {
-            return;
-        }
-
-        if (bulletSpawnerComponent.TimeBetweenShot <= 0)
-        {
-            for (int i = 0; i < bulletSpawnerComponent.Branches; i++)
+            BulletSpawnerComponent bsc = entityManager.GetComponentData<BulletSpawnerComponent>(spawnerEntity);
+            if (!bsc.HasInitialized)
             {
-                EntityCommandBuffer ECB = new EntityCommandBuffer(Allocator.Temp);
-
-                Entity bulletEntity = entityManager.Instantiate(bulletSpawnerComponent.BulletPrefab);
-#if UNITY_EDITOR
-                entityManager.SetName(bulletEntity, "Generated bullet");
-#endif
-                ECB.AddComponent(bulletEntity, new BulletComponent
+                for (int i = 0; i < bsc.AmountToAdd; i++)
                 {
-                    Speed = 2f,
-                    FramesToLive = 60,
-                });
+                    Entity bulletEntity = entityManager.Instantiate(bsc.BulletPrefab);
+                    entityManager.AddComponent(bulletEntity, typeof(BulletComponent));
 
-                LocalTransform bulletTransform = entityManager.GetComponentData<LocalTransform>(bulletEntity);
+                    LocalTransform bulletTransform = entityManager.GetComponentData<LocalTransform>(bulletEntity);
 
-                bulletTransform.Position = new Unity.Mathematics.float3(192f, -224f, 0f);
-                bulletTransform.Rotation = UnityEngine.Quaternion.Euler(new UnityEngine.Vector3(0f, 0f, 360f / bulletSpawnerComponent.Branches * i));
+                    UnityEngine.Vector2 v = new UnityEngine.Vector2(192, -224) + UnityEngine.Random.insideUnitCircle * 120f;
+                    bulletTransform.Position = new Unity.Mathematics.float3(v.x, v.y, 0f);
+                    bulletTransform.Rotation = UnityEngine.Quaternion.Euler(new UnityEngine.Vector3(0f, 0f, 270f));
 
-                ECB.SetComponent(bulletEntity, bulletTransform);
-
-                ECB.Playback(entityManager);
-
-                ECB.Dispose();
+                    entityManager.SetComponentData(bulletEntity, bulletTransform);
+                }
+                bsc.HasInitialized = true;
+                entityManager.SetComponentData(spawnerEntity, bsc);
             }
-            bulletSpawnerComponent.TimeBetweenShot = bulletSpawnerComponent.ShotInterval;
-            entityManager.SetComponentData(bulletSpawnerEntity, bulletSpawnerComponent);
-            return;
+            else
+            {
+                if (!bsc.DoMath)
+                {
+                    return;
+                }
+                NativeArray<Entity> allEntities = entityManager.GetAllEntities();
+                for (int i = 0; i < allEntities.Length; i++)
+                {
+                    Entity entity = allEntities[i];
+                    if (entityManager.HasComponent<BulletComponent>(entity))
+                    {
+                        LocalTransform localTransform = entityManager.GetComponentData<LocalTransform>(entity);
+
+                        math.distance(localTransform.Position, new float3(192f, -360f, 0f));
+                    }
+                }
+            }
         }
-        bulletSpawnerComponent.TimeBetweenShot -= 1;
-        entityManager.SetComponentData(bulletSpawnerEntity, bulletSpawnerComponent);
+    }
+
+    private void ReceiveCandy(int idk)
+    {
+        Debug.Log(idk);
+        // SceneUtil.LoadSceneAsync("Home");
     }
 }

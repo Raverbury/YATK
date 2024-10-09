@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public static class SceneUtil
 {
-    private const int MIN_LOADING_FRAMES = 120;
+    private const int MIN_LOADING_FRAMES = 60;
+    private static bool isLoading = false;
+
     public static void LoadSceneAsync(string sceneName)
     {
+        if (isLoading) {
+            return;
+        }
+        isLoading = true;
         Timing.RunCoroutine(_LoadSceneAsync(sceneName));
     }
 
@@ -24,5 +30,6 @@ public static class SceneUtil
         }
         asyncOperation.allowSceneActivation = true;
         LoadingCanvas.EVToggleLoadingCanvas?.Invoke(false);
+        isLoading = false;
     }
 }
