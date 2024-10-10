@@ -10,6 +10,12 @@
 
 - Multiple characters, shots and bombs to choose from (only characters are selectable at the point of writing as proof of concept, since shots and bombs selection are similar if not identical and I am not sure if I want there to be shop/inventory system I have decided to not make them selectable just yet).
 
-- Pattern scripts inspired from Danmakufu syntax (a whooping of 8 patterns at the moment /s).
+- Pattern scripts inspired from Danmakufu syntax (a whooping of 11 patterns at the moment /s).
 
 - Half decent-ish graphics and animations for things... I am no UI/UX designer so...
+
+# Release
+
+- Currently I'm checking out ECS as possible way to improve performance so progress is likely slowed down.
+
+- The last non-ECS build is uploaded [here](https://mega.nz/file/USxikayZ#KNEKXxsV3mLrFuik_dY1L3WCzt-DLkfCKgs7F1LbRJc).
