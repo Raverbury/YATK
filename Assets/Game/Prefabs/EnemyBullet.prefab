@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1457613965659378253}
   - component: {fileID: 4281020861179375372}
   - component: {fileID: 6755104092177847905}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4279224381330405332}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:

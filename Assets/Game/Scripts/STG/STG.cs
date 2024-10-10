@@ -126,12 +126,15 @@ namespace STG
         MASTER_SPARK_LASER_RAGE = 1,
     }
 
-    class Lifecycle
+    public static class Lifecycle
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static void OnLoad()
+        public static void OnLoad()
         {
-            // Application.targetFrameRate = 60;
+#if UNITY_EDITOR
+#else
+            Application.targetFrameRate = 60;
+#endif
         }
     }
 
@@ -223,11 +226,13 @@ namespace STG
         /// </summary>
         /// <param name="effectKey"></param>
         /// <param name="bonusMultiplier"></param>
-        public void AddMultiplier(string effectKey, float bonusMultiplier) {
+        public void AddMultiplier(string effectKey, float bonusMultiplier)
+        {
             percentageBonusStat.Add(effectKey, bonusMultiplier);
         }
 
-        public void RemoveMultiplier(string effectKey) {
+        public void RemoveMultiplier(string effectKey)
+        {
             percentageBonusStat.Remove(effectKey);
         }
     }

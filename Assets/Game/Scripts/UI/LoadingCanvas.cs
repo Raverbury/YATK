@@ -15,9 +15,6 @@ public class LoadingCanvas : MonoBehaviour
     private int alphaChangeVel = 1;
     private bool shown = false;
 
-    private const int SHOW_X = 0;
-    private const int HIDE_X = 1000;
-
     public static UnityAction<bool> EVToggleLoadingCanvas;
 
     private void OnEnable()

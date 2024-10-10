@@ -17,6 +17,8 @@ public class BulletSpawnerAuthoring : MonoBehaviour
 
     public bool DoMath = true;
 
+    public static Entity entity;
+
     private void Start()
     {
         bullets = new GameObject[AmountToAdd];
@@ -55,6 +57,7 @@ public class BulletSpawnerAuthoring : MonoBehaviour
                 return;
             }
             Entity spawnerEntity = GetEntity(TransformUsageFlags.None);
+            entity = spawnerEntity;
             AddComponent(spawnerEntity, new BulletSpawnerComponent
             {
                 BulletPrefab = GetEntity(authoring.BulletPrefab, TransformUsageFlags.None),

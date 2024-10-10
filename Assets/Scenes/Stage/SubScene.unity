@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &264532671
+--- !u!1 &671539570
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,8 +131,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 264532673}
-  - component: {fileID: 264532672}
+  - component: {fileID: 671539572}
+  - component: {fileID: 671539571}
   m_Layer: 0
   m_Name: BulletSpawner
   m_TagString: Untagged
@@ -140,34 +140,34 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &264532672
+--- !u!114 &671539571
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 264532671}
+  m_GameObject: {fileID: 671539570}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e8f815a2c083f148a27217d7f852cf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletPrefab: {fileID: 7197914987545117293, guid: 3951d058d1662ba4d9bf48bdd4ffa817, type: 3}
+  BulletPrefab: {fileID: 4279224381330405332, guid: 5479009c79180994db97a880cb6c6c42, type: 3}
   bullets: []
   playerGO: {fileID: 0}
   AmountToAdd: 1000
   UseECS: 1
   DoMath: 1
---- !u!4 &264532673
+--- !u!4 &671539572
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 264532671}
+  m_GameObject: {fileID: 671539570}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 228.08665, y: -236.10107, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -177,4 +177,4 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 264532673}
+  - {fileID: 671539572}

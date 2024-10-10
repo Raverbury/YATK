@@ -19,17 +19,18 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     private Dictionary<string, GameObject> enemies = new();
 
     private List<Type> singles = new() {
-        typeof(Pattern01),
-        typeof(Nonspell2),
-        typeof(Nonspell3),
-        typeof(Nonspell4),
-        typeof(Nonspell8),
-        typeof(Nonspell5),
-        typeof(Nonspell10),
-        typeof(Nonspell6),
-        typeof(Nonspell11),
-        typeof(Nonspell7),
-        typeof(Nonspell9),
+        typeof(MokouNon1),
+        // typeof(Pattern01),
+        // typeof(Nonspell2),
+        // typeof(Nonspell3),
+        // typeof(Nonspell4),
+        // typeof(Nonspell8),
+        // typeof(Nonspell5),
+        // typeof(Nonspell10),
+        // typeof(Nonspell6),
+        // typeof(Nonspell11),
+        // typeof(Nonspell7),
+        // typeof(Nonspell9),
     };
     public AbstractSingle activeSingle = null;
 
