@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showHP: 1
+  IsInvulnerable: 1
   HasRefilledHP: 0
   animator: {fileID: 2266866713288095113}
   spriteRenderer: {fileID: 4087574023789089968}

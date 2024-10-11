@@ -30,4 +30,4 @@ MonoBehaviour:
   - {fileID: 1630726415, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
   - {fileID: 1078697317, guid: 81cbff42c4bbdd04188d7bc70f9fdf0b, type: 3}
   _size: 8
-  _hitboxRadius: 0.02
+  _hitboxRadius: 1

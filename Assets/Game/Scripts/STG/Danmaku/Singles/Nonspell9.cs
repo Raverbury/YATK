@@ -3,6 +3,7 @@ using MEC;
 using UnityEngine;
 using STG;
 using System;
+using Unity.Entities;
 
 public class Nonspell9 : AbstractSingle
 {
@@ -33,10 +34,11 @@ public class Nonspell9 : AbstractSingle
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
+        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
         AbstractSingle.PatternStart?.Invoke();
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
+        yield return WaitForFrames.WaitWrapper(30);
 
         CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_BLUE, 2, 180, -0.2f, 0.4f, 0.1f));
         yield return WaitForFrames.WaitWrapper(60 * 8);
@@ -56,7 +58,7 @@ public class Nonspell9 : AbstractSingle
     {
         float gapBetweenVertices = edgeLength / (verticesPerEdge - 1);
         float halfLength = edgeLength / 2;
-        List<Tuple<FakeTransform, GameObject>> vertices = new();
+        List<Tuple<FakeTransform, Entity>> vertices = new();
         FakeTransform cubeCenterTransform = new(cubeCenter, Vector3.zero, Vector3.zero);
         for (int y = 0; y < verticesPerEdge; y++)
         {
@@ -65,23 +67,23 @@ public class Nonspell9 : AbstractSingle
             {
                 for (int x = 0; x < verticesPerEdge - 1; x++)
                 {
-                    GameObject bullet = EnemyBulletPool.SpawnBulletA1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
-                    vertices.Add(new Tuple<FakeTransform, GameObject>(new FakeTransform(new Vector3(-halfLength + x * gapBetweenVertices, yLevel, -halfLength), cubeCenterTransform), bullet));
+                    Entity bulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
+                    vertices.Add(new Tuple<FakeTransform, Entity>(new FakeTransform(new Vector3(-halfLength + x * gapBetweenVertices, yLevel, -halfLength), cubeCenterTransform), bulletEntity));
                 }
                 for (int z = 0; z < verticesPerEdge - 1; z++)
                 {
-                    GameObject bullet = EnemyBulletPool.SpawnBulletA1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
-                    vertices.Add(new Tuple<FakeTransform, GameObject>(new FakeTransform(new Vector3(halfLength, yLevel, -halfLength + z * gapBetweenVertices), cubeCenterTransform), bullet));
+                    Entity bulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
+                    vertices.Add(new Tuple<FakeTransform, Entity>(new FakeTransform(new Vector3(halfLength, yLevel, -halfLength + z * gapBetweenVertices), cubeCenterTransform), bulletEntity));
                 }
                 for (int x = 0; x < verticesPerEdge - 1; x++)
                 {
-                    GameObject bullet = EnemyBulletPool.SpawnBulletA1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
-                    vertices.Add(new Tuple<FakeTransform, GameObject>(new FakeTransform(new Vector3(halfLength - x * gapBetweenVertices, yLevel, halfLength), cubeCenterTransform), bullet));
+                    Entity bulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
+                    vertices.Add(new Tuple<FakeTransform, Entity>(new FakeTransform(new Vector3(halfLength - x * gapBetweenVertices, yLevel, halfLength), cubeCenterTransform), bulletEntity));
                 }
                 for (int z = 0; z < verticesPerEdge - 1; z++)
                 {
-                    GameObject bullet = EnemyBulletPool.SpawnBulletA1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
-                    vertices.Add(new Tuple<FakeTransform, GameObject>(new FakeTransform(new Vector3(-halfLength, yLevel, halfLength - z * gapBetweenVertices), cubeCenterTransform), bullet));
+                    Entity bulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
+                    vertices.Add(new Tuple<FakeTransform, Entity>(new FakeTransform(new Vector3(-halfLength, yLevel, halfLength - z * gapBetweenVertices), cubeCenterTransform), bulletEntity));
                 }
             }
             else
@@ -90,8 +92,8 @@ public class Nonspell9 : AbstractSingle
                 {
                     for (int auxZ = 0; auxZ < 2; auxZ++)
                     {
-                        GameObject bullet = EnemyBulletPool.SpawnBulletA1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
-                        vertices.Add(new Tuple<FakeTransform, GameObject>(new FakeTransform(new Vector3(-halfLength + auxX * edgeLength, yLevel, -halfLength + auxZ * edgeLength), cubeCenterTransform), bullet));
+                        Entity bulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
+                        vertices.Add(new Tuple<FakeTransform, Entity>(new FakeTransform(new Vector3(-halfLength + auxX * edgeLength, yLevel, -halfLength + auxZ * edgeLength), cubeCenterTransform), bulletEntity));
                     }
                 }
             }
@@ -114,7 +116,7 @@ public class Nonspell9 : AbstractSingle
         }
     }
 
-    private void TickFakeTransform(List<Tuple<FakeTransform, GameObject>> vertices)
+    private void TickFakeTransform(List<Tuple<FakeTransform, Entity>> vertices)
     {
         foreach (var vertice in vertices)
         {

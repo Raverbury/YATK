@@ -1,4 +1,6 @@
 using STG;
+using Unity.Entities;
+using Unity.Transforms;
 using UnityEngine;
 
 public class FakeTransform
@@ -47,6 +49,22 @@ public class FakeTransform
             ProjectionType.Perspective => GetPerspectivePos(transformMatrix),
             _ => GetOrthographicPos(transformMatrix),
         };
+    }
+
+    public void ApplyTo(Entity entity, ProjectionType projectionType)
+    {
+        // calculate transform matrix
+        Matrix4x4 transformMatrix = CalculateTransformMatrix();
+        // only set positions since we're only trying to recreate the 3d in 2d effect, not replicate the entire transform
+        // in essence, only uses scale and rotate to calculate pos when stuff has parent(s), while the object manages its own scale and rotate
+        EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        LocalTransform localTransform = entityManager.GetComponentData<LocalTransform>(entity);
+        localTransform.Position = projectionType switch
+        {
+            ProjectionType.Perspective => GetPerspectivePos(transformMatrix),
+            _ => GetOrthographicPos(transformMatrix),
+        };
+        entityManager.SetComponentData(entity, localTransform);
     }
 
     private Matrix4x4 CalculateTransformMatrix()

@@ -32,10 +32,11 @@ public class Nonspell5 : AbstractSingle
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
+        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
         AbstractSingle.PatternStart?.Invoke();
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
+        yield return WaitForFrames.WaitWrapper(30);
 
         const int BRANCHES = 5;
         const int SUBBRANCHES = 3;
@@ -55,7 +56,7 @@ public class Nonspell5 : AbstractSingle
                 for (int j = 0; j < SUBBRANCHES; j++)
                 {
                     float bulletAngle = angle - 75f - ((SUBBRANCHES - 1) / 2 * SPREAD_ANGLE) + j * SPREAD_ANGLE;
-                    EnemyBulletPool.SpawnBulletA1(spawnPos, SPEED, bulletAngle, EnemyBulletType.AMULET_BLUE, 10);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(spawnPos, SPEED, bulletAngle, EnemyBulletType.AMULET_BLUE, 10);
                 }
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(8)));
@@ -66,7 +67,7 @@ public class Nonspell5 : AbstractSingle
                 for (int j = 0; j < SUBBRANCHES; j++)
                 {
                     float bulletAngle = angle + 75f - ((SUBBRANCHES - 1) / 2 * SPREAD_ANGLE) + j * SPREAD_ANGLE;
-                    EnemyBulletPool.SpawnBulletA1(spawnPos, SPEED, bulletAngle, EnemyBulletType.AMULET_RED, 10);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(spawnPos, SPEED, bulletAngle, EnemyBulletType.AMULET_RED, 10);
                 }
             }
             rotation1 += 6;

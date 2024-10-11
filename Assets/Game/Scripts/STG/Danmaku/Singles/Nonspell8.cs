@@ -33,10 +33,11 @@ public class Nonspell8 : AbstractSingle
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
+        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
         AbstractSingle.PatternStart?.Invoke();
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
+        yield return WaitForFrames.WaitWrapper(30);
 
         const int BURSTS = 2;
         const int BRANCHES = 70;
@@ -57,7 +58,7 @@ public class Nonspell8 : AbstractSingle
             {
                 for (int j = 0; j < BURSTS; j++)
                 {
-                    EnemyBulletPool.SpawnBulletA1(enemy.gameObject, 1.5f + 5f * j, angleToPlayer + branchRotation * i, EnemyBulletType.RICE_SKY, 10);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, 1.5f + 5f * j, angleToPlayer + branchRotation * i, EnemyBulletType.RICE_SKY, 10);
                 }
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(80)));

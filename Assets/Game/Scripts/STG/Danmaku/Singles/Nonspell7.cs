@@ -3,6 +3,8 @@ using MEC;
 using UnityEngine;
 using STG;
 using System.Linq;
+using Unity.Entities;
+using Unity.Transforms;
 
 public class Nonspell7 : AbstractSingle
 {
@@ -23,7 +25,7 @@ public class Nonspell7 : AbstractSingle
 
     public override int GetTimer()
     {
-        return 47;
+        return 49;
     }
 
     public override bool IsTimeout()
@@ -38,7 +40,7 @@ public class Nonspell7 : AbstractSingle
         yield return WaitForFrames.WaitWrapper(30);
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, 200), 60)));
         // yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
-        enemy.SetAnimState(Enemy.AnimState.Attack);
+        StageManager.DestroyNamedEnemy("mokou");
 
         float[] xPositions = { 48, 144, 240, 336 };
         EnemyBulletType[] bulletTypes = {
@@ -49,7 +51,7 @@ public class Nonspell7 : AbstractSingle
         };
         int wait = 110;
         int BURSTS = 4;
-        int BRANCHES = 3;
+        int BRANCHES = 2;
         // int i = 0;
         int count = xPositions.Count();
         while (true)
@@ -61,7 +63,7 @@ public class Nonspell7 : AbstractSingle
                 {
                     for (int k = 0; k < BRANCHES; k++)
                     {
-                        CoroutineUtil.StartSingleLoopCRT(_InitialSpawnMotion(EnemyBulletPool.SpawnBulletA1(xPositions[i], -330f + 20 * j, 6, 90, bulletTypes[i], 10), branchRotation * k));
+                        CoroutineUtil.StartSingleLoopCRT(_InitialSpawnMotion(ECSEntitySpawner.SpawnEnemyBulletE1(xPositions[i], -330f + 20 * j, 6, 90, bulletTypes[i], 10), branchRotation * k));
                     }
                     yield return WaitForFrames.WaitWrapper(wait / BURSTS);
                 }
@@ -70,36 +72,40 @@ public class Nonspell7 : AbstractSingle
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(wait)));
             wait = Mathf.Max(30, wait - 15);
             BURSTS = Mathf.Min(7, BURSTS + 1);
-            BRANCHES = Mathf.Min(15, BRANCHES + 2);
+            BRANCHES = Mathf.Min(8, BRANCHES + 1);
         }
     }
 
-    private IEnumerator<float> _InitialSpawnMotion(GameObject bulletGameObject, float rotOffset)
+    private IEnumerator<float> _InitialSpawnMotion(Entity bulletEntity, float rotOffset)
     {
-        if (bulletGameObject.TryGetComponent(out EnemyBullet enemyBullet))
+        yield return WaitForFrames.WaitWrapper(10);
+        EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        float speed = 6f;
+        float slowDown = speed / 60f;
+        for (int i = 0; i < 60; i++)
         {
-            float slowDown = enemyBullet.speed / 60;
-            for (int i = 0; i < 60; i++)
+            speed -= slowDown;
+            ECSEntitySpawner.SetBulletSpeed(bulletEntity, speed);
+            yield return Timing.WaitForOneFrame;
+        }
+        ECSEntitySpawner.SetBulletSpeed(bulletEntity, 0f);
+        yield return WaitForFrames.WaitWrapper(60);
+        if (Player.instance != null)
+        {
+            LocalTransform bulletTransform = entityManager.GetComponentData<LocalTransform>(bulletEntity);
+            ECSEntitySpawner.SetBulletFacing(bulletEntity, rotOffset + Mathf.Rad2Deg * Mathf.Atan2(
+                Player.instance.transform.position.y - bulletTransform.Position.y,
+                Player.instance.transform.position.x - bulletTransform.Position.x
+            ));
+            // enemyBullet.transform.right = enemyBullet.transform.position - Player.instance.gameObject.transform.position;
+            // enemyBullet.transform.eulerAngles = new Vector3(0f, 0f, 270f);
+            for (int i = 0; i < 20; i++)
             {
-                enemyBullet.speed -= slowDown;
+                speed += 0.15f;
+                ECSEntitySpawner.SetBulletSpeed(bulletEntity, speed);
                 yield return Timing.WaitForOneFrame;
             }
-            enemyBullet.speed = 0f;
-            yield return WaitForFrames.WaitWrapper(60);
-            if (Player.instance != null)
-            {
-                enemyBullet.transform.eulerAngles = new Vector3(0f, 0f, rotOffset + Mathf.Rad2Deg * Mathf.Atan2(
-                    Player.instance.transform.position.y - enemyBullet.transform.position.y,
-                    Player.instance.transform.position.x - enemyBullet.transform.position.x
-                ));
-                // enemyBullet.transform.right = enemyBullet.transform.position - Player.instance.gameObject.transform.position;
-                // enemyBullet.transform.eulerAngles = new Vector3(0f, 0f, 270f);
-                for (int i = 0; i < 20; i++)
-                {
-                    enemyBullet.speed += 0.15f;
-                    yield return Timing.WaitForOneFrame;
-                }
-            }
         }
+
     }
 }

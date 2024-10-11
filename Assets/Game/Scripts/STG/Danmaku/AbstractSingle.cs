@@ -40,7 +40,7 @@ public abstract class AbstractSingle : MonoBehaviour
         DropRewards(enemy.transform.position);
         for (int __delay = 0; __delay < 150; __delay++)
         {
-            StageManager.ClearBullet?.Invoke(!hasTimedOut, true);
+            StageManager.ClearEnemyBullet?.Invoke(!hasTimedOut, true);
             yield return 1;
         }
         // if (Player.instance != null)
@@ -55,7 +55,7 @@ public abstract class AbstractSingle : MonoBehaviour
         int randomNum = 12;
         for (int i = 0; i < randomNum; i++)
         {
-            ItemPool.SpawnItemI1(
+            ECSEntitySpawner.SpawnItemI1(
                 targetPos.x + Random.Range(-50f, 50f),
                 targetPos.y + Random.Range(-30f, 30f),
                 (i % 4) switch

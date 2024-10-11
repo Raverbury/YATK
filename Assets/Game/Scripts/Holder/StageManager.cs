@@ -12,25 +12,25 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     [SerializeField]
     private GameObject enemyPrefab;
 
-    public static UnityAction<bool, bool> ClearBullet;
+    public static UnityAction<bool, bool> ClearEnemyBullet;
     public static UnityAction<bool> SetPause;
     public static UnityAction EVStageDestroy;
 
     private Dictionary<string, GameObject> enemies = new();
 
     private List<Type> singles = new() {
+        typeof(Pattern01),
+        typeof(Nonspell2),
+        typeof(Nonspell3),
+        typeof(Nonspell4),
+        typeof(Nonspell8),
+        typeof(Nonspell5),
+        typeof(Nonspell10),
+        typeof(Nonspell6),
+        typeof(Nonspell7),
+        typeof(Nonspell11),
+        typeof(Nonspell9),
         typeof(MokouNon1),
-        // typeof(Pattern01),
-        // typeof(Nonspell2),
-        // typeof(Nonspell3),
-        // typeof(Nonspell4),
-        // typeof(Nonspell8),
-        // typeof(Nonspell5),
-        // typeof(Nonspell10),
-        // typeof(Nonspell6),
-        // typeof(Nonspell11),
-        // typeof(Nonspell7),
-        // typeof(Nonspell9),
     };
     public AbstractSingle activeSingle = null;
 
@@ -50,13 +50,13 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
 
     private void OnEnable()
     {
-        ClearBullet += KillBulletSpawningCoroutines;
+        ClearEnemyBullet += KillBulletSpawningCoroutines;
         AbstractSingle.SingleFinish += StartNextAvailableSingle;
     }
 
     private void OnDisable()
     {
-        ClearBullet -= KillBulletSpawningCoroutines;
+        ClearEnemyBullet -= KillBulletSpawningCoroutines;
         AbstractSingle.SingleFinish -= StartNextAvailableSingle;
     }
 
@@ -133,18 +133,27 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         }
         try
         {
-            return enemies.First(kvp =>
-            {
-                if (kvp.Value.TryGetComponent(out Enemy enemy))
-                {
-                    return !enemy.IsInvulnerable;
-                }
-                return false;
-            }).Value;
+            return enemies.First().Value;
         }
         catch (InvalidOperationException _)
         {
             return null;
+        }
+    }
+
+    public GameObject[] GetTargetableEnemies()
+    {
+        if (enemies.Count == 0)
+        {
+            return new GameObject[] { };
+        }
+        try
+        {
+            return enemies.Select(kvp => kvp.Value).ToArray();
+        }
+        catch (InvalidOperationException _)
+        {
+            return new GameObject[] { };
         }
     }
 

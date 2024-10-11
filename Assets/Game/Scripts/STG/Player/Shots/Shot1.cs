@@ -106,24 +106,24 @@ public class Shot1 : AbstractShot
                 if (isFocused)
                 {
                     float focusedOrbDamage = 0.6f * shotDamage;
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x + 4, transform.position.y - 4, shotDamage, 20, 90f + 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x - 4, transform.position.y - 4, shotDamage, 20, 90f - 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x + 4, transform.position.y - 4, shotDamage, 20, 90f + 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x - 4, transform.position.y - 4, shotDamage, 20, 90f - 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x + 16, orb.transform.position.y, focusedOrbDamage, 20, 90f + 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x - 16, orb.transform.position.y, focusedOrbDamage, 20, 90f - 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x + 16, orb.transform.position.y, focusedOrbDamage, 20, 90f + 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x - 16, orb.transform.position.y, focusedOrbDamage, 20, 90f - 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
                     }
                 }
                 else
                 {
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f - 8f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                    PlayerBulletPool.SpawnBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f + 8f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f - 8f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x, transform.position.y, shotDamage, 20, 90f + 8f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 20, 90f + 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 20, 90f - 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 20, 90f + 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 20, 90f - 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                     }
                 }
                 timeBetweenShot = 0;

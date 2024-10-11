@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using MEC;
 using STG;
+using Unity.Entities;
 using UnityEngine;
 
 public class Pattern01 : AbstractSingle
@@ -32,10 +33,11 @@ public class Pattern01 : AbstractSingle
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
+        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
-        PatternStart?.Invoke();
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
+        AbstractSingle.PatternStart?.Invoke();
         enemy.SetAnimState(Enemy.AnimState.Attack);
+        yield return WaitForFrames.WaitWrapper(30);
 
         const int SEGMENTS = 8;
         const int BRANCHES = SEGMENTS * 11;
@@ -50,14 +52,14 @@ public class Pattern01 : AbstractSingle
                 int j = (i % SEGMENTS) switch
                 {
                     0 or 7 => 1,
-                    1 or 6 => 3,
-                    2 or 5 => 5,
-                    _ => 10,
+                    1 or 6 => 2,
+                    2 or 5 => 3,
+                    _ => 2,
                 };
                 float speed = 2 + 0.5f * j;
                 float angle = 360f / BRANCHES * i + rotation;
                 EnemyBulletType color = oddWave ? EnemyBulletType.ARROW_DARK_BLUE : EnemyBulletType.ARROW_DARK_GREEN;
-                GameObject bullet = EnemyBulletPool.SpawnBulletA1(enemy.gameObject, speed, angle, color, 30);
+                Entity bullet = ECSEntitySpawner.SpawnEnemyBulletE1(enemy.transform.position, speed, angle, color, 30);
                 CoroutineUtil.StartSingleLoopCRT(_Manipulate(bullet));
             }
             rotation += 7;
@@ -69,21 +71,19 @@ public class Pattern01 : AbstractSingle
     protected override void DropRewards(Vector2 targetPos)
     {
         base.DropRewards(targetPos);
-        ItemPool.SpawnItemI1(targetPos, ItemType.LIFE_ITEM);
     }
 
-    IEnumerator<float> _Manipulate(GameObject bullet)
+    IEnumerator<float> _Manipulate(Entity bulletEntity)
     {
-        for (int __delay = 0; __delay < 15; __delay++)
+        int i = 0;
+        while (!ECSEntitySpawner.EntityIsDisabled(bulletEntity) && i < 100)
         {
+            if (i == 99)
+            {
+                ECSEntitySpawner.SetBulletSpeed(bulletEntity, 1.2f);
+            }
+            i += 1;
             yield return Timing.WaitForOneFrame;
         }
-        bullet.TryGetComponent(out EnemyBullet enemyBullet);
-        while (bullet.activeInHierarchy && Vector2.Distance(bullet.transform.position, new Vector2(192, -60)) < 260)
-        {
-            yield return Timing.WaitForOneFrame;
-        }
-
-        enemyBullet.speed = 1.6f;
     }
 }

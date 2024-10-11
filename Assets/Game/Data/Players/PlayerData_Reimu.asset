@@ -25,6 +25,9 @@ MonoBehaviour:
   hitboxRadius:
     baseStat: 4
     flatBonusStat: 0
+  grazeboxRadius:
+    baseStat: 20
+    flatBonusStat: 0
   initialLife: 2
   initialBomb: 3
   deathBombWindow:

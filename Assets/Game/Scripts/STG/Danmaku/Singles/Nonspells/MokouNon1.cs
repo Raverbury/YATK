@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MEC;
+using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
 public class MokouNon1 : AbstractSingle
@@ -31,22 +32,26 @@ public class MokouNon1 : AbstractSingle
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
+        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
         AbstractSingle.PatternStart?.Invoke();
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
+        yield return WaitForFrames.WaitWrapper(30);
+
+        float angle = 270f;
 
         while (true)
         {
-            yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_FireSeiranFan(
+            CoroutineUtil.StartSingleLoopCRT(_FireSeiranFan(
                 new Vector2(192, -90),
-                270f,
+                angle,
                 10,
                 1,
                 3,
                 3f
-            )));
-            yield return WaitForFrames.WaitWrapper(100);
+            ));
+            yield return WaitForFrames.WaitWrapper(15);
+            angle = (angle + Random.Range(40f, 90f)) % 360f;
         }
     }
 
@@ -58,12 +63,12 @@ public class MokouNon1 : AbstractSingle
             float halfFanSpread = spreadBetweenBullet * (fanCount - 1) * 0.5f;
             for (int j = 0; j < fanCount; j++)
             {
-                if (j < fanCount * 0.5f) {
-                    ECSBulletSpawner.SpawnBulletA1(at.x, at.y, 3f, facing - halfFanSpread + spreadBetweenBullet * j, STG.EnemyBulletType.ARROW_DARK_BLUE, 20);
-                }
-                else {
-                    EnemyBulletPool.SpawnBulletA1(at.x, at.y, 3f, facing - halfFanSpread + spreadBetweenBullet * j, STG.EnemyBulletType.ARROW_DARK_BLUE, 20);
-                }
+                // if (j < fanCount * 0.5f) {
+                ECSEntitySpawner.SpawnEnemyBulletE1(at.x, at.y, 3f, facing - halfFanSpread + spreadBetweenBullet * j, STG.EnemyBulletType.ARROW_DARK_BLUE, 20);
+                // }
+                // else {
+                //     ECSEntitySpawner.SpawnEnemyBulletE1(at.x, at.y, 3f, facing - halfFanSpread + spreadBetweenBullet * j, STG.EnemyBulletType.ARROW_DARK_BLUE, 20);
+                // }
             }
             fanCount += incrementCount;
             yield return WaitForFrames.WaitWrapper(delayBetweenWaves);

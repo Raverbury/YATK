@@ -27,7 +27,7 @@ public class Bomb : MonoBehaviour
     private void Update()
     {
         Player.PlayerAutoCollectItem?.Invoke();
-        StageManager.ClearBullet?.Invoke(true, false);
+        StageManager.ClearEnemyBullet?.Invoke(true, false);
     }
 
     public void SetBombData(BombType bombType, float damage)

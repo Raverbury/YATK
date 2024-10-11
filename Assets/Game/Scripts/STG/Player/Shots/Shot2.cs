@@ -1,7 +1,8 @@
-using System;
 using System.Collections.Generic;
 using MEC;
-using Unity.VisualScripting;
+using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 
 public class Shot2 : AbstractShot
@@ -75,23 +76,23 @@ public class Shot2 : AbstractShot
                 CalcShotInterval();
                 CalcShotDamage();
                 float baseAmuletDamage = 0.9f * shotDamage;
-                PlayerBulletPool.SpawnBulletP1(transform.position.x - 15, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 100f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                PlayerBulletPool.SpawnBulletP1(transform.position.x + 15, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 80f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                PlayerBulletPool.SpawnBulletP1(transform.position.x - 10, transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                PlayerBulletPool.SpawnBulletP1(transform.position.x + 10, transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x - 15, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 100f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x + 15, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 80f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x - 10, transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x + 10, transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                 if (isFocused)
                 {
                     foreach (var orb in weaponOrbs)
                     {
-                        PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 25, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 25, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
                     }
                 }
                 else
                 {
                     foreach (var orb in weaponOrbs)
                     {
-                        GameObject bulletGameObject = PlayerBulletPool.SpawnBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 8, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                        Timing.RunCoroutine(_DoHoming(bulletGameObject));
+                        Entity entity = ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 8, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                        Timing.RunCoroutine(_DoHoming(entity));
                     }
                 }
                 timeBetweenShot = 0;
@@ -116,48 +117,49 @@ public class Shot2 : AbstractShot
         }
     }
 
-    IEnumerator<float> _DoHoming(GameObject bulletGameObject)
+    IEnumerator<float> _DoHoming(Entity entity)
     {
-        if (bulletGameObject.TryGetComponent(out PlayerBullet playerBullet))
+        EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        int t = 0;
+        while (!ECSEntitySpawner.EntityIsDisabled(entity))
         {
-            int t = 0;
-            while (bulletGameObject.activeInHierarchy)
+            GameObject homingTarget = StageManager.instance.GetFirstEnemy();
+            if (homingTarget != null)
             {
-                GameObject homingTarget = StageManager.instance.GetFirstEnemy();
-                if (homingTarget != null)
+                LocalTransform localTransform = entityManager.GetComponentData<LocalTransform>(entity);
+                float angle = math.degrees(math.Euler(localTransform.Rotation).z);
+                float homingAngle = Mathf.Rad2Deg * Mathf.Atan2(
+                    homingTarget.transform.position.y - localTransform.Position.y,
+                    homingTarget.transform.position.x - localTransform.Position.x
+                );
+                // if (homingAngle < 0) {
+                //     homingAngle = 360f + homingAngle;
+                // }
+                // Debug.Log(homingAngle);
+                float diff = homingAngle - angle;
+                while (diff >= 180f)
                 {
-                    float angle = bulletGameObject.transform.eulerAngles.z;
-                    float homingAngle = Mathf.Rad2Deg * Mathf.Atan2(
-                        homingTarget.transform.position.y - bulletGameObject.transform.position.y,
-                        homingTarget.transform.position.x - bulletGameObject.transform.position.x
-                    );
-                    // if (homingAngle < 0) {
-                    //     homingAngle = 360f + homingAngle;
-                    // }
-                    // Debug.Log(homingAngle);
-                    float diff = homingAngle - angle;
-                    while (diff >= 180f)
-                    {
-                        diff -= 360f;
-                    }
-                    while (diff < -180f)
-                    {
-                        diff += 360f;
-                    }
-                    float diffAbs = Mathf.Abs(diff);
-                    if (diffAbs <= 2f)
-                    {
-                        angle = homingAngle;
-                    }
-                    else if (diffAbs > 2f)
-                    {
-                        angle += diffAbs / 10f * diff / (diffAbs / 2f);
-                    }
-                    bulletGameObject.transform.eulerAngles = new Vector3(0f, 0f, angle);
+                    diff -= 360f;
                 }
-                yield return Timing.WaitForOneFrame;
-                t += 1;
+                while (diff < -180f)
+                {
+                    diff += 360f;
+                }
+                float diffAbs = Mathf.Abs(diff);
+                if (diffAbs <= 2f)
+                {
+                    angle = homingAngle;
+                }
+                else if (diffAbs > 2f)
+                {
+                    angle += diffAbs / 10f * diff / (diffAbs / 2f);
+                }
+                localTransform.Rotation = quaternion.EulerXYZ(new float3(0f, 0f, math.radians(angle)));
+                entityManager.SetComponentData(entity, localTransform);
             }
+            yield return Timing.WaitForOneFrame;
+            t += 1;
         }
+
     }
 }

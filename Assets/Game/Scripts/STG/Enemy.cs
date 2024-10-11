@@ -62,15 +62,14 @@ public class Enemy : PausableMono
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (STG.Constant.LAYER_PLAYER_BULLET == other.gameObject.layer)
-        {
-            if (other.gameObject.TryGetComponent(out PlayerBullet playerBullet))
-            {
-                float damage = Mathf.Clamp(playerBullet.damage, 0f, HP);
-                TakeDamage(damage);
-            }
-            other.gameObject.SetActive(false);
-        }
+        // if (STG.Constant.LAYER_PLAYER_BULLET == other.gameObject.layer)
+        // {
+        //     if (other.gameObject.TryGetComponent(out PlayerBullet playerBullet))
+        //     {
+        //         TakeDamage(playerBullet.damage);
+        //     }
+        //     other.gameObject.SetActive(false);
+        // }
         if (STG.Constant.LAYER_PLAYER_BOMB == other.gameObject.layer)
         {
             if (other.gameObject.TryGetComponent(out Bomb bomb))
@@ -102,12 +101,13 @@ public class Enemy : PausableMono
         }
     }
 
-    private void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         if (IsInvulnerable)
         {
             return;
         }
+        damage = Mathf.Clamp(damage, 0f, HP);
         HP -= damage;
     }
 

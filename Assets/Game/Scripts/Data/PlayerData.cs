@@ -35,6 +35,9 @@ public class PlayerData : ScriptableObject
     [Tooltip("The player's hitbox in units (i.e. 1, 2, 3). Default for most should be 5.")]
     public Stat hitboxRadius;
 
+    [Tooltip("The player's grazebox in units (i.e. 1, 2, 3). Default for most should be 20.")]
+    public Stat grazeboxRadius;
+
     [Tooltip("The player starts with this many extra lives.")]
     public int initialLife;
 

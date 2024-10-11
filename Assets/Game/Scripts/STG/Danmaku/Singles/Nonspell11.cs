@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using MEC;
 using UnityEngine;
 using STG;
-using System.Linq;
 
 public class Nonspell11 : AbstractSingle
 {
@@ -33,18 +32,19 @@ public class Nonspell11 : AbstractSingle
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
+        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
         AbstractSingle.PatternStart?.Invoke();
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
+        yield return WaitForFrames.WaitWrapper(30);
 
         const int BURSTS = 7;
         const int BRANCHES = 20;
+        const float GAP = 3f;
         // int i = 0;
         float branchRotation = 360f / BRANCHES;
-        float halfBranchRotation = branchRotation / 2f;
-        bool oddWave = true;
-        CoroutineUtil.StartSingleLoopCRT(_MoveEnemy(enemy));
+        int state = 0;
+        // CoroutineUtil.StartSingleLoopCRT(_MoveEnemy(enemy));
         while (true)
         {
             float angleToPlayer = 270f;
@@ -59,32 +59,28 @@ public class Nonspell11 : AbstractSingle
             {
                 for (int j = 0; j < BURSTS; j++)
                 {
-                    EnemyBulletPool.SpawnBulletA1(enemy.gameObject, 3.5f + 0.3f * j, 2f * (oddWave ? j : -j) + angleToPlayer + branchRotation * i, j switch
+                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.transform.position, 3.5f + 0.3f * j, GAP * (state % 2 == 0 ? j : -j) + angleToPlayer + branchRotation * i, j switch
                     {
-                        0 => EnemyBulletType.ICE_RED,
-                        1 => EnemyBulletType.ICE_PURPLE,
-                        2 => EnemyBulletType.ICE_BLUE,
-                        3 => EnemyBulletType.ICE_SKY,
-                        4 => EnemyBulletType.ICE_GREEN,
-                        5 => EnemyBulletType.ICE_YELLOW,
-                        _ => EnemyBulletType.ICE_ORANGE,
+                        0 or 6 or 3 => EnemyBulletType.AMULET_RED,
+                        1 or 5 => EnemyBulletType.AMULET_PURPLE,
+                        _ => EnemyBulletType.AMULET_BLUE,
+                        // 3 => EnemyBulletType.AMULET_SKY,
+                        // 4 => EnemyBulletType.AMULET_GREEN,
+                        // 5 => EnemyBulletType.AMULET_YELLOW,
+                        // _ => EnemyBulletType.AMULET_ORANGE,
                     }, 10);
                 }
             }
-            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(oddWave ? 20 : 60)));
-            oddWave = !oddWave;
-        }
-    }
-
-    private IEnumerator<float> _MoveEnemy(Enemy enemy)
-    {
-        while (true)
-        {
-            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(90)));
-            float targetX = ((Player.instance == null) ? 192f : Player.instance.gameObject.transform.position.x) + Random.Range(-20f, 20f);
-            targetX = Mathf.Clamp(targetX, Constant.GAME_BORDER_LEFT + 60, Constant.GAME_BORDER_RIGHT - 60);
-            yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(targetX, Random.Range(-60, -60)), 60)));
-            enemy.SetAnimState(Enemy.AnimState.Attack);
+            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(40)));
+            if (state == 2 || state == 5)
+            {
+                float targetX = ((Player.instance == null) ? 192f : Player.instance.gameObject.transform.position.x) + Random.Range(-20f, 20f);
+                targetX = Mathf.Clamp(targetX, Constant.GAME_BORDER_LEFT + 60, Constant.GAME_BORDER_RIGHT - 60);
+                yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(targetX, Random.Range(-90, -60)), 60)));
+                enemy.SetAnimState(Enemy.AnimState.Attack);
+                yield return WaitForFrames.WaitWrapper(40);
+            }
+            state = (state + 1) % 6;
         }
     }
 }

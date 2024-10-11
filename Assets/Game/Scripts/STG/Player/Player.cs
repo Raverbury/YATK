@@ -16,7 +16,6 @@ public class Player : PausableMono
     public static UnityAction<float> PlayerIsInvulnerable;
     public static UnityAction<int> PlayerSetLife;
     public static UnityAction<int> PlayerSetBomb;
-    public static UnityAction<int> PlayerSetGrazeboxRadius;
     public static UnityAction<int> PlayerSetGraze;
     public static UnityAction<int> PlayerSetPower;
     public static UnityAction PlayerAutoCollectItem;
@@ -171,7 +170,6 @@ public class Player : PausableMono
         RemainingLife = playerData.initialLife;
         initialBomb = playerData.initialBomb; // TODO: also add from bomb's stat if implemented
         RemainingBomb = initialBomb;
-        PlayerSetGrazeboxRadius(25);
         Focus = false;
         // change anims
         AnimatorOverrideController aoc = new(animator.runtimeAnimatorController);
@@ -263,33 +261,33 @@ public class Player : PausableMono
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (Constant.LAYER_ENEMY_BULLET == other.gameObject.layer)
-        {
-            PlayerGetHit();
-            if (other.gameObject.TryGetComponent(out EnemyBullet enemyBullet)) {
-                enemyBullet.ClearBullet(false);
-            }
-            else {
-                other.gameObject.SetActive(false);
-            }
-        }
-        else if (Constant.LAYER_ITEM == other.gameObject.layer)
-        {
-            if (other.gameObject.TryGetComponent(out Item item))
-            {
-                item.CollectItem(this);
-            }
-            other.gameObject.SetActive(false);
-        }
-        else if (Constant.LAYER_ENEMY == other.gameObject.layer)
-        {
-            PlayerGetHit();
-        }
-    }
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if (Constant.LAYER_ENEMY_BULLET == other.gameObject.layer)
+    //     {
+    //         PlayerGetHit();
+    //         if (other.gameObject.TryGetComponent(out EnemyBullet enemyBullet)) {
+    //             enemyBullet.ClearBullet(false);
+    //         }
+    //         else {
+    //             other.gameObject.SetActive(false);
+    //         }
+    //     }
+    //     else if (Constant.LAYER_ITEM == other.gameObject.layer)
+    //     {
+    //         if (other.gameObject.TryGetComponent(out Item item))
+    //         {
+    //             item.CollectItem(this);
+    //         }
+    //         other.gameObject.SetActive(false);
+    //     }
+    //     else if (Constant.LAYER_ENEMY == other.gameObject.layer)
+    //     {
+    //         PlayerGetHit();
+    //     }
+    // }
 
-    private void PlayerGetHit()
+    public void PlayerGetHit()
     {
         // any invuln check
         if (isInvulnerable)
@@ -380,7 +378,7 @@ public class Player : PausableMono
         {
             pos.y += REVIVE_STEP_DISTANCE;
             transform.position = pos;
-            StageManager.ClearBullet?.Invoke(false, false);
+            StageManager.ClearEnemyBullet?.Invoke(false, false);
             yield return Timing.WaitForOneFrame;
         }
         shouldCheckMovement = true;

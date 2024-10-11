@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using MEC;
 using STG;
+using Unity.Entities;
 using UnityEngine;
 
 public class Nonspell3 : AbstractSingle
@@ -37,9 +38,9 @@ public class Nonspell3 : AbstractSingle
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
+        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
         AbstractSingle.PatternStart?.Invoke();
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
 
         int state = 0;
         while (true)
@@ -87,7 +88,7 @@ public class Nonspell3 : AbstractSingle
                             2 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) - 0.6f,
                             _ => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) + 0.05f,
                         }) * Mathf.Rad2Deg;
-                        EnemyBulletPool.SpawnBulletA1(pos, 9, angle, STG.EnemyBulletType.ARROW_SKY, 30);
+                        ECSEntitySpawner.SpawnEnemyBulletE1(pos, 9, angle, STG.EnemyBulletType.ARROW_SKY, 30);
                         pos.x += 90;
                     }
                     yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(2)));
@@ -115,19 +116,19 @@ public class Nonspell3 : AbstractSingle
                 float angle = rotation + 360f / FLOWER_PETALS * j + r;
                 float angleR = Mathf.Deg2Rad * angle;
                 Vector2 spawnPos = flowerPos + new Vector2(PETAL_DISTANCE * Mathf.Cos(angleR), PETAL_DISTANCE * Mathf.Sin(angleR));
-                GameObject bullet = EnemyBulletPool.SpawnBulletA1(spawnPos, 0, angle + 180f, enemyBulletType, 10);
+                Entity bullet = ECSEntitySpawner.SpawnEnemyBulletE1(spawnPos, 0, angle + 180f, enemyBulletType, 10);
                 CoroutineUtil.StartSingleLoopCRT(_ManipulateFlower(bullet));
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(2)));
         }
     }
 
-    private IEnumerator<float> _ManipulateFlower(GameObject gameObject)
+    private IEnumerator<float> _ManipulateFlower(Entity entity)
     {
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(120)));
-        if (gameObject.activeInHierarchy)
+        if (!ECSEntitySpawner.EntityIsDisabled(entity))
         {
-            gameObject.GetComponent<EnemyBullet>().speed = 2.7f;
+            ECSEntitySpawner.SetBulletSpeed(entity, 2.7f);
         }
     }
 }
