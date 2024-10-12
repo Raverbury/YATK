@@ -32,9 +32,8 @@ public class MokouNon1 : AbstractSingle
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
-        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
-        AbstractSingle.PatternStart?.Invoke();
+        Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60));
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return WaitForFrames.WaitWrapper(30);
 

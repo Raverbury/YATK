@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d28b2e2c3aa54438fccbbf0ab5d598, type: 3}
+  m_Name: EnemyData_Mokou
+  m_EditorClassIdentifier: 
+  enemyName: Fujiwara no Mokou
+  nameColor: {r: 1, g: 0.32321632, b: 0, a: 0}
+  idleAnimation: {fileID: 7400000, guid: d8f1785b8ece8a7488e3d7eb45e77f0d, type: 2}
+  sideAnimation: {fileID: 7400000, guid: b02938ed4ceba7049ba56656012dc230, type: 2}
+  attackAnimation: {fileID: 7400000, guid: 73c457deb99b0d243aa31cbee832fb4a, type: 2}
+  enemySpellcardBackgroundImage: {fileID: 21300000, guid: 90fdead0eb8af6f45a5adbca9ab29858, type: 3}
+  enemySpellcardBackgroundEffect: {fileID: 21300000, guid: b527d33ce3a236f4bbf7d9cdf7c9808f, type: 3}

@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &71911184
+--- !u!1 &1496145241
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,22 +131,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 71911186}
-  - component: {fileID: 71911185}
+  - component: {fileID: 1496145243}
+  - component: {fileID: 1496145242}
   m_Layer: 0
-  m_Name: '@ECSEntitySpawner'
+  m_Name: '@EntitySpawnerAuthoring'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &71911185
+--- !u!114 &1496145242
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 71911184}
+  m_GameObject: {fileID: 1496145241}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e8f815a2c083f148a27217d7f852cf4, type: 3}
@@ -154,18 +154,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GenericEntityPrefab: {fileID: 7197914987545117293, guid: 3951d058d1662ba4d9bf48bdd4ffa817, type: 3}
   AmountOfEnemyBulletsToAdd: 500
-  AmountOfPlayerBulletsToAdd: 300
+  AmountOfPlayerBulletsToAdd: 200
   AmountOfItemsToAdd: 500
---- !u!4 &71911186
+--- !u!4 &1496145243
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 71911184}
+  m_GameObject: {fileID: 1496145241}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 151.6061, y: -125.66954, z: -0.7852985}
+  m_LocalPosition: {x: 264.96994, y: -311.53003, z: 88.619125}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -175,4 +175,4 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 71911186}
+  - {fileID: 1496145243}

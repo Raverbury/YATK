@@ -85,7 +85,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
                 PushNextSelector(playerSelector);
                 break;
             case HomeMenuSelector.HomeMenuResult.Settings:
-                SceneUtil.LoadSceneAsync("ECS");
+                SFXPlayer.RequestPlayInvalidSound?.Invoke();
                 break;
             case HomeMenuSelector.HomeMenuResult.Quit:
                 SFXPlayer.EVPlayCancelSound?.Invoke();

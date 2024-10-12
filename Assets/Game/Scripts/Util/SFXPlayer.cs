@@ -33,16 +33,19 @@ public class SFXPlayer : MonoBehaviour
     public AudioClip SFX_CONFIRM;
     public AudioClip SFX_SELECT;
     public AudioClip SFX_CANCEL;
+    public AudioClip SFX_INVALID;
 
     private int internalIndex = 0;
 
     private Dictionary<AudioClip, ushort> audioWaitMap = new();
 
+    public static UnityAction RequestPlaySpellStartSound;
     public static UnityAction EVPlayConfirmSound;
     public static UnityAction EVPlaySelectSound;
     public static UnityAction EVPlayCancelSound;
 
     public static UnityAction EVPlayMasterSparkSound;
+    public static UnityAction RequestPlayInvalidSound;
 
     private void Awake()
     {
@@ -73,7 +76,7 @@ public class SFXPlayer : MonoBehaviour
         Player.PlayerSetMiss += PlayMissSound;
         Player.ResultPlayerExtend += PlayExtendSound;
         Player.PlayerPowerUp += PlayPowerUpSound;
-        AbstractSingle.PatternStart += PlaySpellStartSound;
+        RequestPlaySpellStartSound += PlaySpellStartSound;
         Player.PlayerShoot += PlayPlayerShootSound;
         AbstractSingle.SingleExplode += PlaySingleExplodeSound;
         Player.PlayerCollectItem += PlayGenericItemCollectSound;
@@ -85,6 +88,7 @@ public class SFXPlayer : MonoBehaviour
         StageManager.EVStageDestroy += ClearPausedSounds;
         Player.EVBombActivate += PlaySpellStartSound2;
         EVPlayMasterSparkSound += PlayMasterSparkSound;
+        RequestPlayInvalidSound += PlayValidSound;
     }
 
     private void OnDisable()
@@ -94,7 +98,7 @@ public class SFXPlayer : MonoBehaviour
         Player.PlayerSetMiss -= PlayMissSound;
         Player.ResultPlayerExtend -= PlayExtendSound;
         Player.PlayerPowerUp -= PlayPowerUpSound;
-        AbstractSingle.PatternStart -= PlaySpellStartSound;
+        RequestPlaySpellStartSound -= PlaySpellStartSound;
         Player.PlayerShoot -= PlayPlayerShootSound;
         AbstractSingle.SingleExplode -= PlaySingleExplodeSound;
         Player.PlayerCollectItem -= PlayGenericItemCollectSound;
@@ -105,7 +109,13 @@ public class SFXPlayer : MonoBehaviour
         EVPlaySelectSound -= PlaySelectSound;
         StageManager.EVStageDestroy -= ClearPausedSounds;
         Player.EVBombActivate -= PlaySpellStartSound2;
-        EVPlayMasterSparkSound += PlayMasterSparkSound;
+        EVPlayMasterSparkSound -= PlayMasterSparkSound;
+        RequestPlayInvalidSound -= PlayValidSound;
+    }
+
+    private void PlayValidSound()
+    {
+        PlayAudioAlt(SFX_INVALID);
     }
 
     private void PlayExtendSound()

@@ -34,9 +34,8 @@ public class Nonspell4 : AbstractSingle
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
         int wait = 60;
-        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
-        AbstractSingle.PatternStart?.Invoke();
+        Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60));
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return WaitForFrames.WaitWrapper(30);
 
@@ -48,9 +47,9 @@ public class Nonspell4 : AbstractSingle
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    float rotOffset = -45f + 45f * j;
+                    float rotOffset = -60f + 60f * j;
                     ECSEntitySpawner.SpawnEnemyBulletE1(Constant.GAME_BORDER_LEFT, pos.y, Mathf.Abs(Constant.GAME_BORDER_LEFT - pos.x) * 0.005f + 2 * i, 0f + rotOffset, EnemyBulletType.ARROW_RED, 20);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(pos.x, Constant.GAME_BORDER_TOP, Mathf.Abs(Constant.GAME_BORDER_TOP - pos.y) * 0.008f + 2 * i, 270f + rotOffset, EnemyBulletType.ARROW_GREEN, 20);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(pos.x, Constant.GAME_BORDER_TOP, Mathf.Abs(Constant.GAME_BORDER_TOP - pos.y) * 0.008f + 1.5f * i, 270f + rotOffset, EnemyBulletType.ARROW_GREEN, 20);
                     ECSEntitySpawner.SpawnEnemyBulletE1(Constant.GAME_BORDER_RIGHT, pos.y, Mathf.Abs(Constant.GAME_BORDER_RIGHT - pos.x) * 0.005f + 2 * i, 180f + rotOffset, EnemyBulletType.ARROW_BLUE, 20);
                 }
                 for (int j = 0; j < 8; j++)

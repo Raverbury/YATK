@@ -181,6 +181,18 @@ public class Enemy : PausableMono
         }
         IsInvulnerable = false;
         HasRefilledHP = true;
+    }
 
+    public void ChangeSprites(EnemyData enemyData)
+    {
+        AnimatorOverrideController aoc = new(animator.runtimeAnimatorController);
+        aoc["enemy_front"] = enemyData.idleAnimation;
+        aoc["enemy_side"] = enemyData.sideAnimation;
+        aoc["enemy_attack"] = enemyData.attackAnimation;
+        // aoc.ApplyOverrides(new List<KeyValuePair<AnimationClip, AnimationClip>>(){
+        //     new(aoc["front"], playerData.frontAnimation),
+        //     new(aoc["side"], playerData.sideAnimation),
+        // });
+        animator.runtimeAnimatorController = aoc;
     }
 }

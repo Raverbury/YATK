@@ -281,6 +281,7 @@ MonoBehaviour:
   SFX_CONFIRM: {fileID: 8300000, guid: cc5c914e55967644898aaf1dac35e674, type: 3}
   SFX_SELECT: {fileID: 8300000, guid: 240305b00e8c9124388b3ffe2cce6964, type: 3}
   SFX_CANCEL: {fileID: 8300000, guid: ad60ba62b0672604e8d26e80201b8c2d, type: 3}
+  SFX_INVALID: {fileID: 8300000, guid: d6d46e737b884744ea4d8ced0d531099, type: 3}
 --- !u!1 &634771141
 GameObject:
   m_ObjectHideFlags: 0

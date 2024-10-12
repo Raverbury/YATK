@@ -35,9 +35,8 @@ public class Nonspell6 : AbstractSingle
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
-        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
-        AbstractSingle.PatternStart?.Invoke();
+        Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60));
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return WaitForFrames.WaitWrapper(30);
 
@@ -56,12 +55,12 @@ public class Nonspell6 : AbstractSingle
             if (i == count - 1)
             {
                 iVel = -1;
-                wait = Mathf.Max(20, wait - 1);
+                wait = Mathf.Max(10, wait - 2);
             }
             else if (i == 0)
             {
                 iVel = 1;
-                wait = Mathf.Max(20, wait - 1);
+                wait = Mathf.Max(10, wait - 2);
             }
             i += iVel;
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(wait)));
@@ -71,13 +70,13 @@ public class Nonspell6 : AbstractSingle
     private IEnumerator<float> _SpawnFromBubble(Entity bubbleBulletEntity)
     {
         EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        yield return WaitForFrames.WaitWrapper(Random.Range(40, 100));
-        const int BRANCHES = 3;
-        float rot = 360f / BRANCHES;
+        yield return WaitForFrames.WaitWrapper(Random.Range(40, 60));
+        int branches = Random.Range(2, 6);
+        float rot = 360f / branches;
         while (!ECSEntitySpawner.EntityIsDisabled(bubbleBulletEntity))
         {
             float r = Random.Range(-20f, 20f);
-            for (int i = 0; i < BRANCHES; i++)
+            for (int i = 0; i < branches; i++)
             {
                 LocalTransform bulletTransform = entityManager.GetComponentData<LocalTransform>(bubbleBulletEntity);
                 Entity subBulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(bulletTransform.Position.x, bulletTransform.Position.y, 0f, r + rot * i, EnemyBulletType.AMULET_RED, 30);

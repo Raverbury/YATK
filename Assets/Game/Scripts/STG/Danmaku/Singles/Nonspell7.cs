@@ -25,7 +25,7 @@ public class Nonspell7 : AbstractSingle
 
     public override int GetTimer()
     {
-        return 49;
+        return 60;
     }
 
     public override bool IsTimeout()
@@ -36,9 +36,9 @@ public class Nonspell7 : AbstractSingle
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
         yield return WaitForFrames.WaitWrapper(30);
-        AbstractSingle.PatternStart?.Invoke();
         yield return WaitForFrames.WaitWrapper(30);
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, 200), 60)));
+        Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, 100), 60));
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         // yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         StageManager.DestroyNamedEnemy("mokou");
 
@@ -71,7 +71,7 @@ public class Nonspell7 : AbstractSingle
                 yield return WaitForFrames.WaitWrapper(wait / 3);
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(wait)));
-            wait = Mathf.Max(30, wait - 15);
+            wait = Mathf.Max(10, wait - 15);
             BURSTS = Mathf.Min(7, BURSTS + 1);
             BRANCHES = Mathf.Min(8, BRANCHES + 1);
         }

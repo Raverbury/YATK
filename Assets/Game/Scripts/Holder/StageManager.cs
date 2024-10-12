@@ -12,33 +12,37 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     [SerializeField]
     private GameObject enemyPrefab;
 
+    public EnemyData enemyData;
+
     public static UnityAction<bool, bool> ClearEnemyBullet;
     public static UnityAction<bool> SetPause;
     public static UnityAction EVStageDestroy;
 
     private Dictionary<string, GameObject> enemies = new();
 
-    private List<Type> singles = new() {
-        typeof(Nonspell2),
-        typeof(Pattern01),
+    private List<AbstractSingle> singles = new() {
 
-        typeof(MokouNon1),
-        typeof(Nonspell3),
+        new Nonspell2(),
+        new Pattern01(){IsSpellCard = true},
 
-        typeof(Nonspell8),
-        typeof(Nonspell4),
+        new MokouNon1(),
+        new Nonspell3(){IsSpellCard = true},
 
-        typeof(Nonspell10),
+        new Nonspell8(),
+        new Nonspell4(){IsSpellCard = true},
 
-        typeof(Nonspell5),
-        typeof(Nonspell6),
+        new Nonspell10(),
+        new StarSpell1(){IsSpellCard = true},
 
-        typeof(Nonspell11),
-        typeof(Nonspell7),
+        new Nonspell11(),
+        new Nonspell6(){IsSpellCard = true},
 
-        typeof(Nonspell9),
+        new Nonspell5(),
+        new Nonspell7(){IsSpellCard = true},
+
+        new Nonspell9(){IsSpellCard = true},
     };
-    public AbstractSingle activeSingle = null;
+    private AbstractSingle activeSingle = null;
 
     public static bool isPaused = false;
     private bool shouldRespondToInput = true;
@@ -82,20 +86,23 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     {
         if (activeSingle != null)
         {
-            DestroyImmediate(activeSingle);
             activeSingle = null;
         }
         if (singles.Count == 0)
         {
             return;
         }
-        Type singleType = singles[0];
-        activeSingle = (AbstractSingle)gameObject.AddComponent(singleType);
+        activeSingle = singles[0];
+        activeSingle.StartSingle(enemyData);
         singles.RemoveAt(0);
     }
 
     public static bool DestroyNamedEnemy(string name)
     {
+        if (instance.enemies.ContainsKey(name))
+        {
+            Destroy(instance.enemies[name]);
+        }
         return instance.enemies.Remove(name);
     }
 
@@ -141,7 +148,7 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         {
             return enemies.First().Value;
         }
-        catch (InvalidOperationException _)
+        catch (InvalidOperationException)
         {
             return null;
         }
@@ -157,7 +164,7 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         {
             return enemies.Select(kvp => kvp.Value).ToArray();
         }
-        catch (InvalidOperationException _)
+        catch (InvalidOperationException)
         {
             return new GameObject[] { };
         }

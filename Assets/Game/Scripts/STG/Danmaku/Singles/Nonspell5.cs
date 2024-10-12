@@ -32,9 +32,8 @@ public class Nonspell5 : AbstractSingle
 
     protected override IEnumerator<float> _Loop(Enemy enemy)
     {
-        Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60));
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60)));
-        AbstractSingle.PatternStart?.Invoke();
+        Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60));
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return WaitForFrames.WaitWrapper(30);
 
@@ -70,8 +69,8 @@ public class Nonspell5 : AbstractSingle
                     ECSEntitySpawner.SpawnEnemyBulletE1(spawnPos, SPEED, bulletAngle, EnemyBulletType.AMULET_RED, 10);
                 }
             }
-            rotation1 += 6;
-            rotation2 -= 6;
+            rotation1 = (rotation1 + 3) % 360;
+            rotation2 = (rotation2 - 9) % 360;
         }
     }
 
@@ -82,7 +81,7 @@ public class Nonspell5 : AbstractSingle
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(5 * 60)));
             float targetX = ((Player.instance == null) ? 192f : Player.instance.gameObject.transform.position.x) + Random.Range(-50f, 50f);
             targetX = Mathf.Clamp(targetX, Constant.GAME_BORDER_LEFT + 60, Constant.GAME_BORDER_RIGHT - 60);
-            yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(targetX, Random.Range(-180, -60)), 60)));
+            yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(targetX, Random.Range(-180, -60)), 60)));
             enemy.SetAnimState(Enemy.AnimState.Attack);
         }
     }
