@@ -63,7 +63,8 @@ public class Nonspell7 : AbstractSingle
                 {
                     for (int k = 0; k < BRANCHES; k++)
                     {
-                        CoroutineUtil.StartSingleLoopCRT(_InitialSpawnMotion(ECSEntitySpawner.SpawnEnemyBulletE1(xPositions[i], -330f + 20 * j, 6, 90, bulletTypes[i], 10), branchRotation * k));
+                        Entity entity = ECSEntitySpawner.SpawnEnemyBulletE1(xPositions[i], -330f + 20 * j, 6, 90, bulletTypes[i], 10);
+                        CoroutineUtil.RunEntityBoundCoroutine(_InitialSpawnMotion(entity, branchRotation * k), entity);
                     }
                     yield return WaitForFrames.WaitWrapper(wait / BURSTS);
                 }

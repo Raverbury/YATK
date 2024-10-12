@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MEC;
+using Unity.Entities;
 
 public class CoroutineUtil
 {
@@ -31,5 +32,15 @@ public class CoroutineUtil
     {
         Timing.KillCoroutines(TAG_STRING_PLAYER_INVULNERABLE);
         Timing.RunCoroutine(coroutine, TAG_STRING_PLAYER_INVULNERABLE);
+    }
+
+    public static void RunEntityBoundCoroutine(IEnumerator<float> coroutine, Entity entity)
+    {
+        Timing.RunCoroutine(coroutine, $"Entity#{entity.Index}");
+    }
+
+    public static void KillEntityBoundCoroutines(Entity entity)
+    {
+        Timing.KillCoroutines($"Entity#{entity.Index}");
     }
 }

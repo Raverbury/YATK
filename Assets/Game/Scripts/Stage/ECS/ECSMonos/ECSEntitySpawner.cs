@@ -196,6 +196,7 @@ public class ECSEntitySpawner : MonoBehaviour
     /// <param name="entity"></param>
     public static void DespawnEntity(Entity entity)
     {
+        CoroutineUtil.KillEntityBoundCoroutines(entity);
         entityManager.AddComponent(entity, ComponentType.ReadOnly<Disabled>());
     }
 

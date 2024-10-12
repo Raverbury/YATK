@@ -6,7 +6,7 @@ public class Nonspell2 : AbstractSingle
 {
     public int GetHP()
     {
-        return 3000;
+        return 1500;
     }
 
     public override string GetName()

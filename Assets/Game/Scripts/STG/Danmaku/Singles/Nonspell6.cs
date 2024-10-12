@@ -52,7 +52,7 @@ public class Nonspell6 : AbstractSingle
             // if (bubbleBulletEntity.TryGetComponent(out EnemyBullet enemyBullet)) {
             //     enemyBullet.HitScreenEdgeCallback = Bounce;
             // }
-            CoroutineUtil.StartSingleLoopCRT(_SpawnFromBubble(entity));
+            CoroutineUtil.RunEntityBoundCoroutine(_SpawnFromBubble(entity), entity);
             if (i == count - 1)
             {
                 iVel = -1;
@@ -80,7 +80,8 @@ public class Nonspell6 : AbstractSingle
             for (int i = 0; i < BRANCHES; i++)
             {
                 LocalTransform bulletTransform = entityManager.GetComponentData<LocalTransform>(bubbleBulletEntity);
-                CoroutineUtil.StartSingleLoopCRT(_AccelerateBullet(ECSEntitySpawner.SpawnEnemyBulletE1(bulletTransform.Position.x, bulletTransform.Position.y, 0f, r + rot * i, EnemyBulletType.AMULET_RED, 30)));
+                Entity subBulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(bulletTransform.Position.x, bulletTransform.Position.y, 0f, r + rot * i, EnemyBulletType.AMULET_RED, 30);
+                CoroutineUtil.RunEntityBoundCoroutine(_AccelerateBullet(subBulletEntity), subBulletEntity);
             }
             yield return WaitForFrames.WaitWrapper(Random.Range(100, 200));
         }

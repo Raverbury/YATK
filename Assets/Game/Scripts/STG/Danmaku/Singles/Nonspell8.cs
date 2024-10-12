@@ -58,7 +58,7 @@ public class Nonspell8 : AbstractSingle
             {
                 for (int j = 0; j < BURSTS; j++)
                 {
-                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, 1.5f + 5f * j, angleToPlayer + branchRotation * i, EnemyBulletType.RICE_SKY, 10);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, 1.5f + 5f * j, angleToPlayer + branchRotation * i, EnemyBulletType.RICE_ORANGE, 10);
                 }
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(80)));

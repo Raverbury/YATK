@@ -117,7 +117,7 @@ public class Nonspell3 : AbstractSingle
                 float angleR = Mathf.Deg2Rad * angle;
                 Vector2 spawnPos = flowerPos + new Vector2(PETAL_DISTANCE * Mathf.Cos(angleR), PETAL_DISTANCE * Mathf.Sin(angleR));
                 Entity bullet = ECSEntitySpawner.SpawnEnemyBulletE1(spawnPos, 0, angle + 180f, enemyBulletType, 10);
-                CoroutineUtil.StartSingleLoopCRT(_ManipulateFlower(bullet));
+                CoroutineUtil.RunEntityBoundCoroutine(_ManipulateFlower(bullet), bullet);
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(2)));
         }

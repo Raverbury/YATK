@@ -8,7 +8,7 @@ public class Pattern01 : AbstractSingle
 {
     public int GetHP()
     {
-        return 1600;
+        return 2300;
     }
 
     public override string GetName()
@@ -60,7 +60,7 @@ public class Pattern01 : AbstractSingle
                 float angle = 360f / BRANCHES * i + rotation;
                 EnemyBulletType color = oddWave ? EnemyBulletType.ARROW_DARK_BLUE : EnemyBulletType.ARROW_DARK_GREEN;
                 Entity bullet = ECSEntitySpawner.SpawnEnemyBulletE1(enemy.transform.position, speed, angle, color, 30);
-                CoroutineUtil.StartSingleLoopCRT(_Manipulate(bullet));
+                CoroutineUtil.RunEntityBoundCoroutine(_Manipulate(bullet), bullet);
             }
             rotation += 7;
             oddWave = !oddWave;

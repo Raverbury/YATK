@@ -39,23 +39,47 @@ public class MokouNon1 : AbstractSingle
         yield return WaitForFrames.WaitWrapper(30);
 
         float angle = 270f;
+        int state = 0;
+        int lapCompleted = 0;
+        float waveOffset = 0.8f;
 
         while (true)
         {
             CoroutineUtil.StartSingleLoopCRT(_FireSeiranFan(
                 new Vector2(192, -90),
                 angle,
-                10,
-                1,
-                3,
-                3f
+                6,
+                2,
+                6,
+                7f,
+                waveOffset
             ));
-            yield return WaitForFrames.WaitWrapper(15);
-            angle = (angle + Random.Range(40f, 90f)) % 360f;
+            yield return WaitForFrames.WaitWrapper(25);
+            angle = (angle + 120f) % 360f;
+            state = (state + 1) % 3;
+            if (state == 0)
+            {
+                waveOffset *= -1;
+                lapCompleted += 1;
+                if (lapCompleted % 4 == 0)
+                {
+                    if (Player.instance != null)
+                    {
+                        float angleToPlayer = Mathf.Rad2Deg * Mathf.Atan2(
+                            Player.instance.transform.position.y - enemy.transform.position.y,
+                            Player.instance.transform.position.x - enemy.transform.position.x
+                        );
+                        for (int i = 0; i < 1; i++)
+                        {
+                            ECSEntitySpawner.SpawnEnemyBulletE1(enemy.transform.position, 1f - 0.2f * i, angleToPlayer, STG.EnemyBulletType.BUBBLE_DARK_YELLOW, 10);
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private IEnumerator<float> _FireSeiranFan(Vector2 at, float facing, int repeatTimes, int incrementCount, int delayBetweenWaves, float spreadBetweenBullet)
+    private IEnumerator<float> _FireSeiranFan(Vector2 at, float facing, int repeatTimes, int incrementCount, int delayBetweenWaves, float spreadBetweenBullet, float waveAngleOffset)
     {
         int fanCount = 1;
         for (int i = 0; i < repeatTimes; i++)
@@ -64,7 +88,7 @@ public class MokouNon1 : AbstractSingle
             for (int j = 0; j < fanCount; j++)
             {
                 // if (j < fanCount * 0.5f) {
-                ECSEntitySpawner.SpawnEnemyBulletE1(at.x, at.y, 3f, facing - halfFanSpread + spreadBetweenBullet * j, STG.EnemyBulletType.ARROW_DARK_BLUE, 20);
+                ECSEntitySpawner.SpawnEnemyBulletE1(at.x, at.y, 3f, facing - halfFanSpread + spreadBetweenBullet * j + waveAngleOffset * i, STG.EnemyBulletType.ARROW_SKY, 20);
                 // }
                 // else {
                 //     ECSEntitySpawner.SpawnEnemyBulletE1(at.x, at.y, 3f, facing - halfFanSpread + spreadBetweenBullet * j, STG.EnemyBulletType.ARROW_DARK_BLUE, 20);

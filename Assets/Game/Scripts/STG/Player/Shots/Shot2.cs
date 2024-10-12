@@ -89,10 +89,13 @@ public class Shot2 : AbstractShot
                 }
                 else
                 {
-                    foreach (var orb in weaponOrbs)
+                    float spread = 10f;
+                    float halfFanSpread = spread * (weaponOrbs.Count - 1) * 0.5f;
+                    for (int i = 0; i < weaponOrbs.Count; i++)
                     {
-                        Entity entity = ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 8, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                        Timing.RunCoroutine(_DoHoming(entity));
+                        var orb = weaponOrbs[i];
+                        Entity entity = ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 8, 90f + halfFanSpread - spread * i, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                        CoroutineUtil.RunEntityBoundCoroutine(_DoHoming(entity), entity);
                     }
                 }
                 timeBetweenShot = 0;
