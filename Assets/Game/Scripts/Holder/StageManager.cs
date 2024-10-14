@@ -21,7 +21,6 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     private Dictionary<string, GameObject> enemies = new();
 
     private List<AbstractSingle> singles = new() {
-
         new Nonspell2(),
         new Pattern01(){IsSpellCard = true},
 
@@ -34,10 +33,18 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         new Nonspell10(),
         new StarSpell1(){IsSpellCard = true},
 
+        new Nonspell12(),
+        new OldtroxSpell(){IsSpellCard = true},
+
         new Nonspell11(),
         new Nonspell6(){IsSpellCard = true},
 
+        new Nonspell13(),
+        new ShapeSpell(){IsSpellCard = true},
+
         new Nonspell5(),
+        new SurroundSpell1(){IsSpellCard = true},
+
         new Nonspell7(){IsSpellCard = true},
 
         new Nonspell9(){IsSpellCard = true},
