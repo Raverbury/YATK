@@ -15,7 +15,7 @@ public class Nonspell6 : AbstractSingle
 
     public override string GetName()
     {
-        return "Nonspell 6";
+        return "Jade Sign [Heaven's Intervention]";
     }
 
     public override int GetScore()
@@ -70,8 +70,8 @@ public class Nonspell6 : AbstractSingle
     private IEnumerator<float> _SpawnFromBubble(Entity bubbleBulletEntity)
     {
         EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        yield return WaitForFrames.WaitWrapper(Random.Range(40, 60));
-        int branches = Random.Range(2, 6);
+        yield return WaitForFrames.WaitWrapper(Random.Range(30, 50));
+        int branches = Random.Range(2, 8);
         float rot = 360f / branches;
         while (!ECSEntitySpawner.EntityIsDisabled(bubbleBulletEntity))
         {

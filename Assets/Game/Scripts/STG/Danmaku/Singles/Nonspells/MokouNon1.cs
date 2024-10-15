@@ -12,7 +12,7 @@ public class MokouNon1 : AbstractSingle
 
     public override string GetName()
     {
-        return "Mokou Non 1";
+        return "Nonspell 2";
     }
 
     public override int GetScore()

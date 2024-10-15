@@ -13,7 +13,7 @@ public class Pattern01 : AbstractSingle
 
     public override string GetName()
     {
-        return "Nonspell 1";
+        return "Origin Sign [Asymmetric Pursuit]";
     }
 
     public override int GetScore()

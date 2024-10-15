@@ -13,7 +13,7 @@ public class SurroundSpell1 : AbstractSingle
 
     public override string GetName()
     {
-        return "Miracle [Halley's Comet]";
+        return "Dream Sign [Encircling Spiral]";
     }
 
     public override int GetScore()

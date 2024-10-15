@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using MEC;
 using STG;
-using Unity.Entities;
 using UnityEngine;
 
 public class Nonspell4 : AbstractSingle
@@ -13,7 +12,7 @@ public class Nonspell4 : AbstractSingle
 
     public override string GetName()
     {
-        return "Nonspell 4";
+        return "Falling Matrix";
     }
 
     public override int GetScore()

@@ -15,7 +15,7 @@ public class OldtroxSpell : AbstractSingle
 
     public override string GetName()
     {
-        return "Tormenting - Dark Flight";
+        return "Dark Kin [Dark Flight of Torments]";
     }
 
     public override int GetScore()

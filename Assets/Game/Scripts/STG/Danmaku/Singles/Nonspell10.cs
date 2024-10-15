@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using MEC;
 using UnityEngine;
 using STG;
-using System.Linq;
 
 public class Nonspell10 : AbstractSingle
 {
@@ -13,7 +12,7 @@ public class Nonspell10 : AbstractSingle
 
     public override string GetName()
     {
-        return "Nonspell 10";
+        return "Spell 4";
     }
 
     public override int GetScore()

@@ -14,7 +14,7 @@ public class Nonspell9 : AbstractSingle
 
     public override string GetName()
     {
-        return "Nonspell 9";
+        return "Crush Depth [Subspace of Ancients]";
     }
 
     public override int GetScore()

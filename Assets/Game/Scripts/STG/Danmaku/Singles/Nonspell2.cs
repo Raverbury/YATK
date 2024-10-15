@@ -11,7 +11,7 @@ public class Nonspell2 : AbstractSingle
 
     public override string GetName()
     {
-        return "Nonspell 2";
+        return "Nonspell 1";
     }
 
     public override int GetScore()

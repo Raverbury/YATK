@@ -12,7 +12,7 @@ public class Nonspell12 : AbstractSingle
 
     public override string GetName()
     {
-        return "Nonspell 12";
+        return "Nonspell 5";
     }
 
     public override int GetScore()

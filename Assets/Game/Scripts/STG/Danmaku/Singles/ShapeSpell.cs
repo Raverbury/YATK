@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using MEC;
 using UnityEngine;
 using STG;
-using System.Linq;
-using System.Diagnostics.Tracing;
 
 public class ShapeSpell : AbstractSingle
 {
@@ -14,7 +12,7 @@ public class ShapeSpell : AbstractSingle
 
     public override string GetName()
     {
-        return "Art Sign - Shapes of Fascination";
+        return "Art Sign [World-forming Shape]";
     }
 
     public override int GetScore()
