@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MEC;
-using STG;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class StageManager : OverwritableMonoSingleton<StageManager>
 {
@@ -20,44 +18,19 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
 
     private Dictionary<string, GameObject> enemies = new();
 
-    private List<AbstractSingle> singles = new() {
-        new Nonspell2(),
-        new Pattern01(){IsSpellCard = true},
+    private List<AbstractSingle> stageSingles;
 
-        new MokouNon1(),
-        new Nonspell3(){IsSpellCard = true},
-
-        new Nonspell8(),
-        new Nonspell4(){IsSpellCard = true},
-
-        new Nonspell10(),
-        new StarSpell1(){IsSpellCard = true},
-
-        new Nonspell12(),
-        new OldtroxSpell(){IsSpellCard = true},
-
-        new Nonspell11(),
-        new Nonspell6(){IsSpellCard = true},
-
-        new Nonspell13(),
-        new ShapeSpell(){IsSpellCard = true},
-
-        new Nonspell5(),
-        new SurroundSpell1(){IsSpellCard = true},
-
-        new Nonspell7(){IsSpellCard = true},
-
-        new Nonspell9(){IsSpellCard = true},
-    };
     private AbstractSingle activeSingle = null;
 
     public static bool isPaused = false;
     private bool shouldRespondToInput = true;
+    private int currentSingleIndex = 0;
 
     protected override void Awake()
     {
         base.Awake();
         TogglePause(false);
+        stageSingles = RuntimeGameData.SelectedPatterns;
     }
 
     private void Start()
@@ -95,13 +68,13 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         {
             activeSingle = null;
         }
-        if (singles.Count == 0)
+        if (stageSingles.Count == 0 || currentSingleIndex >= stageSingles.Count)
         {
             return;
         }
-        activeSingle = singles[0];
+        activeSingle = stageSingles[currentSingleIndex];
         activeSingle.StartSingle(enemyData);
-        singles.RemoveAt(0);
+        currentSingleIndex += 1;
     }
 
     public static bool DestroyNamedEnemy(string name)

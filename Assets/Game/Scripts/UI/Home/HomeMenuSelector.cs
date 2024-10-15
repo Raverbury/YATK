@@ -8,13 +8,14 @@ public class HomeMenuSelector : AbstractHomeSelector
     public enum HomeMenuResult
     {
         Start = 0,
-        Settings = 1,
-        Quit = 2,
+        Practice = 1,
+        Settings = 2,
+        Quit = 3,
     }
 
     [SerializeField]
     private List<TMP_Text> menuOptions;
-    private int currentOption;
+    private static int currentOption;
 
     private int keyHeldForFrames = 0;
 
@@ -31,7 +32,7 @@ public class HomeMenuSelector : AbstractHomeSelector
         else if (Input.GetButtonDown("Bomb") || Input.GetButtonDown("Pause"))
         {
             SFXPlayer.EVPlayCancelSound?.Invoke();
-            currentOption = 2;
+            currentOption = (int)HomeMenuResult.Quit;
         }
         else if (Input.GetButtonDown("Up"))
         {

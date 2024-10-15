@@ -30,7 +30,6 @@ public class Player : PausableMono
 
     public static Player instance;
 
-    public static PlayerData selectedPlayerData = null;
     [DoNotSerialize, HideInInspector]
     public PlayerData playerData = null;
 
@@ -158,30 +157,14 @@ public class Player : PausableMono
         }
         instance = this;
 
-        if (null == selectedPlayerData)
+        if (null == RuntimeGameData.SelectedPlayerData)
         {
-            throw new System.Exception("No default PlayerData attached to Player");
+            throw new Exception("Selected player data is not set!");
         }
         // set player data/stats
-        // TODO: retrieve player data from char select menu or something
-        SetPlayerData(selectedPlayerData);
-        deathBombFrames = (int)playerData.deathBombWindow.GetFinalStat();
-        circleCollider2D.radius = (float)playerData.hitboxRadius.GetFinalStat() / 100;
-        RemainingLife = playerData.initialLife;
-        initialBomb = playerData.initialBomb; // TODO: also add from bomb's stat if implemented
-        RemainingBomb = initialBomb;
-        Focus = false;
-        // change anims
-        AnimatorOverrideController aoc = new(animator.runtimeAnimatorController);
-        aoc["front"] = playerData.frontAnimation;
-        aoc["side"] = playerData.sideAnimation;
-        // aoc.ApplyOverrides(new List<KeyValuePair<AnimationClip, AnimationClip>>(){
-        //     new(aoc["front"], playerData.frontAnimation),
-        //     new(aoc["side"], playerData.sideAnimation),
-        // });
-        animator.runtimeAnimatorController = aoc;
+        SetPlayerData(RuntimeGameData.SelectedPlayerData);
 
-        // TODO: register passive/ability or smth
+        // PLAN: register passive/ability or smth
         // playerData.Register(this);
         if (playerData.playerName == "Hakurei Reimu")
         {
@@ -196,6 +179,18 @@ public class Player : PausableMono
     private void SetPlayerData(PlayerData playerData)
     {
         this.playerData = Instantiate(playerData);
+        // set stats
+        deathBombFrames = (int)playerData.deathBombWindow.GetFinalStat();
+        circleCollider2D.radius = (float)playerData.hitboxRadius.GetFinalStat() / 100;
+        RemainingLife = playerData.initialLife;
+        initialBomb = playerData.initialBomb; // PLAN: also add from bomb's stat if implemented
+        RemainingBomb = initialBomb;
+        Focus = false;
+        // change anims
+        AnimatorOverrideController aoc = new(animator.runtimeAnimatorController);
+        aoc["front"] = playerData.frontAnimation;
+        aoc["side"] = playerData.sideAnimation;
+        animator.runtimeAnimatorController = aoc;
     }
 
     protected override void PausableUpdate()
@@ -298,7 +293,8 @@ public class Player : PausableMono
         isInvulnerable = true;
         PlayerSetMiss?.Invoke();
         framesLeftToDeathBomb = deathBombFrames;
-        if (RemainingBomb == 0) {
+        if (RemainingBomb == 0)
+        {
             framesLeftToDeathBomb = 1;
         }
         shouldCheckMovement = false;

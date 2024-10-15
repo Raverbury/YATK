@@ -4,14 +4,15 @@ using UnityEngine;
 using STG;
 using MEC;
 
-public class PlayerSelector : AbstractHomeSelector
+public class PracticeSelector : AbstractHomeSelector
 {
     [SerializeField]
-    private RectTransform playerPanel;
+    private RectTransform patternPanel;
     [SerializeField]
-    private TMP_Text playerDescription;
+    private TMP_Text patternName;
     [SerializeField]
-    private List<PlayerData> playerDatas;
+    private TMP_Text patternNumber;
+    private List<AbstractSingle> availablePatterns;
 
     private static int currentOption = 0;
     private int keyHeldForFrames = 0;
@@ -22,7 +23,8 @@ public class PlayerSelector : AbstractHomeSelector
 
     private void Awake()
     {
-        SetPlayerDescription(playerDatas[currentOption]);
+        availablePatterns = DefaultGameData.AllPatterns;
+        SetPatternDescription(availablePatterns[currentOption]);
     }
 
     private void Update()
@@ -42,26 +44,26 @@ public class PlayerSelector : AbstractHomeSelector
         }
         else if (Input.GetButtonDown("Left") || Input.GetButtonDown("Up"))
         {
-            SelectChoice((currentOption - 1).Modulus(playerDatas.Count), -1);
+            SelectChoice((currentOption - 1).Modulus(availablePatterns.Count), -1);
         }
         else if (Input.GetButton("Left") || Input.GetButton("Up"))
         {
             keyHeldForFrames++;
             if (keyHeldForFrames == 30 || (keyHeldForFrames > 30 && keyHeldForFrames % 15 == 0))
             {
-                SelectChoice((currentOption - 1).Modulus(playerDatas.Count), -1);
+                SelectChoice((currentOption - 1).Modulus(availablePatterns.Count), -1);
             }
         }
         else if (Input.GetButtonDown("Right") || Input.GetButtonDown("Down"))
         {
-            SelectChoice((currentOption + 1).Modulus(playerDatas.Count), 1);
+            SelectChoice((currentOption + 1).Modulus(availablePatterns.Count), 1);
         }
         else if (Input.GetButton("Right") || Input.GetButton("Down"))
         {
             keyHeldForFrames++;
             if (keyHeldForFrames == 30 || (keyHeldForFrames > 30 && keyHeldForFrames % 15 == 0))
             {
-                SelectChoice((currentOption + 1).Modulus(playerDatas.Count), 1);
+                SelectChoice((currentOption + 1).Modulus(availablePatterns.Count), 1);
             }
         }
         else
@@ -76,11 +78,11 @@ public class PlayerSelector : AbstractHomeSelector
         Timing.RunCoroutine(_SwitchPanel(nextOption, dir));
     }
 
-    private void SetPlayerDescription(PlayerData playerData)
+    private void SetPatternDescription(AbstractSingle pattern)
     {
         // Debug.Log(playerData.name);
-        playerDescription.text = playerData.playerName;
-        playerDescription.color = playerData.nameColor;
+        patternName.text = pattern.GetName();
+        patternNumber.text = $"{currentOption + 1}/{availablePatterns.Count}";
     }
 
     private IEnumerator<float> _SwitchPanel(int nextOption, int dir)
@@ -88,16 +90,16 @@ public class PlayerSelector : AbstractHomeSelector
         freezeInput = true;
         currentOption = nextOption;
         const float ANGLE_CHANGE_VEL = 180f / PANEL_SWITCH_DURATION;
-        Vector3 panelRotation = playerPanel.eulerAngles;
+        Vector3 panelRotation = patternPanel.eulerAngles;
         for (int i = 0; i < PANEL_SWITCH_DURATION; i++)
         {
             panelRotation.y += ANGLE_CHANGE_VEL;
             if (i == PANEL_SWITCH_DURATION / 2)
             {
-                SetPlayerDescription(playerDatas[currentOption]);
-                playerPanel.localScale = new(-playerPanel.localScale.x, 1, 1);
+                SetPatternDescription(availablePatterns[currentOption]);
+                patternPanel.localScale = new(-patternPanel.localScale.x, 1, 1);
             }
-            playerPanel.eulerAngles = panelRotation;
+            patternPanel.eulerAngles = panelRotation;
             yield return Timing.WaitForOneFrame;
         }
         freezeInput = false;
@@ -105,7 +107,7 @@ public class PlayerSelector : AbstractHomeSelector
 
     private void ConfirmChoice()
     {
-        HomeManager.EVConfirmPlayerSelect?.Invoke(playerDatas[currentOption]);
-        freezeInput = true;
+        HomeManager.RequestSetPracticePattern?.Invoke(availablePatterns[currentOption]);
+        // freezeInput = true;
     }
 }

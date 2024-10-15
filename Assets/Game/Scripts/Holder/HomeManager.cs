@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using MEC;
-using STG;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,12 +9,15 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
     public static UnityAction EVCancel;
     public static UnityAction<HomeMenuSelector.HomeMenuResult> EVConfirmHomeMenuResult;
     public static UnityAction<PlayerData> EVConfirmPlayerSelect;
+    public static UnityAction<AbstractSingle> RequestSetPracticePattern;
 
     private List<AbstractHomeSelector> homeSelectors = new();
     [SerializeField]
     private HomeMenuSelector homeMenuSelector;
     [SerializeField]
     private PlayerSelector playerSelector;
+    [SerializeField]
+    private PracticeSelector practiceSelector;
 
     private const int SELECTOR_SWITCH_DURATION = 15;
 
@@ -27,6 +28,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         EVCancel += ResolveCancel;
         EVConfirmHomeMenuResult += ResolveHomeMenu;
         EVConfirmPlayerSelect += ResolvePlayerData;
+        RequestSetPracticePattern += ResolveSetPracticePattern;
     }
 
     private void OnDisable()
@@ -34,6 +36,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         EVCancel -= ResolveCancel;
         EVConfirmHomeMenuResult -= ResolveHomeMenu;
         EVConfirmPlayerSelect -= ResolvePlayerData;
+        RequestSetPracticePattern -= ResolveSetPracticePattern;
     }
 
     protected override void Awake()
@@ -82,7 +85,14 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         {
             case HomeMenuSelector.HomeMenuResult.Start:
                 SFXPlayer.EVPlayConfirmSound?.Invoke();
+                // set patterns to use all listed
+                RuntimeGameData.SelectedPatterns = DefaultGameData.AllPatterns;
                 PushNextSelector(playerSelector);
+                break;
+            case HomeMenuSelector.HomeMenuResult.Practice:
+                SFXPlayer.EVPlayConfirmSound?.Invoke();
+                // set patterns to use all listed
+                PushNextSelector(practiceSelector);
                 break;
             case HomeMenuSelector.HomeMenuResult.Settings:
                 SFXPlayer.RequestPlayInvalidSound?.Invoke();
@@ -104,10 +114,21 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         {
             return;
         }
-        Player.selectedPlayerData = selectedPlayerData;
+        RuntimeGameData.SelectedPlayerData = selectedPlayerData;
         SFXPlayer.EVPlayConfirmSound?.Invoke();
         SceneUtil.LoadSceneAsync("Stage");
         shouldRespondToInput = false;
+    }
+
+    private void ResolveSetPracticePattern(AbstractSingle practicePattern)
+    {
+        if (!shouldRespondToInput)
+        {
+            return;
+        }
+        RuntimeGameData.SelectedPatterns = new() { practicePattern };
+        SFXPlayer.EVPlayConfirmSound?.Invoke();
+        PushNextSelector(playerSelector);
     }
 
     private IEnumerator<float> _PushSelector(AbstractHomeSelector oldSelector, AbstractHomeSelector newSelector)
