@@ -130,6 +130,8 @@ public class Player : PausableMono
     private bool shouldCheckMovement = true;
     private bool canBomb = true;
 
+    private bool autofire = false;
+
     private void OnValidate()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
@@ -230,7 +232,7 @@ public class Player : PausableMono
             spriteRenderer.flipX = (moveDir.x > 0) || moveDir.x >= 0 && spriteRenderer.flipX;
 
             // shoot
-            if (Input.GetButton("Shoot"))
+            if (autofire || Input.GetButton("Shoot"))
             {
                 PlayerShoot?.Invoke();
             }
@@ -247,6 +249,12 @@ public class Player : PausableMono
                     PlayerBomb?.Invoke(shouldMiss);
                 }
             }
+        }
+
+        // toggle autofire
+        if (Input.GetButtonDown("Autofire"))
+        {
+            autofire = !autofire;
         }
 
         // check above poc line
