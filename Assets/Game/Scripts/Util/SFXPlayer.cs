@@ -28,6 +28,7 @@ public class SFXPlayer : MonoBehaviour
     public AudioClip SFX_TIMEOUT_1;
     public AudioClip SFX_PLAYER_EXTEND;
     public AudioClip SFX_MASTER_SPARK;
+    public AudioClip SFX_TAN01;
 
     public AudioClip SFX_PAUSE;
     public AudioClip SFX_CONFIRM;
@@ -46,6 +47,7 @@ public class SFXPlayer : MonoBehaviour
 
     public static UnityAction EVPlayMasterSparkSound;
     public static UnityAction RequestPlayInvalidSound;
+    public static UnityAction RequestPlayTan1Sound;
 
     private void Awake()
     {
@@ -89,6 +91,7 @@ public class SFXPlayer : MonoBehaviour
         Player.EVBombActivate += PlaySpellStartSound2;
         EVPlayMasterSparkSound += PlayMasterSparkSound;
         RequestPlayInvalidSound += PlayValidSound;
+        RequestPlayTan1Sound += PlayTan1Sound;
     }
 
     private void OnDisable()
@@ -111,6 +114,12 @@ public class SFXPlayer : MonoBehaviour
         Player.EVBombActivate -= PlaySpellStartSound2;
         EVPlayMasterSparkSound -= PlayMasterSparkSound;
         RequestPlayInvalidSound -= PlayValidSound;
+        RequestPlayTan1Sound -= PlayTan1Sound;
+    }
+
+    private void PlayTan1Sound()
+    {
+        PlayAudio(SFX_TAN01);
     }
 
     private void PlayValidSound()

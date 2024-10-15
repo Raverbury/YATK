@@ -42,6 +42,7 @@ public class Nonspell2 : AbstractSingle
         while (true)
         {
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(10)));
+            // SFXPlayer.RequestPlayTan1Sound?.Invoke();
             for (int i = 0; i < BRANCHES; i++)
             {
                 float angle = 360f / BRANCHES;
@@ -49,7 +50,7 @@ public class Nonspell2 : AbstractSingle
                 {
                     float modSpeed = SPEED * (1 - 0.2f * j);
                     // int delay = 30 * (BRANCHES - j);
-                    int delay = 30;
+                    int delay = 0;
                     ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i + rotation, STG.EnemyBulletType.AMULET_BLUE, delay);
                     ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i + 23 + rotation, STG.EnemyBulletType.AMULET_RED, delay);
                     ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i - 23 + rotation, STG.EnemyBulletType.AMULET_PURPLE, delay);

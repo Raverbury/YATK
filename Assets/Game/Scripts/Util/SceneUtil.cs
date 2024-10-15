@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public static class SceneUtil
 {
-    private const int MIN_LOADING_FRAMES = 60;
+    private const int MIN_LOADING_FRAMES = 30;
     private static bool isLoading = false;
 
     public static int workQueued = 0;
