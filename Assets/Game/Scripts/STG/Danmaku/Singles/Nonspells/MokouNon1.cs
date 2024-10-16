@@ -46,9 +46,9 @@ public class MokouNon1 : AbstractSingle
         {
             CoroutineUtil.StartSingleLoopCRT(_FireSeiranFan(
                 new Vector2(192, -90),
-                angle,
+                angle + Random.Range(-10f, 10f),
                 6,
-                2,
+                4,
                 6,
                 7f,
                 waveOffset

@@ -10,7 +10,7 @@ public class OldtroxSpell : AbstractSingle
 {
     public int GetHP()
     {
-        return 5000;
+        return 7000;
     }
 
     public override string GetName()

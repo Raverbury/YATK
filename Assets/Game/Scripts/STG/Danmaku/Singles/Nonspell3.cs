@@ -76,7 +76,7 @@ public class Nonspell3 : AbstractSingle
                 for (int i = 0; i < 60; i++)
                 {
                     Vector2 pos = new Vector2(57, -90);
-                    targetPos.x += (state == 2) ? -2 : 2;
+                    targetPos.x += (state == 2) ? -3 : 3;
                     for (int j = 0; j < 4; j++)
                     {
                         // Vector2 targetPos = (Player.instance == null) ? new Vector2(192, -360) : (Vector2)Player.instance.transform.position;

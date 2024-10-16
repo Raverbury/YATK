@@ -10,7 +10,7 @@ public class Nonspell6 : AbstractSingle
 {
     public int GetHP()
     {
-        return 6000;
+        return 8000;
     }
 
     public override string GetName()

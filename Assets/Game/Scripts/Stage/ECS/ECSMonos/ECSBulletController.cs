@@ -41,12 +41,12 @@ public class ECSBulletController : PausableMono
                 if (localTransform.Position.y < Constant.GAME_BORDER_BOTTOM - 100 ||
                 localTransform.Position.y > Constant.GAME_BORDER_TOP + 100)
                 {
-                    ECSEntitySpawner.DespawnEntity(entity);
+                    ECSEntitySpawner.ClearBullet(entity);
                 }
                 else if (localTransform.Position.x < Constant.GAME_BORDER_LEFT - 100 ||
                 localTransform.Position.x > Constant.GAME_BORDER_RIGHT + 100)
                 {
-                    ECSEntitySpawner.DespawnEntity(entity);
+                    ECSEntitySpawner.ClearBullet(entity);
                 }
 
                 ecb.SetComponent(entity, localTransform);

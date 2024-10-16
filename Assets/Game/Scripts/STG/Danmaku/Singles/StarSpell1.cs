@@ -8,7 +8,7 @@ public class StarSpell1 : AbstractSingle
 {
     public int GetHP()
     {
-        return 7000;
+        return 8000;
     }
 
     public override string GetName()

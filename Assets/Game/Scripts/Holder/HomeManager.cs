@@ -18,6 +18,8 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
     private PlayerSelector playerSelector;
     [SerializeField]
     private PracticeSelector practiceSelector;
+    [SerializeField]
+    private InertPanel manualPanel;
 
     private const int SELECTOR_SWITCH_DURATION = 15;
 
@@ -43,6 +45,11 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
     {
         base.Awake();
         homeSelectors.Add(homeMenuSelector);
+    }
+
+    private void Start()
+    {
+        BGMPlayer.RequestPlayHomeBGM?.Invoke();
     }
 
     private void PushNextSelector(AbstractHomeSelector newSelector)
@@ -97,6 +104,10 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
                 break;
             case HomeMenuSelector.HomeMenuResult.Settings:
                 SFXPlayer.RequestPlayInvalidSound?.Invoke();
+                break;
+            case HomeMenuSelector.HomeMenuResult.Manual:
+                SFXPlayer.EVPlayConfirmSound?.Invoke();
+                PushNextSelector(manualPanel);
                 break;
             case HomeMenuSelector.HomeMenuResult.Quit:
                 SFXPlayer.EVPlayCancelSound?.Invoke();

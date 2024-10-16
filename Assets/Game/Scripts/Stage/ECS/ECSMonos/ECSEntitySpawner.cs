@@ -316,7 +316,7 @@ public class ECSEntitySpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Clears a bullet.
+    /// Clears an enemy bullet.
     /// Calls DespawnBullet under the hood if this bullet is clearable only
     /// </summary>
     /// <param name="entity"></param>
@@ -327,6 +327,24 @@ public class ECSEntitySpawner : MonoBehaviour
         {
             DespawnEntity(entity);
         }
+    }
+
+    /// <summary>
+    /// Clears a bullet.
+    /// Calls DespawnBullet under the hood. Usable for all entities, and performs and additional clearable check if it has an EnemyBulletComponent
+    /// </summary>
+    /// <param name="entity"></param>
+    public static void ClearBullet(Entity entity)
+    {
+        if (entityManager.HasComponent<EnemyBulletComponent>(entity))
+        {
+            var enemyBulletComponent = entityManager.GetComponentData<EnemyBulletComponent>(entity);
+            if (!enemyBulletComponent.CanClear())
+            {
+                return;
+            }
+        }
+        DespawnEntity(entity);
     }
 
     /// <summary>

@@ -24,7 +24,7 @@ public class Nonspell9 : AbstractSingle
 
     public override int GetTimer()
     {
-        return 60;
+        return 90;
     }
 
     public override bool IsTimeout()
@@ -39,13 +39,13 @@ public class Nonspell9 : AbstractSingle
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return WaitForFrames.WaitWrapper(30);
 
-        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_BLUE, 2, 180, -0.2f, 0.4f, 0.1f));
+        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_BLUE, 2, 180, 0f, 0.4f, 0f));
         yield return WaitForFrames.WaitWrapper(60 * 8);
-        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_GREEN, 3, 190, 0.1f, -0.2f, -0.27f));
+        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_GREEN, 3, 190, 0.12f, -0.3f, -0.12f));
         yield return WaitForFrames.WaitWrapper(60 * 8);
-        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_RED, 4, 200, -0.2f, -0.3f, 0.22f));
+        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_RED, 4, 200, 0f, 0f, 0.22f));
         yield return WaitForFrames.WaitWrapper(60 * 8);
-        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_YELLOW, 3, 170, 0.14f, 0.1f, -0.2f));
+        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_YELLOW, 5, 170, 0.14f, 0.1f, -0.2f));
 
         while (true)
         {
@@ -68,21 +68,25 @@ public class Nonspell9 : AbstractSingle
                 {
                     Entity bulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
                     vertices.Add(new Tuple<FakeTransform, Entity>(new FakeTransform(new Vector3(-halfLength + x * gapBetweenVertices, yLevel, -halfLength), cubeCenterTransform), bulletEntity));
+                    CoroutineUtil.KillEntityBoundCoroutines(bulletEntity);
                 }
                 for (int z = 0; z < verticesPerEdge - 1; z++)
                 {
                     Entity bulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
                     vertices.Add(new Tuple<FakeTransform, Entity>(new FakeTransform(new Vector3(halfLength, yLevel, -halfLength + z * gapBetweenVertices), cubeCenterTransform), bulletEntity));
+                    CoroutineUtil.KillEntityBoundCoroutines(bulletEntity);
                 }
                 for (int x = 0; x < verticesPerEdge - 1; x++)
                 {
                     Entity bulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
                     vertices.Add(new Tuple<FakeTransform, Entity>(new FakeTransform(new Vector3(halfLength - x * gapBetweenVertices, yLevel, halfLength), cubeCenterTransform), bulletEntity));
+                    CoroutineUtil.KillEntityBoundCoroutines(bulletEntity);
                 }
                 for (int z = 0; z < verticesPerEdge - 1; z++)
                 {
                     Entity bulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
                     vertices.Add(new Tuple<FakeTransform, Entity>(new FakeTransform(new Vector3(-halfLength, yLevel, halfLength - z * gapBetweenVertices), cubeCenterTransform), bulletEntity));
+                    CoroutineUtil.KillEntityBoundCoroutines(bulletEntity);
                 }
             }
             else
@@ -93,6 +97,7 @@ public class Nonspell9 : AbstractSingle
                     {
                         Entity bulletEntity = ECSEntitySpawner.SpawnEnemyBulletE1(cubeCenter, 0f, 90f, enemyBulletType, 20, false);
                         vertices.Add(new Tuple<FakeTransform, Entity>(new FakeTransform(new Vector3(-halfLength + auxX * edgeLength, yLevel, -halfLength + auxZ * edgeLength), cubeCenterTransform), bulletEntity));
+                        CoroutineUtil.KillEntityBoundCoroutines(bulletEntity);
                     }
                 }
             }

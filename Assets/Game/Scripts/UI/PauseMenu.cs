@@ -65,6 +65,9 @@ public class PauseMenu : MonoBehaviour
         this.isPaused = isPaused;
         canvas.enabled = isPaused;
         currentOption = resumeIsDisabled ? 1 : 0;
+        if (resumeIsDisabled) {
+            BGMPlayer.RequestPlayGameoverBGM?.Invoke();
+        }
     }
 
     private void Update()

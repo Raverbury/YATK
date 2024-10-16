@@ -15,6 +15,7 @@ public static class SceneUtil
         if (isLoading) {
             return;
         }
+        BGMPlayer.RequestStopBGM?.Invoke();
         isLoading = true;
         Timing.RunCoroutine(_LoadSceneAsync(sceneName));
     }

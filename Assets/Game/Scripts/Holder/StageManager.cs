@@ -38,6 +38,7 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
 
     private void Start()
     {
+        BGMPlayer.RequestPlayStageBGM?.Invoke();
         StartNextAvailableSingle();
     }
 

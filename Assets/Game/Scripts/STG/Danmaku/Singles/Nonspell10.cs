@@ -12,7 +12,7 @@ public class Nonspell10 : AbstractSingle
 
     public override string GetName()
     {
-        return "Spell 4";
+        return "Nonspell 4";
     }
 
     public override int GetScore()
@@ -38,7 +38,7 @@ public class Nonspell10 : AbstractSingle
         yield return WaitForFrames.WaitWrapper(30);
 
         const int BURSTS = 3;
-        const int BRANCHES = 70;
+        const int BRANCHES = 80;
         // int i = 0;
         float branchRotation = 360f / BRANCHES;
         float halfBranchRotation = branchRotation / 2f;

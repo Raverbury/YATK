@@ -10,7 +10,8 @@ public class HomeMenuSelector : AbstractHomeSelector
         Start = 0,
         Practice = 1,
         Settings = 2,
-        Quit = 3,
+        Manual = 3,
+        Quit = 4,
     }
 
     [SerializeField]
