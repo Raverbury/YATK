@@ -40,24 +40,27 @@ public class OldtroxSpell : AbstractSingle
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return WaitForFrames.WaitWrapper(30);
 
+        int state = 1;
+
         while (true)
         {
             enemy.SetAnimState(Enemy.AnimState.Attack);
             yield return WaitForFrames.WaitWrapper(10);
+            for (int i = 0; i < Mathf.Min(6, state / 2); i++)
+            {
+                FireBladesOfTorment(enemy.transform.position);
+                yield return WaitForFrames.WaitWrapper((100 + 5 * state) / state);
+            }
             FireBladesOfTorment(enemy.transform.position);
-            yield return WaitForFrames.WaitWrapper(70);
-            FireBladesOfTorment(enemy.transform.position);
-            yield return WaitForFrames.WaitWrapper(30);
-            FireBladesOfTorment(enemy.transform.position);
-            // FireRing(enemy.transform.position, 30);
-            yield return WaitForFrames.WaitWrapper(60);
+            yield return WaitForFrames.WaitWrapper(Mathf.Max(20, 60 - 5 * state));
             Vector2 playerPos = new Vector2(192f, -360f);
             if (Player.instance != null)
             {
                 playerPos = Player.instance.transform.position;
             }
             yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_CastDarkFlight(playerPos, enemy)));
-            yield return WaitForFrames.WaitWrapper(100);
+            yield return WaitForFrames.WaitWrapper(Mathf.Max(0, 100 - 10 * state));
+            state += 1;
         }
     }
 
@@ -77,7 +80,7 @@ public class OldtroxSpell : AbstractSingle
             Player.instance.transform.position.y - pos.y,
             Player.instance.transform.position.x - pos.x
         );
-        const int BURSTS = 11;
+        const int BURSTS = 1;
         const int BRANCHES = 1;
         const float SPREAD = 9f;
         const float HALF_FAN_SPREAD = SPREAD * (BRANCHES - 1) * 0.5f;
@@ -125,8 +128,7 @@ public class OldtroxSpell : AbstractSingle
 
     private IEnumerator<float> _CastDarkFlight(Vector2 targetPos, Enemy enemy)
     {
-        const int OUTER_BRANCHES = 40;
-        const int BRANCHES = 100;
+        const int OUTER_BRANCHES = 45;
         const int FLIGHT_PREP_TIME = 40;
         const int FLIGHT_TIME = 10;
         const int SPAWN_DELAY = FLIGHT_PREP_TIME + FLIGHT_TIME;
@@ -160,10 +162,14 @@ public class OldtroxSpell : AbstractSingle
         yield return WaitForFrames.WaitWrapper(FLIGHT_TIME);
 
         // spawn inner ring as impact effect
-        for (int j = 0; j < BRANCHES * 2; j++)
+        const int INNER_COUNT = 10;
+        gap = 360f / INNER_COUNT;
+        for (int j = 0; j < INNER_COUNT; j++)
         {
-            Vector2 spawnPos = targetPos + UnityEngine.Random.insideUnitCircle * 55f;
-            Entity entity = ECSEntitySpawner.SpawnEnemyBulletE1(spawnPos, 0f, 0f, EnemyBulletType.BALL2_DARK_RED, 0);
+            float angle = 0f + gap * j;
+            float spawnPosX = targetPos.x + Mathf.Cos(Mathf.Deg2Rad * angle) * 20f;
+            float spawnPosY = targetPos.y + Mathf.Sin(Mathf.Deg2Rad * angle) * 20f;
+            Entity entity = ECSEntitySpawner.SpawnEnemyBulletE1(spawnPosX, spawnPosY, 0f, 0f, EnemyBulletType.BUBBLE_DARK_RED, 0);
             CoroutineUtil.RunEntityBoundCoroutine(_DespawnStationaryEntity(entity, 60), entity);
         }
     }

@@ -12,7 +12,7 @@ public class Nonspell4 : AbstractSingle
 
     public override string GetName()
     {
-        return "Falling Matrix";
+        return "Collapse Matrix";
     }
 
     public override int GetScore()

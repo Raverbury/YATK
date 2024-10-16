@@ -13,7 +13,7 @@ public class SurroundSpell1 : AbstractSingle
 
     public override string GetName()
     {
-        return "Dream Sign [Encircling Spiral]";
+        return "Dream Sign [Fickling Embrace]";
     }
 
     public override int GetScore()
@@ -60,7 +60,7 @@ public class SurroundSpell1 : AbstractSingle
 
     IEnumerator<float> _DoSurround(Vector2 targetPos, int dir)
     {
-        targetPos.y = Mathf.Clamp(targetPos.y, Constant.GAME_BORDER_BOTTOM + 60, Constant.GAME_BORDER_TOP - 60);
+        targetPos.y = Mathf.Clamp(targetPos.y, Constant.GAME_BORDER_BOTTOM + 100, Constant.GAME_BORDER_TOP - 100);
         // spawn init ring
         const float OUTER_RADIUS = 120f;
         const int OUTER_COUNT = 80;
@@ -70,10 +70,10 @@ public class SurroundSpell1 : AbstractSingle
             float facing = 90f + 90f * dir - OUTER_SPREAD * i * dir;
             float bulletX = targetPos.x + Mathf.Cos(facing * Mathf.Deg2Rad) * OUTER_RADIUS;
             float bulletY = targetPos.y + Mathf.Sin(facing * Mathf.Deg2Rad) * OUTER_RADIUS;
-            Entity entity = ECSEntitySpawner.SpawnEnemyBulletE1(bulletX, bulletY, 0.03f, facing - 180, EnemyBulletType.BALL2_DARK_YELLOW, 5, false);
-            CoroutineUtil.RunEntityBoundCoroutine(_Manipulate(entity, 2f, 420 + i), entity);
+            Entity entity = ECSEntitySpawner.SpawnEnemyBulletE1(bulletX, bulletY, 0.03f, facing - 180, EnemyBulletType.BALL2_DARK_YELLOW, 5);
+            CoroutineUtil.RunEntityBoundCoroutine(_Manipulate(entity, 2f, 390 + i), entity);
         }
-        yield return WaitForFrames.WaitWrapper(90);
+        yield return WaitForFrames.WaitWrapper(10);
 
         // spawn circle closing in
         const float INNER_RADIUS = 100f;
@@ -81,11 +81,15 @@ public class SurroundSpell1 : AbstractSingle
         const float INNER_SPREAD = 360f / OUTER_COUNT;
         for (int i = 0; i < INNER_COUNT * 2; i++)
         {
-            float facing = 90f - 90f * dir + INNER_SPREAD * i * dir;
-            float bulletX = targetPos.x + Mathf.Cos(facing * Mathf.Deg2Rad) * INNER_RADIUS;
-            float bulletY = targetPos.y + Mathf.Sin(facing * Mathf.Deg2Rad) * INNER_RADIUS;
-            Entity entity = ECSEntitySpawner.SpawnEnemyBulletE1(bulletX, bulletY, 0.05f, facing - 180f, EnemyBulletType.RICE_DARK_GREEN, 5, false);
-            CoroutineUtil.RunEntityBoundCoroutine(_Manipulate(entity, 1.5f, 120), entity);
+            float radius = INNER_RADIUS + 0.2f * i;
+            float facing = 90f - 90f * dir - INNER_SPREAD * i * dir;
+            float bulletX = targetPos.x + Mathf.Cos(facing * Mathf.Deg2Rad) * radius;
+            float bulletY = targetPos.y + Mathf.Sin(facing * Mathf.Deg2Rad) * radius;
+            for (int j = 0; j < 3; j++)
+            {
+                Entity entity = ECSEntitySpawner.SpawnEnemyBulletE1(bulletX, bulletY, 0.01f, facing - 180f + 120f * j, EnemyBulletType.RICE_DARK_GREEN, 5);
+                CoroutineUtil.RunEntityBoundCoroutine(_Manipulate(entity, 1.5f, 10 + (2 * INNER_COUNT - i) * 2), entity);
+            }
             yield return Timing.WaitForOneFrame;
         }
     }

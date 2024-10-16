@@ -13,7 +13,7 @@ public class StarSpell1 : AbstractSingle
 
     public override string GetName()
     {
-        return "Miracle [Spreading Hope]";
+        return "Miracle [Supernova]";
     }
 
     public override int GetScore()

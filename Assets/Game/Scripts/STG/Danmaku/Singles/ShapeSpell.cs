@@ -12,7 +12,7 @@ public class ShapeSpell : AbstractSingle
 
     public override string GetName()
     {
-        return "Art Sign [World-forming Shape]";
+        return "Art Sign [World Shaping]";
     }
 
     public override int GetScore()

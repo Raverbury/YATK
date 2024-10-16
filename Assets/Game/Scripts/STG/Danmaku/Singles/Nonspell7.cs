@@ -15,7 +15,7 @@ public class Nonspell7 : AbstractSingle
 
     public override string GetName()
     {
-        return "The Elite Four";
+        return "Tetra Assault";
     }
 
     public override int GetScore()
