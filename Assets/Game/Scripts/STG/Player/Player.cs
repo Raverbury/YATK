@@ -24,7 +24,7 @@ public class Player : PausableMono
     public static UnityAction PlayerCollectItem;
     public static UnityAction PlayerPowerUp;
     public static UnityAction EVPlayerGraze;
-    public static UnityAction<int> EVBombActivate;
+    public static UnityAction<int, int> EVBombActivate;
 
     public static UnityAction ResultPlayerExtend;
 
@@ -338,11 +338,11 @@ public class Player : PausableMono
         ResultPlayerExtend?.Invoke();
     }
 
-    private void BombActivated(int invulnerableDuration)
+    private void BombActivated(int invulnerableDuration, int bombCost)
     {
         shouldMiss = false;
         shouldCheckMovement = true;
-        RemainingBomb -= 1;
+        RemainingBomb = Mathf.Max(0, RemainingBomb - bombCost);
         CoroutineUtil.RunPlayerInvulnerableCoroutine(_SetBombInvulnerable(invulnerableDuration));
     }
 

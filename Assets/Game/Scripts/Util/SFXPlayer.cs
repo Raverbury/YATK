@@ -189,7 +189,7 @@ public class SFXPlayer : MonoBehaviour
         PlayAudio(SFX_SPELL_START);
     }
 
-    private void PlaySpellStartSound2(int _)
+    private void PlaySpellStartSound2(int _, int _2)
     {
         PlayAudio(SFX_SPELL_START);
     }
