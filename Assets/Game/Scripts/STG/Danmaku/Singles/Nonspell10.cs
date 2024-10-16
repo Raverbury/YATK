@@ -38,7 +38,7 @@ public class Nonspell10 : AbstractSingle
         yield return WaitForFrames.WaitWrapper(30);
 
         const int BURSTS = 3;
-        const int BRANCHES = 50;
+        const int BRANCHES = 70;
         // int i = 0;
         float branchRotation = 360f / BRANCHES;
         float halfBranchRotation = branchRotation / 2f;

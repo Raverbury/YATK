@@ -40,6 +40,8 @@ public class SFXPlayer : MonoBehaviour
 
     private Dictionary<AudioClip, ushort> audioWaitMap = new();
 
+    public static UnityAction RequestPlayPauseSound;
+
     public static UnityAction RequestPlaySpellStartSound;
     public static UnityAction EVPlayConfirmSound;
     public static UnityAction EVPlaySelectSound;
@@ -74,6 +76,7 @@ public class SFXPlayer : MonoBehaviour
     private void OnEnable()
     {
         StageManager.SetPause += OnPause;
+        RequestPlayPauseSound += PlayPauseSound;
 
         Player.PlayerSetMiss += PlayMissSound;
         Player.ResultPlayerExtend += PlayExtendSound;
@@ -97,6 +100,7 @@ public class SFXPlayer : MonoBehaviour
     private void OnDisable()
     {
         StageManager.SetPause -= OnPause;
+        RequestPlayPauseSound -= PlayPauseSound;
 
         Player.PlayerSetMiss -= PlayMissSound;
         Player.ResultPlayerExtend -= PlayExtendSound;
@@ -115,6 +119,11 @@ public class SFXPlayer : MonoBehaviour
         EVPlayMasterSparkSound -= PlayMasterSparkSound;
         RequestPlayInvalidSound -= PlayValidSound;
         RequestPlayTan1Sound -= PlayTan1Sound;
+    }
+
+    private void PlayPauseSound()
+    {
+        PlayAudioAlt(SFX_PAUSE);
     }
 
     private void PlayTan1Sound()
@@ -278,7 +287,6 @@ public class SFXPlayer : MonoBehaviour
                     pausedAudioSources.Add(audioSource);
                 }
             }
-            PlayAudioAlt(SFX_PAUSE);
         }
         else
         {

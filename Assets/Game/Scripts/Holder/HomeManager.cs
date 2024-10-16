@@ -87,11 +87,12 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
                 SFXPlayer.EVPlayConfirmSound?.Invoke();
                 // set patterns to use all listed
                 RuntimeGameData.SelectedPatterns = DefaultGameData.AllPatterns;
+                RuntimeGameData.IsPractice = false;
                 PushNextSelector(playerSelector);
                 break;
             case HomeMenuSelector.HomeMenuResult.Practice:
                 SFXPlayer.EVPlayConfirmSound?.Invoke();
-                // set patterns to use all listed
+                RuntimeGameData.IsPractice = true;
                 PushNextSelector(practiceSelector);
                 break;
             case HomeMenuSelector.HomeMenuResult.Settings:

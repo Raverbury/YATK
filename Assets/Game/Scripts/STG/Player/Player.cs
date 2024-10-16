@@ -312,7 +312,12 @@ public class Player : PausableMono
     {
         if (0 == RemainingLife)
         {
-            // TODO: gameover
+            Vector3 pos = transform.position;
+            pos.x = Constant.GAME_CENTER_X;
+            pos.y = -500f;
+            transform.position = pos;
+            StageManager.RequestPlayerRunOutOfLife?.Invoke();
+            return;
         }
         RemainingLife -= 1;
         RemainingBomb = initialBomb;

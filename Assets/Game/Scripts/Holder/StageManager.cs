@@ -15,6 +15,7 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     public static UnityAction<bool, bool> ClearEnemyBullet;
     public static UnityAction<bool> SetPause;
     public static UnityAction EVStageDestroy;
+    public static UnityAction RequestPlayerRunOutOfLife;
 
     private Dictionary<string, GameObject> enemies = new();
 
@@ -25,6 +26,8 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     public static bool isPaused = false;
     private bool shouldRespondToInput = true;
     private int currentSingleIndex = 0;
+
+    public bool isFinished = false;
 
     protected override void Awake()
     {
@@ -42,12 +45,14 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     {
         ClearEnemyBullet += KillBulletSpawningCoroutines;
         AbstractSingle.SingleFinish += StartNextAvailableSingle;
+        RequestPlayerRunOutOfLife += PlayerRunOutOfLife;
     }
 
     private void OnDisable()
     {
         ClearEnemyBullet -= KillBulletSpawningCoroutines;
         AbstractSingle.SingleFinish -= StartNextAvailableSingle;
+        RequestPlayerRunOutOfLife -= PlayerRunOutOfLife;
     }
 
     protected override void OnDestroy()
@@ -62,6 +67,20 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         // Timing.KillCoroutines("enemyBulletSpawning");
     }
 
+    private void PlayerDefeatAllPatterns()
+    {
+        isFinished = true;
+        PauseMenu.RequestDisableResume?.Invoke(RuntimeGameData.IsPractice ? "Practice Done!" : "All Clear!");
+        TogglePause(true);
+    }
+
+    private void PlayerRunOutOfLife()
+    {
+        isFinished = true;
+        PauseMenu.RequestDisableResume?.Invoke("Out of Lives!");
+        TogglePause(true);
+    }
+
     private void StartNextAvailableSingle()
     {
         if (activeSingle != null)
@@ -70,11 +89,18 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         }
         if (stageSingles.Count == 0 || currentSingleIndex >= stageSingles.Count)
         {
+            Timing.RunCoroutine(_WaitForGameoverWin());
             return;
         }
         activeSingle = stageSingles[currentSingleIndex];
         activeSingle.StartSingle(enemyData);
         currentSingleIndex += 1;
+    }
+
+    private IEnumerator<float> _WaitForGameoverWin()
+    {
+        yield return WaitForFrames.WaitWrapper(150);
+        PlayerDefeatAllPatterns();
     }
 
     public static bool DestroyNamedEnemy(string name)
@@ -156,7 +182,14 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         {
             if (Input.GetButtonDown("Pause"))
             {
-                TogglePause();
+                if (!isFinished)
+                {
+                    if (!isPaused)
+                    {
+                        SFXPlayer.RequestPlayPauseSound?.Invoke();
+                    }
+                    TogglePause();
+                }
             }
         }
     }

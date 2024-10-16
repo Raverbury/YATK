@@ -71,7 +71,7 @@ public class Nonspell11 : AbstractSingle
                 }
             }
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(40)));
-            if (state == 2 || state == 5)
+            if (state == 4 || state == 9)
             {
                 float targetX = ((Player.instance == null) ? 192f : Player.instance.gameObject.transform.position.x) + Random.Range(-20f, 20f);
                 targetX = Mathf.Clamp(targetX, Constant.GAME_BORDER_LEFT + 60, Constant.GAME_BORDER_RIGHT - 60);
@@ -79,7 +79,7 @@ public class Nonspell11 : AbstractSingle
                 enemy.SetAnimState(Enemy.AnimState.Attack);
                 yield return WaitForFrames.WaitWrapper(40);
             }
-            state = (state + 1) % 6;
+            state = (state + 1) % 10;
         }
     }
 }
