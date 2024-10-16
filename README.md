@@ -17,5 +17,5 @@
 # Release
 
 - Currently I'm checking out ECS as a potential way to improve performance so progress is likely slowed down.
-
 - The last non-ECS build is uploaded [here](https://mega.nz/file/USxikayZ#KNEKXxsV3mLrFuik_dY1L3WCzt-DLkfCKgs7F1LbRJc).
+- Latest release can be found [here](https://mega.nz/file/JbR1TAAb#wiCz1j0mDemGK9bHj1sUXS86vBpUTMAGv44r0CnSTbg)
