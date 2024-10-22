@@ -146,6 +146,11 @@ namespace STG
         public const int GAME_CENTER_X = 192;
         public const int GAME_CENTER_Y = -224;
 
+        public const int CAM_WIDTH = 854;
+        public const int CAM_HEIGHT = 480;
+        public const int CAM_BORDER_LEFT = -427;
+        public const int CAM_BORDER_RIGHT = 427;
+
         public const int LAYER_SCREEN_EDGE = 16;
         public const int LAYER_PLAYABLE_AREA = 17;
         public const int LAYER_ENEMY_BULLET = 18;

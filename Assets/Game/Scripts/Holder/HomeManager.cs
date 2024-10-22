@@ -21,6 +21,9 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
     [SerializeField]
     private InertPanel manualPanel;
 
+    private Vector2 RIGHT_HINGE = new Vector2(STG.Constant.CAM_BORDER_RIGHT, 0f);
+    private Vector2 LEFT_HINGE = new Vector2(STG.Constant.CAM_BORDER_LEFT, 0f);
+
     private const int SELECTOR_SWITCH_DURATION = 15;
 
     private bool shouldRespondToInput = true;
@@ -150,16 +153,18 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         Vector3 newSelectorRotation = new Vector3(0f, -90f, 0f);
 
         oldSelector.enabled = false;
-        oldSelector.RectTransform.anchorMin = new Vector2(0f, 0.5f);
-        oldSelector.RectTransform.anchorMax = new Vector2(0f, 0.5f);
+        // oldSelector.RectTransform.anchorMin = new Vector2(0f, 0.5f);
+        // oldSelector.RectTransform.anchorMax = new Vector2(0f, 0.5f);
+        oldSelector.RectTransform.localPosition = LEFT_HINGE;
         oldSelector.RectTransform.pivot = new Vector2(0f, 0.5f);
         // oldSelector.RectTransform.position = Vector3.zero;
         // oldSelector.RectTransform.eulerAngles = oldSelectorRotation;
 
         newSelector.gameObject.SetActive(true);
         newSelector.enabled = false;
-        newSelector.RectTransform.anchorMin = new Vector2(1f, 0.5f);
-        newSelector.RectTransform.anchorMax = new Vector2(1f, 0.5f);
+        // newSelector.RectTransform.anchorMin = new Vector2(1f, 0.5f);
+        // newSelector.RectTransform.anchorMax = new Vector2(1f, 0.5f);
+        newSelector.RectTransform.localPosition = RIGHT_HINGE;
         newSelector.RectTransform.pivot = new Vector2(1f, 0.5f);
         // newSelector.RectTransform.position = Vector3.zero;
         // oldSelector.RectTransform.eulerAngles = newSelectorRotation;
@@ -188,16 +193,18 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         Vector3 newSelectorRotation = new Vector3(0f, -90f, 0f);
 
         oldSelector.enabled = false;
-        oldSelector.RectTransform.anchorMin = new Vector2(1f, 0.5f);
-        oldSelector.RectTransform.anchorMax = new Vector2(1f, 0.5f);
+        // oldSelector.RectTransform.anchorMin = new Vector2(1f, 0.5f);
+        // oldSelector.RectTransform.anchorMax = new Vector2(1f, 0.5f);
+        oldSelector.RectTransform.localPosition = RIGHT_HINGE;
         oldSelector.RectTransform.pivot = new Vector2(1f, 0.5f);
         // oldSelector.RectTransform.position = Vector3.zero;
         // oldSelector.RectTransform.eulerAngles = oldSelectorRotation;
 
         newSelector.gameObject.SetActive(true);
         newSelector.enabled = false;
-        newSelector.RectTransform.anchorMin = new Vector2(0f, 0.5f);
-        newSelector.RectTransform.anchorMax = new Vector2(0f, 0.5f);
+        // newSelector.RectTransform.anchorMin = new Vector2(0f, 0.5f);
+        // newSelector.RectTransform.anchorMax = new Vector2(0f, 0.5f);
+        newSelector.RectTransform.localPosition = LEFT_HINGE;
         newSelector.RectTransform.pivot = new Vector2(0f, 0.5f);
         // newSelector.RectTransform.position = Vector3.zero;
         // oldSelector.RectTransform.eulerAngles = newSelectorRotation;

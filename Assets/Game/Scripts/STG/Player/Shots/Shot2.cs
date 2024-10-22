@@ -114,7 +114,7 @@ public class Shot2 : AbstractShot
         {
             float xPos = xOffset + distance * i;
             Vector3 pos = orb.transform.localPosition;
-            pos = Vector3.MoveTowards(pos, !isFocused ? new Vector2(xPos * 1.2f, -0.35f) : new Vector2(xPos, 0.35f), 0.06f);
+            pos = Vector3.MoveTowards(pos, !isFocused ? new Vector2(xPos * 1.2f, -0.35f) : new Vector2(xPos, 0.35f), 0.1f);
             orb.transform.localPosition = pos;
             i++;
         }

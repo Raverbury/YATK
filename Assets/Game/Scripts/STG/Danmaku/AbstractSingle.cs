@@ -12,7 +12,13 @@ public abstract class AbstractSingle
     public abstract string GetName();
     public abstract bool IsTimeout();
 
+    /// <summary>
+    /// Fires after a single ends, after waiting after spellcard and cancelling, used to signal to start next single
+    /// </summary>
     public static UnityAction SingleFinish;
+    /// <summary>
+    /// Fires right when a single ends, before any waiting or cancelling has occured
+    /// </summary>
     public static UnityAction SingleExplode;
     public static UnityAction<ushort> PatternTimerSecondTick;
 
@@ -51,6 +57,7 @@ public abstract class AbstractSingle
         {
             EnemySpellcardBackgroundImage.RequestSetBackgroundImage(enemyData.enemySpellcardBackgroundImage);
             EnemySpellcardBackgroundEffect.RequestSetBackgroundEffect(enemyData.enemySpellcardBackgroundEffect);
+            SpellcardName.RequestSetSpellcardName(GetName());
         }
         PlaySpellStartSound();
         enemy.SetEmptyHpCircle();

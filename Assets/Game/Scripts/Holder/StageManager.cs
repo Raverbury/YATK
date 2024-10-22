@@ -9,6 +9,10 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
 {
     [SerializeField]
     private GameObject enemyPrefab;
+    [SerializeField]
+    private GameObject enemyMarkerPrefab;
+    [SerializeField]
+    private GameObject sidebarBottom;
 
     public EnemyData enemyData;
 
@@ -122,22 +126,27 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     /// <param name="y"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static bool SpawnNamedEnemy(out GameObject gameObject, float x, float y, string name)
+    public static bool SpawnNamedEnemy(out GameObject gameObject, float x, float y, string name, bool hasMarker = true)
     {
         if (instance.enemies.ContainsKey(name))
         {
             gameObject = instance.enemies[name];
             return false;
         }
-        gameObject = SpawnEnemy(x, y);
+        gameObject = SpawnEnemy(x, y, hasMarker);
         instance.enemies.Add(name, gameObject);
         return true;
     }
 
-    public static GameObject SpawnEnemy(float x, float y)
+    public static GameObject SpawnEnemy(float x, float y, bool hasMarker = true)
     {
         GameObject enemyGameObject = Instantiate(instance.enemyPrefab);
         enemyGameObject.transform.position = new Vector3(x, y, 0);
+        if (hasMarker)
+        {
+            GameObject enemyMarkerGO = Instantiate(instance.enemyMarkerPrefab, instance.sidebarBottom.transform);
+            enemyMarkerGO.GetComponent<EnemyMarker>().enemy = enemyGameObject.GetComponent<Enemy>();
+        }
         return enemyGameObject;
     }
 
