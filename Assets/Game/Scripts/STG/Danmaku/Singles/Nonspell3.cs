@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using MEC;
 using STG;
 using Unity.Entities;
+using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
 public class Nonspell3 : AbstractSingle
@@ -76,16 +77,16 @@ public class Nonspell3 : AbstractSingle
                 for (int i = 0; i < 60; i++)
                 {
                     Vector2 pos = new Vector2(57, -90);
-                    targetPos.x += (state == 2) ? -3 : 3;
+                    // targetPos.x += (state == 2) ? -3 : 3;
                     for (int j = 0; j < 4; j++)
                     {
                         // Vector2 targetPos = (Player.instance == null) ? new Vector2(192, -360) : (Vector2)Player.instance.transform.position;
                         float angle = (j switch
                         {
-                            0 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) - 0.05f,
-                            1 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) + 0.6f,
-                            2 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) - 0.6f,
-                            _ => Mathf.Atan2(targetPos.y - pos.y, targetPos.x - pos.x) + 0.05f,
+                            0 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x + (state == 2 ? -1.7f : -1) * i - pos.x) - 0.05f,
+                            1 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x + (state == 2 ? -3.8f * (i > 30 ? 60 - i : i) : 2 * i) - pos.x) + 0.6f,
+                            2 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x + (state == 2 ? -2 * i : 3.8f * (i > 30 ? 60 - i : i)) - pos.x) - 0.6f,
+                            _ => Mathf.Atan2(targetPos.y - pos.y, targetPos.x + (state == 2 ? 1 : 1.7f) * i - pos.x) + 0.05f,
                         }) * Mathf.Rad2Deg;
                         ECSEntitySpawner.SpawnEnemyBulletE1(pos, 9, angle, STG.EnemyBulletType.ARROW_SKY, 30);
                         pos.x += 90;

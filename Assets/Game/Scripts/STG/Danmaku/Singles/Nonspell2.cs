@@ -38,10 +38,11 @@ public class Nonspell2 : AbstractSingle
 
         const int BRANCHES = 3;
         const float SPEED = 3;
+        int dir = 17;
         int rotation = 90;
         while (true)
         {
-            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(10)));
+            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(25)));
             // SFXPlayer.RequestPlayTan1Sound?.Invoke();
             for (int i = 0; i < BRANCHES; i++)
             {
@@ -54,9 +55,15 @@ public class Nonspell2 : AbstractSingle
                     ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i + rotation, STG.EnemyBulletType.AMULET_BLUE, delay);
                     ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i + 23 + rotation, STG.EnemyBulletType.AMULET_RED, delay);
                     ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i - 23 + rotation, STG.EnemyBulletType.AMULET_PURPLE, delay);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i + 23 - dir + rotation, STG.EnemyBulletType.AMULET_RED, delay + 15);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i - 23 - dir + rotation, STG.EnemyBulletType.AMULET_PURPLE, delay + 15);
                 }
             }
-            rotation -= 7;
+            if (Random.Range(0f, 1f) < 0.12f)
+            {
+                dir *= -1;
+            }
+            rotation = Random.Range(0, 361);
         }
     }
 }

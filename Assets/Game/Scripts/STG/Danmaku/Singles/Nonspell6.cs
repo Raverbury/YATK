@@ -5,6 +5,7 @@ using STG;
 using System.Linq;
 using Unity.Entities;
 using Unity.Transforms;
+using Unity.VisualScripting;
 
 public class Nonspell6 : AbstractSingle
 {
@@ -70,7 +71,7 @@ public class Nonspell6 : AbstractSingle
     private IEnumerator<float> _SpawnFromBubble(Entity bubbleBulletEntity)
     {
         EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        yield return WaitForFrames.WaitWrapper(Random.Range(30, 50));
+        yield return WaitForFrames.WaitWrapper(Random.Range(25, 50));
         int branches = Random.Range(2, 8);
         float rot = 360f / branches;
         while (!ECSEntitySpawner.EntityIsDisabled(bubbleBulletEntity))
@@ -99,7 +100,7 @@ public class Nonspell6 : AbstractSingle
         while (!ECSEntitySpawner.EntityIsDisabled(subBulletEntity))
         {
             speed = Mathf.Min(speed + 0.1f, 2f);
-            ECSEntitySpawner.SetBulletSpeed(subBulletEntity, speed);
+            ECSEntitySpawner.SetBulletSpeed(subBulletEntity, -speed);
             yield return Timing.WaitForOneFrame;
         }
     }
@@ -114,4 +115,13 @@ public class Nonspell6 : AbstractSingle
     //         enemyBullet.speed *= 2f;
     //     }
     // }
+
+    protected override void DropRewards(Vector2 targetPos)
+    {
+        base.DropRewards(targetPos);
+        ECSEntitySpawner.SpawnItemI1(
+            targetPos.x + Random.Range(-50f, 50f),
+            targetPos.y + Random.Range(-30f, 30f),
+            ItemType.LIFE_ITEM);
+    }
 }

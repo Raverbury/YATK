@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using MEC;
 using UnityEngine;
 using STG;
-using System.Linq;
 
 public class Nonspell8 : AbstractSingle
 {
@@ -74,6 +73,14 @@ public class Nonspell8 : AbstractSingle
             yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(enemy._MoveEnemyToOver(new Vector2(targetX, Random.Range(-60, -60)), 60)));
             enemy.SetAnimState(Enemy.AnimState.Attack);
         }
+    }
+
+    protected override void DropRewards(Vector2 targetPos)
+    {
+        ECSEntitySpawner.SpawnItemI1(
+            targetPos.x + Random.Range(-50f, 50f),
+            targetPos.y + Random.Range(-30f, 30f),
+            ItemType.BOMB_ITEM);
     }
 }
 

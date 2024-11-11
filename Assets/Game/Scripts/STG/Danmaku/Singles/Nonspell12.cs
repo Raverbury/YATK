@@ -40,24 +40,27 @@ public class Nonspell12 : AbstractSingle
         // const int BRANCHES = 78;
         const float RADIUS = 80f;
         float rotation = 0f;
-        // const float SPREAD = 360f / BRANCHES;
-        const float SPREAD = 5.7f;
-        float facing = 0f;
+        // const float spread = 360f / BRANCHES;
+        float spread = 5.7f;
         int counter = 0;
+        int batchCount = 7;
+        int loopCount = 0;
         while (true)
         {
-            if (counter == 0)
-            {
-                facing = rotation;
-            }
             float spawnX = enemy.transform.position.x + Mathf.Cos(Mathf.Deg2Rad * rotation) * RADIUS;
             float spawnY = enemy.transform.position.y + Mathf.Sin(Mathf.Deg2Rad * rotation) * RADIUS;
             ECSEntitySpawner.SpawnEnemyBulletE1(spawnX, spawnY, 3f, rotation, EnemyBulletType.AMULET_DARK_BLUE, 10 - counter);
-            ECSEntitySpawner.SpawnEnemyBulletE1(spawnX, spawnY, 3f, rotation + 180f, EnemyBulletType.AMULET_DARK_RED, 10 - counter);
+            ECSEntitySpawner.SpawnEnemyBulletE1(spawnX, spawnY, 3f, rotation + 180f, EnemyBulletType.AMULET_DARK_RED, 14 - counter);
             // ECSEntitySpawner.SpawnEnemyBulletE1(spawnX, spawnY, 3f, facing, EnemyBulletType.AMULET_DARK_BLUE, 10 - counter);
-            rotation = (rotation + SPREAD) % 360f;
-            counter = (counter + 1) % 5;
+            rotation = (rotation + spread) % 360f;
+            counter = (counter + 1) % batchCount;
             yield return Timing.WaitForOneFrame;
+            loopCount = (loopCount + 1) % 300;
+            if (loopCount == 0)
+            {
+                batchCount = Mathf.Max(3, batchCount - 1);
+                spread = Mathf.Max(4.53f, spread * 0.9f);
+            }
         }
     }
 }

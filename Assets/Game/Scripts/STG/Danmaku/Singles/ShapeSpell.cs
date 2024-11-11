@@ -47,11 +47,11 @@ public class ShapeSpell : AbstractSingle
 
         while (true)
         {
-            FireEquilateralTriangle(DrawFromPool(ref pool, 3));
+            FireEquilateralTriangle(DrawFromPool(ref pool, 3), 1f - (60 - wait) * 0.01f);
             yield return WaitForFrames.WaitWrapper(wait);
-            FireSquare(DrawFromPool(ref pool, 2));
+            FireSquare(DrawFromPool(ref pool, 2), 1f - (60 - wait) * 0.01f);
             yield return WaitForFrames.WaitWrapper(wait);
-            FireCircle(DrawFromPool(ref pool, 1));
+            FireCircle(DrawFromPool(ref pool, 1), 1f - (60 - wait) * 0.01f);
             yield return WaitForFrames.WaitWrapper(wait);
             wait = Mathf.Max(20, wait - 1);
         }
@@ -63,19 +63,20 @@ public class ShapeSpell : AbstractSingle
         {
             choicesLeft = pool.Length;
         }
+        // roll a random number, ref that index as ret and swap it with last index of eligible section
         int roll = Random.Range(0, choicesLeft);
         var result = pool[roll];
         (pool[roll], pool[choicesLeft - 1]) = (pool[choicesLeft - 1], pool[roll]);
         return result;
     }
 
-    private void FireEquilateralTriangle(Vector2 pos)
+    private void FireEquilateralTriangle(Vector2 pos, float speedScale)
     {
         const int BULLETS_PER_EDGE = 20;
         const float SPREAD = 120f / (BULLETS_PER_EDGE - 1);
         const float HALF_FAN_SPREAD = 60f;
         float rotation = Random.Range(0f, 360f);
-        float baseSpeed = Random.Range(1f, 3.5f);
+        float baseSpeed = Random.Range(1.5f, 3f) * speedScale;
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < BULLETS_PER_EDGE; j++)
@@ -89,12 +90,12 @@ public class ShapeSpell : AbstractSingle
         }
     }
 
-    private void FireSquare(Vector2 pos)
+    private void FireSquare(Vector2 pos, float speedScale)
     {
         const int TOTAL_BULLETS = 60;
         float rotation = Random.Range(0f, 360f);
         const float SPREAD = 360f / TOTAL_BULLETS;
-        float baseSpeed = Random.Range(1f, 3.5f);
+        float baseSpeed = Random.Range(2f, 3.5f) * speedScale;
         for (int i = 0; i < TOTAL_BULLETS; i++)
         {
             float facing = rotation + SPREAD * i;
@@ -103,12 +104,12 @@ public class ShapeSpell : AbstractSingle
         }
     }
 
-    private void FireCircle(Vector2 pos)
+    private void FireCircle(Vector2 pos, float speedScale)
     {
         const int TOTAL_BULLETS = 60;
         float rotation = Random.Range(0f, 360f);
         const float SPREAD = 360f / TOTAL_BULLETS;
-        float baseSpeed = Random.Range(1f, 3.5f);
+        float baseSpeed = Random.Range(1f, 3.5f) * speedScale;
         for (int i = 0; i < TOTAL_BULLETS; i++)
         {
             float facing = rotation + SPREAD * i;
