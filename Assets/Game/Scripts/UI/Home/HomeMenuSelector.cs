@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using STG;
 
 public class HomeMenuSelector : AbstractHomeSelector
 {
@@ -14,9 +13,18 @@ public class HomeMenuSelector : AbstractHomeSelector
         Quit = 4,
     }
 
+    private static readonly ChoiceSelector choiceSelector = ChoiceSelector.CreateFrom0(
+        (int)HomeMenuResult.Quit,
+        // disable quitting in editor/webgl
+#if UNITY_WEBGL || UNITY_EDITOR
+        new() { (int)HomeMenuResult.Settings, (int)HomeMenuResult.Quit },
+#else
+        new() {(int)HomeMenuResult.Settings},
+#endif
+        0);
+
     [SerializeField]
     private List<TMP_Text> menuOptions;
-    private static int currentOption;
 
     private int keyHeldForFrames = 0;
 
@@ -30,33 +38,36 @@ public class HomeMenuSelector : AbstractHomeSelector
         {
             ConfirmChoice();
         }
+#if !(UNITY_WEBGL || UNITY_EDITOR)
+        // disable pressing X to jump to quit choice in editor/webgl
         else if (Input.GetButtonDown("Bomb") || Input.GetButtonDown("Pause"))
         {
             SFXPlayer.EVPlayCancelSound?.Invoke();
-            currentOption = (int)HomeMenuResult.Quit;
+            choiceSelector.CurrentChoice = (int)HomeMenuResult.Quit;
         }
+#endif
         else if (Input.GetButtonDown("Up"))
         {
-            SelectChoice((currentOption - 1).Modulus(menuOptions.Count));
+            SelectChoice(-1);
         }
         else if (Input.GetButton("Up"))
         {
             keyHeldForFrames++;
             if (keyHeldForFrames == 30 || (keyHeldForFrames > 30 && keyHeldForFrames % 5 == 0))
             {
-                SelectChoice((currentOption - 1).Modulus(menuOptions.Count));
+                SelectChoice(-1);
             }
         }
         else if (Input.GetButtonDown("Down"))
         {
-            SelectChoice((currentOption + 1).Modulus(menuOptions.Count));
+            SelectChoice(1);
         }
         else if (Input.GetButton("Down"))
         {
             keyHeldForFrames++;
             if (keyHeldForFrames == 30 || (keyHeldForFrames > 30 && keyHeldForFrames % 5 == 0))
             {
-                SelectChoice((currentOption + 1).Modulus(menuOptions.Count));
+                SelectChoice(1);
             }
         }
         else
@@ -67,22 +78,37 @@ public class HomeMenuSelector : AbstractHomeSelector
         HighlightChoice();
     }
 
-    private void SelectChoice(int nextOption)
+    private void SelectChoice(int dir)
     {
-        currentOption = nextOption;
+        if (dir == 1)
+        {
+            choiceSelector.GetNextChoice();
+        }
+        else
+        {
+            choiceSelector.GetPreviousChoice();
+        }
         SFXPlayer.EVPlaySelectSound?.Invoke();
     }
 
     private void HighlightChoice()
     {
-        foreach (var text in menuOptions)
+        for (int i = 0; i < menuOptions.Count; i++)
         {
+            var text = menuOptions[i];
             text.margin = Vector4.zero;
-            text.color = Color.white;
+            if (choiceSelector.IsDisabled(i))
+            {
+                text.color = Color.gray;
+            }
+            else
+            {
+                text.color = Color.white;
+            }
         }
-        menuOptions[currentOption].margin = new Vector4(-15, 0, 0, 0);
+        menuOptions[choiceSelector.CurrentChoice].margin = new Vector4(-15, 0, 0, 0);
         float gbColor = (float)colorFrames / COLOR_FLUC_DURATION;
-        menuOptions[currentOption].color = new Vector4(1f, gbColor, gbColor, 1f);
+        menuOptions[choiceSelector.CurrentChoice].color = new Vector4(1f, gbColor, gbColor, 1f);
         colorFrames += colorChangeVel;
         if (colorFrames >= COLOR_FLUC_DURATION - 1)
         {
@@ -96,7 +122,7 @@ public class HomeMenuSelector : AbstractHomeSelector
 
     private void ConfirmChoice()
     {
-        HomeManager.EVConfirmHomeMenuResult?.Invoke((HomeMenuResult)currentOption);
+        HomeManager.EVConfirmHomeMenuResult?.Invoke((HomeMenuResult)choiceSelector.CurrentChoice);
     }
 
 }

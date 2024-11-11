@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using STG;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,6 +15,11 @@ public class PauseMenu : MonoBehaviour
 
     public static UnityAction<string> RequestDisableResume;
 
+    private readonly ChoiceSelector choiceSelector = ChoiceSelector.CreateFrom0(
+        (int)PauseResult.Quit,
+        new(),
+        0);
+
     [SerializeField]
     private List<TMP_Text> options;
 
@@ -24,8 +28,6 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField, HideInInspector]
     private Canvas canvas;
-
-    private int currentOption = 0;
 
     private int keyHeldForFrames = 0;
 
@@ -56,6 +58,7 @@ public class PauseMenu : MonoBehaviour
 
     private void DisableResume(string message)
     {
+        choiceSelector.AddDisabledChoices(new() { (int)PauseResult.Resume });
         resumeIsDisabled = true;
         pauseText.text = message;
     }
@@ -64,8 +67,9 @@ public class PauseMenu : MonoBehaviour
     {
         this.isPaused = isPaused;
         canvas.enabled = isPaused;
-        currentOption = resumeIsDisabled ? 1 : 0;
-        if (resumeIsDisabled) {
+        choiceSelector.CurrentChoice = resumeIsDisabled ? 1 : 0;
+        if (resumeIsDisabled)
+        {
             BGMPlayer.RequestPlayGameoverBGM?.Invoke();
         }
     }
@@ -90,26 +94,26 @@ public class PauseMenu : MonoBehaviour
         }
         else if (Input.GetButtonDown("Up"))
         {
-            SelectChoice(CustomModulus(currentOption, -1, options.Count));
+            SelectChoice(-1);
         }
         else if (Input.GetButton("Up"))
         {
             keyHeldForFrames++;
             if (keyHeldForFrames == 30 || (keyHeldForFrames > 30 && keyHeldForFrames % 5 == 0))
             {
-                SelectChoice(CustomModulus(currentOption, -1, options.Count));
+                SelectChoice(-1);
             }
         }
         else if (Input.GetButtonDown("Down"))
         {
-            SelectChoice(CustomModulus(currentOption, 1, options.Count));
+            SelectChoice(1);
         }
         else if (Input.GetButton("Down"))
         {
             keyHeldForFrames++;
             if (keyHeldForFrames == 30 || (keyHeldForFrames > 30 && keyHeldForFrames % 5 == 0))
             {
-                SelectChoice(CustomModulus(currentOption, 1, options.Count));
+                SelectChoice(1);
             }
         }
         else
@@ -120,19 +124,16 @@ public class PauseMenu : MonoBehaviour
         HighlightChoice();
     }
 
-    private int CustomModulus(int number, int dir, int cap)
+    private void SelectChoice(int dir)
     {
-        number = (number + dir).Modulus(cap);
-        if (resumeIsDisabled && number == 0)
+        if (dir == 1)
         {
-            return (number + dir).Modulus(cap);
+            choiceSelector.GetNextChoice();
         }
-        return number;
-    }
-
-    private void SelectChoice(int nextOption)
-    {
-        currentOption = nextOption;
+        else
+        {
+            choiceSelector.GetPreviousChoice();
+        }
         SFXPlayer.EVPlaySelectSound?.Invoke();
     }
 
@@ -141,7 +142,8 @@ public class PauseMenu : MonoBehaviour
         for (int i = 0; i < options.Count; i++)
         {
             var text = options[i];
-            if (i == 0 && resumeIsDisabled)
+            text.margin = Vector4.zero;
+            if (choiceSelector.IsDisabled(i))
             {
                 text.color = Color.gray;
             }
@@ -149,11 +151,10 @@ public class PauseMenu : MonoBehaviour
             {
                 text.color = Color.white;
             }
-            text.margin = Vector4.zero;
         }
-        options[currentOption].margin = new Vector4(-15, 0, 0, 0);
+        options[choiceSelector.CurrentChoice].margin = new Vector4(-15, 0, 0, 0);
         float gbColor = (float)colorFrames / COLOR_FLUC_DURATION;
-        options[currentOption].color = new Vector4(1f, gbColor, gbColor, 1f);
+        options[choiceSelector.CurrentChoice].color = new Vector4(1f, gbColor, gbColor, 1f);
         colorFrames += colorChangeVel;
         if (colorFrames >= COLOR_FLUC_DURATION - 1)
         {
@@ -167,11 +168,11 @@ public class PauseMenu : MonoBehaviour
 
     private void ConfirmChoice()
     {
-        if (resumeIsDisabled && (PauseResult)currentOption == PauseResult.Resume)
+        if (resumeIsDisabled && (PauseResult)choiceSelector.CurrentChoice == PauseResult.Resume)
         {
             SFXPlayer.RequestPlayInvalidSound?.Invoke();
             return;
         }
-        StageManager.ResolvePause((PauseResult)currentOption);
+        StageManager.ResolvePause((PauseResult)choiceSelector.CurrentChoice);
     }
 }
