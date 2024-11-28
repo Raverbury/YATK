@@ -32,4 +32,9 @@ public static class DefaultGameData
 
         new Nonspell9(){IsSpellCard = true},
     };
+
+    public static AbstractShot[] AllShots = new AbstractShot[] {
+        new Shot1(),
+        new Shot2(),
+    };
 }

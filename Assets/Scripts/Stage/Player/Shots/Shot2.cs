@@ -14,40 +14,29 @@ public class Shot2 : AbstractShot
     private float shotDamage = 6;
 
     private int timeBetweenShot = 0;
-    private bool isFocused = false;
     private int currentLevel = 0;
 
-    List<GameObject> weaponOrbs = new();
+    readonly List<GameObject> weaponOrbs = new();
 
-    protected override void CalcShotInterval()
-    {
-        shotInterval = Mathf.CeilToInt(300f / (5f + player.playerData.RateOfFire.GetFinalStat()));
-    }
-
-    protected override void CalcShotDamage()
-    {
-        shotDamage = 0.6f * player.playerData.Attack.GetFinalStat();
-    }
-
-    public override void SetPower(int power)
+    public override void SetPower(int power, Player player, GameObject weaponOrbPrefab)
     {
         int level = power / 25;
         level = Mathf.Clamp(level, 0, 5);
         if (currentLevel != level)
         {
-            ConstructOrbs(level);
+            ConstructOrbs(level, player, weaponOrbPrefab);
             currentLevel = level;
         }
     }
 
-    private void ConstructOrbs(int level)
+    private void ConstructOrbs(int level, Player player, GameObject weaponOrbPrefab)
     {
         Player.PlayerPowerUp?.Invoke();
-        weaponOrbs.ForEach(orb => Destroy(orb));
+        weaponOrbs.ForEach(orb => GameObject.Destroy(orb));
         weaponOrbs.Clear();
         for (int i = 0; i < level; i++)
         {
-            GameObject orb = Instantiate(player.weaponOrb, transform);
+            GameObject orb = GameObject.Instantiate(weaponOrbPrefab, parent: player.transform);
             if (orb.TryGetComponent(out AutoRotate autoRotate))
             {
                 autoRotate.rotateSpeed *= (0 == i % 2) ? 1 : -1;
@@ -66,20 +55,18 @@ public class Shot2 : AbstractShot
         this.isFocused = isFocused;
     }
 
-    protected override void PausableUpdate()
+    public override void Tick(Player player)
     {
         PositionOrbs();
         if (shootFrames > 0)
         {
             if (timeBetweenShot >= shotInterval)
             {
-                CalcShotInterval();
-                CalcShotDamage();
                 float baseAmuletDamage = 0.9f * shotDamage;
-                ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x - 15, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 100f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x + 15, transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 80f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x - 10, transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                ECSEntitySpawner.SpawnPlayerBulletP1(transform.position.x + 10, transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 15, player.transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 100f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 15, player.transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 80f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 10, player.transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 10, player.transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                 if (isFocused)
                 {
                     foreach (var orb in weaponOrbs)
@@ -107,16 +94,15 @@ public class Shot2 : AbstractShot
 
     private void PositionOrbs()
     {
-        int i = 0;
         float distance = 0.15f;
         float xOffset = -(weaponOrbs.Count - 1) * distance / 2f;
-        foreach (var orb in weaponOrbs)
+        for (int i = 0; i < weaponOrbs.Count; i++)
         {
+            var orb = weaponOrbs[i];
             float xPos = xOffset + distance * i;
             Vector3 pos = orb.transform.localPosition;
             pos = Vector3.MoveTowards(pos, !isFocused ? new Vector2(xPos * 1.2f, -0.35f) : new Vector2(xPos, 0.35f), 0.1f);
             orb.transform.localPosition = pos;
-            i++;
         }
     }
 
@@ -164,5 +150,10 @@ public class Shot2 : AbstractShot
             t += 1;
         }
 
+    }
+
+    public override AbstractShot Clone()
+    {
+        return new Shot2();
     }
 }

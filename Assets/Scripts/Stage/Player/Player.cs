@@ -40,7 +40,6 @@ public class Player : PausableMono
     [SerializeField, HideInInspector]
     private Animator animator;
 
-    public GameObject weaponOrb;
     private int deathBombFrames = 10;
 
     private Vector2 moveDir = Vector2.zero;
@@ -167,15 +166,6 @@ public class Player : PausableMono
         SetPlayerData(RuntimeGameData.SelectedPlayerData);
 
         // PLAN: register passive/ability or smth
-        // playerData.Register(this);
-        if (playerData.playerName == "Hakurei Reimu")
-        {
-            gameObject.AddComponent<Shot2>();
-        }
-        else
-        {
-            gameObject.AddComponent<Shot1>();
-        }
     }
 
     private void SetPlayerData(PlayerData playerData)

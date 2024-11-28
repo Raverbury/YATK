@@ -171,6 +171,7 @@ MonoBehaviour:
   playerSelector: {fileID: 1735283827}
   practiceSelector: {fileID: 1752569249}
   manualPanel: {fileID: 159860880}
+  shotType: 1
 --- !u!1 &49795418
 GameObject:
   m_ObjectHideFlags: 0

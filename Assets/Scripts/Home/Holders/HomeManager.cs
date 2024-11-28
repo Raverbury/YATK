@@ -20,6 +20,8 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
     private PracticeSelector practiceSelector;
     [SerializeField]
     private InertPanel manualPanel;
+    [SerializeField, Range(0, 1)]
+    private int shotType = 1;
 
     private Vector2 RIGHT_HINGE = new Vector2(STG.Constant.CAM_BORDER_RIGHT, 0f);
     private Vector2 LEFT_HINGE = new Vector2(STG.Constant.CAM_BORDER_LEFT, 0f);
@@ -129,6 +131,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         {
             return;
         }
+        RuntimeGameData.SelectedShot = DefaultGameData.AllShots[shotType];
         RuntimeGameData.SelectedPlayerData = selectedPlayerData;
         SFXPlayer.EVPlayConfirmSound?.Invoke();
         SceneUtil.LoadSceneAsync("Stage");

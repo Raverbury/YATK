@@ -1,35 +1,28 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Player))]
-public abstract class AbstractShot : PausableMono
+public abstract class AbstractShot
 {
-    protected int currentPower = 0;
-    protected Player player;
+    protected bool isFocused;
 
-    private void Awake()
-    {
-        player = GetComponent<Player>();
-    }
-
-    private void OnEnable()
-    {
-        Player.PlayerShoot += Shoot;
-        Player.PlayerSetFocus += SetFocus;
-        Player.PlayerSetPower += SetPower;
-    }
-
-    private void OnDisable()
-    {
-        Player.PlayerShoot -= Shoot;
-        Player.PlayerSetFocus -= SetFocus;
-        Player.PlayerSetPower -= SetPower;
-    }
-
+    public abstract AbstractShot Clone();
+    public abstract void Tick(Player player);
     public abstract void Shoot();
-    public abstract void SetFocus(bool isFocused);
+    public abstract void SetPower(int power, Player player, GameObject weaponOrbPrefab);
 
-    public abstract void SetPower(int power);
+    public virtual void SetFocus(bool isFocused)
+    {
+        this.isFocused = isFocused;
+    }
 
-    protected abstract void CalcShotInterval();
-    protected abstract void CalcShotDamage();
+    protected struct PositionPair
+    {
+        public Vector2 First { get; private set; }
+        public Vector2 Second { get; private set; }
+
+        public PositionPair(Vector2 first, Vector2 second)
+        {
+            First = first;
+            Second = second;
+        }
+    }
 }
