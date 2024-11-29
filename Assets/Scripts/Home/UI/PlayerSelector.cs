@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 using STG;
 using MEC;
+using UnityEngine.UI;
+using Assets.Scripts.Util;
 
 public class PlayerSelector : AbstractHomeSelector
 {
@@ -12,6 +14,19 @@ public class PlayerSelector : AbstractHomeSelector
     private TMP_Text playerDescription;
     [SerializeField]
     private List<PlayerData> playerDatas;
+
+    [SerializeField]
+    private Image playerSprite;
+    [SerializeField]
+    private Image playerPowerRatingBar;
+    [SerializeField]
+    private Image playerSpeedRatingBar;
+    [SerializeField]
+    private Image playerDifficultyRatingBar;
+    [SerializeField]
+    private TMP_Text playerStartingLivesCounter;
+    [SerializeField]
+    private TMP_Text playerStartingBombsCounter;
 
     private static int currentOption = 0;
     private int keyHeldForFrames = 0;
@@ -78,9 +93,18 @@ public class PlayerSelector : AbstractHomeSelector
 
     private void SetPlayerDescription(PlayerData playerData)
     {
-        // Debug.Log(playerData.name);
         playerDescription.text = playerData.playerName;
         playerDescription.color = playerData.nameColor;
+
+        playerSprite.sprite = playerData.sprite;
+
+        playerPowerRatingBar.fillAmount = playerData.RatingPower;
+        playerSpeedRatingBar.fillAmount = playerData.RatingSpeed;
+        playerDifficultyRatingBar.fillAmount = playerData.RatingDifficulty;
+        playerStartingLivesCounter.text = LifeCounter.LIFE_TEXT.Repeat(playerData.initialLife);
+        playerStartingBombsCounter.text = BombCounter.BOMB_TEXT.Repeat(playerData.initialBomb);
+
+        // TODO: description
     }
 
     private IEnumerator<float> _SwitchPanel(int nextOption, int dir)

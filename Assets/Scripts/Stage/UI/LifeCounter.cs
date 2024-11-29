@@ -1,6 +1,6 @@
+using Assets.Scripts.Util;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(TMP_Text))]
 public class LifeCounter : MonoBehaviour
@@ -27,10 +27,6 @@ public class LifeCounter : MonoBehaviour
     private void UpdateLifeCounter(int life = 2)
     {
         life = Mathf.Clamp(life, 0, 8);
-        text.text = "";
-        for (int i = 0; i < life; i++)
-        {
-            text.text += LIFE_TEXT;
-        }
+        text.text = LIFE_TEXT.Repeat(life);
     }
 }

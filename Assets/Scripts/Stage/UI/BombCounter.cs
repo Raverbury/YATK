@@ -1,3 +1,4 @@
+using Assets.Scripts.Util;
 using TMPro;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class BombCounter : MonoBehaviour
 {
     [SerializeField, HideInInspector]
     private TMP_Text text;
-    public const string LIFE_TEXT = "<sprite name=\"bomb\">";
+    public const string BOMB_TEXT = "<sprite name=\"bomb\">";
 
     private void OnValidate()
     {
@@ -26,10 +27,6 @@ public class BombCounter : MonoBehaviour
     private void UpdateBombCounter(int bomb = 2)
     {
         bomb = Mathf.Clamp(bomb, 0, 8);
-        text.text = "";
-        for (int i = 0; i < bomb; i++)
-        {
-            text.text += LIFE_TEXT;
-        }
+        text.text = BOMB_TEXT.Repeat(bomb);
     }
 }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Hakurei Reimu
   nameColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+  sprite: {fileID: -66981287, guid: 83868e8855d72664cae45cd48aab5740, type: 3}
   frontAnimation: {fileID: 7400000, guid: 34973ca74821a8a46a07728b2ac6b53c, type: 2}
   sideAnimation: {fileID: 7400000, guid: f1b3ffa6ad8843a429bc19b02a238e5e, type: 2}
   unfocusedSpeed:
@@ -48,5 +49,8 @@ MonoBehaviour:
   ItemCollectionLine:
     baseStat: 27
     flatBonusStat: 0
+  RatingPower: 0.2
+  RatingSpeed: 0.4
+  RatingDifficulty: 0.2
   methods:
   - Skill1

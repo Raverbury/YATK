@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using STG;
 using UnityEngine;
-using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObjects/PlayerData", order = 0)]
 public class PlayerData : ScriptableObject
@@ -13,6 +10,8 @@ public class PlayerData : ScriptableObject
     public string playerName;
     [Tooltip("The color of this character name, should be thematicaly in line with their character.")]
     public Color nameColor;
+    [Tooltip("The normal sprite of this character.")]
+    public Sprite sprite;
     #endregion
 
     [Header("Animations")]
@@ -61,6 +60,21 @@ public class PlayerData : ScriptableObject
 
     [Tooltip("The player's point of collection threshold (percent away from the top edge).")]
     public Stat ItemCollectionLine;
+    #endregion
+
+    #region rating
+    [Header("Ratings")]
+    [Tooltip("The player's power rating, has no actual use. Should be loosely based on attack.")]
+    [Range(0f, 1f)]
+    public float RatingPower;
+
+    [Tooltip("The player's speed rating, has no actual use. Should be loosely based on both speeds.")]
+    [Range(0f, 1f)]
+    public float RatingSpeed;
+
+    [Tooltip("The player's difficulty rating, has no actual use. Should be loosely based on hitbox radius and deathbomb window.")]
+    [Range(0f, 1f)]
+    public float RatingDifficulty;
     #endregion
 
     public string[] methods;
