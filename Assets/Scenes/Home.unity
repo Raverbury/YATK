@@ -2962,7 +2962,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -120, y: 15}
-  m_SizeDelta: {x: 96, y: 144}
+  m_SizeDelta: {x: 84, y: 146.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1451660213
 MonoBehaviour:
@@ -2984,7 +2984,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -66981287, guid: 83868e8855d72664cae45cd48aab5740, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e2ade042e8935db4a855800207d574da, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3882,6 +3882,7 @@ MonoBehaviour:
   playerDescription: {fileID: 1314626265}
   playerDatas:
   - {fileID: 11400000, guid: c1cfff6bc780e534795a19646f353542, type: 2}
+  - {fileID: 11400000, guid: 6b0b567cffedbc44090b315f3a7550e1, type: 2}
   - {fileID: 11400000, guid: 12b5ab448af581b4d99323af724a6eda, type: 2}
   playerSprite: {fileID: 1451660213}
   playerPowerRatingBar: {fileID: 1351293217}

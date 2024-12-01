@@ -49,8 +49,8 @@ MonoBehaviour:
   ItemCollectionLine:
     baseStat: 25
     flatBonusStat: 0
-  RatingPower: 0.4
-  RatingSpeed: 0.3
-  RatingDifficulty: 0.4
+  RatingPower: 0.7
+  RatingSpeed: 0.5
+  RatingDifficulty: 0.6
   methods:
   - Skill1

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 83868e8855d72664cae45cd48aab5740
+guid: 4754635bec5b92e4094029d377e75b61
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -50,7 +50,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -106,11 +106,24 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: reimu_front_0
+      name: marisa_side_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +137,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b31a33463e3352047b3911a36466cb2d
-      internalID: -66981287
+      spriteID: 265fcc530998d4d42b8910f54ec1232a
+      internalID: -71087244
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: reimu_front_1
+      name: marisa_side_1
       rect:
         serializedVersion: 2
         x: 32
@@ -145,14 +158,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6bb0d8eb22f164d4bb76e8e489860b91
-      internalID: -249041933
+      spriteID: 5bb32f5b5fddb3e4bb8deae8b3215f89
+      internalID: 1377897016
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: reimu_front_2
+      name: marisa_side_2
       rect:
         serializedVersion: 2
         x: 64
@@ -166,14 +179,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e4d1f6902ae0abb4d855315bacef1e92
-      internalID: -2034816641
+      spriteID: ca638c7396c4b1c48bffcf8267c3bef6
+      internalID: 252561955
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: reimu_front_3
+      name: marisa_side_3
       rect:
         serializedVersion: 2
         x: 96
@@ -187,8 +200,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c37988b248eb2e74dba983ac65d27910
-      internalID: 306915463
+      spriteID: 62568c598280d5749a72edc58905cd9c
+      internalID: 1123236707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_side_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2025777680a86b347a68caa0c2ba98a8
+      internalID: 1387228229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_side_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 748c9dc8b1d2f7042b8c4000499e9cd5
+      internalID: -1854228834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: marisa_side_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cb38ce51e2a1984f91ff39da1ee7d51
+      internalID: 1999202951
       vertices: []
       indices: 
       edges: []
@@ -204,10 +280,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      reimu_front_0: -66981287
-      reimu_front_1: -249041933
-      reimu_front_2: -2034816641
-      reimu_front_3: 306915463
+      marisa_side_0: -71087244
+      marisa_side_1: 1377897016
+      marisa_side_2: 252561955
+      marisa_side_3: 1123236707
+      marisa_side_4: 1387228229
+      marisa_side_5: -1854228834
+      marisa_side_6: 1999202951
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
