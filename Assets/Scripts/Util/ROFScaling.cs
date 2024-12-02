@@ -2,8 +2,8 @@ using UnityEngine;
 
 public static class ROFScaling
 {
-    private const int MIN_ROF = 0;
-    private const int MAX_ROF = 1500;
+    public const int MIN_ROF = 0;
+    public const int MAX_ROF = 1500;
 
     private const int MIN_FRAMES = 5;
     private const int MAX_FRAMES = 60;

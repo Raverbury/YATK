@@ -25,4 +25,8 @@ public abstract class AbstractShot
             Second = second;
         }
     }
+
+    public abstract string ShotName();
+    public abstract string ShotDescription();
+    public abstract Color ShotColor();
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using MEC;
+using STG;
 using UnityEngine;
 
 public class Nonspell2 : AbstractSingle
@@ -37,29 +39,31 @@ public class Nonspell2 : AbstractSingle
         yield return WaitForFrames.WaitWrapper(30);
 
         const int BRANCHES = 3;
+        const int BURSTS = 5;
         const float SPEED = 3;
         int dir = 17;
         int rotation = 90;
+        float angle = 360f / BRANCHES;
         while (true)
         {
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(25)));
             // SFXPlayer.RequestPlayTan1Sound?.Invoke();
-            for (int i = 0; i < BRANCHES; i++)
+            for (int i = 0; i < BURSTS; i++)
             {
-                float angle = 360f / BRANCHES;
+                EnemyBulletType enemyBulletType = i switch
+                {
+                    0 => EnemyBulletType.AMULET_RED,
+                    1 => EnemyBulletType.AMULET_SKY,
+                    2 => EnemyBulletType.AMULET_GREEN,
+                    3 => EnemyBulletType.AMULET_ORANGE,
+                    _ => EnemyBulletType.AMULET_YELLOW,
+                };
                 for (int j = 0; j < BRANCHES; j++)
                 {
-                    float modSpeed = SPEED * (1 - 0.2f * j);
-                    // int delay = 30 * (BRANCHES - j);
-                    int delay = 0;
-                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i + rotation, STG.EnemyBulletType.AMULET_BLUE, delay);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i + 23 + rotation, STG.EnemyBulletType.AMULET_RED, delay);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i - 23 + rotation, STG.EnemyBulletType.AMULET_PURPLE, delay);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i + 23 - dir + rotation, STG.EnemyBulletType.AMULET_RED, delay + 15);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, modSpeed, angle * i - 23 - dir + rotation, STG.EnemyBulletType.AMULET_PURPLE, delay + 15);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, SPEED * (1 - i * 0.1f), angle * j + rotation + i * dir, enemyBulletType, 0);
                 }
             }
-            if (Random.Range(0f, 1f) < 0.12f)
+            if (Random.Range(0f, 1f) < 0.5f)
             {
                 dir *= -1;
             }

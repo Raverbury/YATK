@@ -119,7 +119,7 @@ public class Player : PausableMono
 
     private bool isInvulnerable = false;
 
-    private short _pocLine = (short)(Constant.GAME_HEIGHT * -0.25);
+    private float pocLine = Constant.GAME_HEIGHT * -0.25f;
 
     private int initialBomb = 3;
 
@@ -172,6 +172,7 @@ public class Player : PausableMono
     {
         this.playerData = Instantiate(playerData);
         // set stats
+        pocLine = (short)(Constant.GAME_HEIGHT * -playerData.ItemCollectionLine.GetFinalStat());
         deathBombFrames = (int)playerData.deathBombWindow.GetFinalStat();
         circleCollider2D.radius = (float)playerData.hitboxRadius.GetFinalStat() / 100;
         RemainingLife = playerData.initialLife;
@@ -248,7 +249,7 @@ public class Player : PausableMono
         }
 
         // check above poc line
-        if (transform.position.y >= _pocLine)
+        if (transform.position.y >= pocLine)
         {
             PlayerAutoCollectItem?.Invoke();
         }

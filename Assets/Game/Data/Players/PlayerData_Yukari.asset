@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Yakumo Yukari
   nameColor: {r: 0.8, g: 0.4, b: 1, a: 1}
-  sprite: {fileID: -1732235031, guid: c57df4d1f0d44df4cb1f05d8b403e793, type: 3}
+  sprite: {fileID: 21300000, guid: 7e7c3b8b033b270479ebca321f73e3c7, type: 3}
   frontAnimation: {fileID: 7400000, guid: 8e39138a451ebb4469ad2575140335ae, type: 2}
   sideAnimation: {fileID: 7400000, guid: 6bb435cd7eefb114d8fb03fd82ec31cc, type: 2}
   unfocusedSpeed:
@@ -35,10 +35,10 @@ MonoBehaviour:
     baseStat: 10
     flatBonusStat: 0
   Attack:
-    baseStat: 11
+    baseStat: 17
     flatBonusStat: 0
   RateOfFire:
-    baseStat: 40
+    baseStat: 650
     flatBonusStat: 0
   CriticalHitRate:
     baseStat: 0
@@ -47,10 +47,10 @@ MonoBehaviour:
     baseStat: 0
     flatBonusStat: 0
   ItemCollectionLine:
-    baseStat: 25
+    baseStat: 0.25
     flatBonusStat: 0
-  RatingPower: 0.7
+  RatingPower: 0.6
   RatingSpeed: 0.5
-  RatingDifficulty: 0.6
+  RatingDifficulty: 0.5
   methods:
   - Skill1

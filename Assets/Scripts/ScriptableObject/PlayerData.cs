@@ -49,7 +49,8 @@ public class PlayerData : ScriptableObject
     [Tooltip("The player's attack power.")]
     public Stat Attack;
 
-    [Tooltip("The player's rate of fire. Time between shot is generally calculated as 5 / (5 + rof).")]
+    [Tooltip("The player's rate of fire. Frames between shot scaling is dictated by ROFScaling. Default should be 650 if not sure.")]
+    // [Range(ROFScaling.MIN_ROF, ROFScaling.MAX_ROF)]
     public Stat RateOfFire;
 
     [Tooltip("The player's critical hit rate.")]
@@ -58,7 +59,7 @@ public class PlayerData : ScriptableObject
     [Tooltip("The player's bomb recharge rate.")]
     public Stat BombRechargeRate;
 
-    [Tooltip("The player's point of collection threshold (percent away from the top edge).")]
+    [Tooltip("The player's point of collection threshold (e.g. 0.1 = 10% away from the top edge).")]
     public Stat ItemCollectionLine;
     #endregion
 

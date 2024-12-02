@@ -817,6 +817,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b3f9b9f1e389a3b4686669aa65c782c1, type: 2}
   - {fileID: 11400000, guid: ec67cf7dbdf336d439c7d79dbf073c8f, type: 2}
   - {fileID: 11400000, guid: 99275b0599754d44797c59f4bf152f86, type: 2}
+  - {fileID: 11400000, guid: 3657ac330f30ed74db088719ce9d3c94, type: 2}
   items:
   - {fileID: 1386627235, guid: 37337388eee3f3546a93decc47506d17, type: 3}
   - {fileID: -647558547, guid: 37337388eee3f3546a93decc47506d17, type: 3}
@@ -4072,6 +4073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2725591cbd634a4c8c59ac34d42acc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1969762549}
   weaponOrbPrefab: {fileID: 5152321037105530819, guid: e5228d1c3728456499a3cf8ef03fd5ab, type: 3}
 --- !u!1 &1981396431
 GameObject:

@@ -130,6 +130,5 @@ public class PlayerSelector : AbstractHomeSelector
     private void ConfirmChoice()
     {
         HomeManager.EVConfirmPlayerSelect?.Invoke(playerDatas[currentOption]);
-        freezeInput = true;
     }
 }

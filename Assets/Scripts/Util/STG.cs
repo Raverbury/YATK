@@ -106,6 +106,7 @@ namespace STG
         IN_MARISA_MISSILE_BLUE = 3,
         IN_YUKARI_NEEDLE_PURPLE = 4,
         IN_YUKARI_NEEDLE_YELLOW = 5,
+        IN_MARISA_FOCUSED_MISSILE = 6,
     }
 
     public enum ItemType : ushort

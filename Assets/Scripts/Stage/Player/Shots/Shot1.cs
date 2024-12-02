@@ -8,12 +8,12 @@ public class Shot1 : AbstractShot
     private int shootFrames = 0;
     private const int SHOOT_FRAMES = 30;
     private int shotInterval = 6;
-    private float shotDamage = 6;
 
     private int timeBetweenShot = 0;
     private int currentLevel = 0;
 
     private readonly List<GameObject> weaponOrbs = new();
+    private float orbRotation = 0f;
 
     public override void SetPower(int power, Player player, GameObject weaponOrbPrefab)
     {
@@ -55,27 +55,31 @@ public class Shot1 : AbstractShot
             if (timeBetweenShot >= shotInterval)
             {
                 float baseShotDamage = player.playerData.Attack.GetFinalStat();
+                shotInterval = ROFScaling.GetFramesBetweenShot((int)player.playerData.RateOfFire.GetFinalStat());
                 if (isFocused)
                 {
-                    float focusedOrbDamage = 0.6f * shotDamage;
-                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x, player.transform.position.y, shotDamage, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
-                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 4, player.transform.position.y - 4, shotDamage, 20, 90f + 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
-                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 4, player.transform.position.y - 4, shotDamage, 20, 90f - 0.3f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x, player.transform.position.y, baseShotDamage * 0.7f, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 4f, player.transform.position.y - 4, baseShotDamage * 0.7f, 20, 90f - 4f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 4f, player.transform.position.y - 4, baseShotDamage * 0.7f, 20, 90f + 4f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x + 16, orb.transform.position.y, focusedOrbDamage, 20, 90f + 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
-                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x - 16, orb.transform.position.y, focusedOrbDamage, 20, 90f - 2f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x + 6f, orb.transform.position.y, baseShotDamage * 0.25f, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x - 6f, orb.transform.position.y, baseShotDamage * 0.25f, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x + 6f, orb.transform.position.y, baseShotDamage * 0.25f, 20, -90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x - 6f, orb.transform.position.y, baseShotDamage * 0.25f, 20, -90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
                     }
                 }
                 else
                 {
-                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x, player.transform.position.y, shotDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x, player.transform.position.y, shotDamage, 20, 90f - 8f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x, player.transform.position.y, shotDamage, 20, 90f + 8f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x, player.transform.position.y, baseShotDamage * 0.7f, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 10f, player.transform.position.y, baseShotDamage * 0.7f, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
+                    ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 10f, player.transform.position.y, baseShotDamage * 0.7f, 20, 90f, STG.PlayerShotType.IN_YUKARI_NEEDLE_PURPLE, 0);
                     foreach (var orb in weaponOrbs)
                     {
-                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 20, 90f + 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 20, 90f - 6f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, baseShotDamage * 0.25f, 20, 90f + 12f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, baseShotDamage * 0.25f, 20, 90f - 12f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, baseShotDamage * 0.25f, 20, -90f + 12f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, baseShotDamage * 0.25f, 20, -90f - 12f, STG.PlayerShotType.IN_YUKARI_NEEDLE_YELLOW, 0);
                     }
                 }
                 timeBetweenShot = 0;
@@ -87,12 +91,19 @@ public class Shot1 : AbstractShot
 
     private void PositionOrbs()
     {
+        const float FOCUSED_RADIUS = 0.3f;
+        const float UNFOCUSED_RADIUS = 0.45f;
+        orbRotation -= 2.13f;
+        orbRotation %= 360f;
+        float orbRotationRad = orbRotation * Mathf.Deg2Rad;
+        float spread = 2 * Mathf.PI / weaponOrbs.Count;
         for (int i = 0; i < weaponOrbs.Count; i++)
         {
             var orb = weaponOrbs[i];
             Vector3 pos = orb.transform.localPosition;
-            PositionPair orbPosition = OrbPositions.GetPositionPairAt(currentLevel, i);
-            pos = Vector3.MoveTowards(pos, isFocused ? orbPosition.Second : orbPosition.First, 0.08f);
+            Vector3 focusedPos = new Vector3(FOCUSED_RADIUS * Mathf.Cos(orbRotationRad + spread * i), FOCUSED_RADIUS * Mathf.Sin(orbRotationRad + spread * i));
+            Vector3 unfocusedPos = new Vector3(UNFOCUSED_RADIUS * Mathf.Cos(orbRotationRad + spread * i), UNFOCUSED_RADIUS * Mathf.Sin(orbRotationRad + spread * i));
+            pos = Vector3.MoveTowards(pos, isFocused ? focusedPos : unfocusedPos, 0.02f);
             orb.transform.localPosition = pos;
         }
     }
@@ -102,44 +113,18 @@ public class Shot1 : AbstractShot
         return new Shot1();
     }
 
-    private static class OrbPositions
+    public override string ShotName()
     {
-        private static readonly PositionPair[][] ORB_POSITIONS = new PositionPair[][] {
-            new PositionPair[0],
-            new PositionPair[]
-            {
-                new(new Vector2(0, -0.35f), new Vector2(0, 0.35f)),
-            },
-            new PositionPair[]
-            {
-                new(new Vector2(-0.35f, 0), new Vector2(-0.1f, 0.25f)),
-                new(new Vector2(0.35f, 0), new Vector2(0.1f, 0.25f)),
-            },
-            new PositionPair[]
-            {
-                new(new Vector2(-0.45f, -0.25f), new Vector2(0.2f, 0.25f)),
-                new(new Vector2(0, -0.35f), new Vector2(0, 0.35f)),
-                new(new Vector2(0.45f, -0.25f), new Vector2(-0.2f, 0.25f)),
-            },
-            new PositionPair[]
-            {
-                new(new Vector2(-0.35f, 0), new Vector2(0.1f, 0.25f)),
-                new(new Vector2(0.35f, 0), new Vector2(-0.1f, 0.25f)),
-                new(new Vector2(0.45f, -0.25f), new Vector2(0.3f, 0)),
-                new(new Vector2(-0.45f, -0.25f), new Vector2(-0.3f, 0)),
-            },
-        };
+        return "Phantasmic Boundary";
+    }
 
-        /// <summary>
-        /// Gets a Vector2 representing local pos of an orb to the player for a certain config.
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="orbNumber"></param>
-        /// <returns></returns>
-        /// <exception cref="IndexOutOfRangeException">When given stupid numbers</exception>
-        public static PositionPair GetPositionPairAt(int level, int orbNumber)
-        {
-            return ORB_POSITIONS[level][orbNumber];
-        }
+    public override string ShotDescription()
+    {
+        return "Tricky rotating needles";
+    }
+
+    public override Color ShotColor()
+    {
+        return new Color(204f / 255, 102f / 255f, 1f);
     }
 }

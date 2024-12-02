@@ -48,7 +48,7 @@ public class Nonspell13 : AbstractSingle
         {
             r = Random.Range(0f, 360f);
             spawnPos = leftSpawn + Random.insideUnitCircle * 60f;
-            speed = Random.Range(1.8f, 3.4f);
+            speed = Random.Range(1.8f, 3f);
             for (int i = 0; i < BRANCHES; i++)
             {
                 ECSEntitySpawner.SpawnEnemyBulletE1(spawnPos, speed, r + SPREAD * i, EnemyBulletType.AMULET_RED, 5);

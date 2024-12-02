@@ -36,5 +36,6 @@ public static class DefaultGameData
     public static AbstractShot[] AllShots = new AbstractShot[] {
         new Shot1(),
         new Shot2(),
+        new MarisaShot1(),
     };
 }

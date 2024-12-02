@@ -35,10 +35,10 @@ MonoBehaviour:
     baseStat: 30
     flatBonusStat: 0
   Attack:
-    baseStat: 10
+    baseStat: 16
     flatBonusStat: 0
   RateOfFire:
-    baseStat: 40
+    baseStat: 650
     flatBonusStat: 0
   CriticalHitRate:
     baseStat: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
     baseStat: 0
     flatBonusStat: 0
   ItemCollectionLine:
-    baseStat: 27
+    baseStat: 0.27
     flatBonusStat: 0
   RatingPower: 0.5
   RatingSpeed: 0.6

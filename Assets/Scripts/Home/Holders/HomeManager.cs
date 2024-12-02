@@ -9,6 +9,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
     public static UnityAction EVCancel;
     public static UnityAction<HomeMenuSelector.HomeMenuResult> EVConfirmHomeMenuResult;
     public static UnityAction<PlayerData> EVConfirmPlayerSelect;
+    public static UnityAction<AbstractShot, int> EVConfirmLoadoutSelect;
     public static UnityAction<AbstractSingle> RequestSetPracticePattern;
 
     private List<AbstractHomeSelector> homeSelectors = new();
@@ -17,11 +18,11 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
     [SerializeField]
     private PlayerSelector playerSelector;
     [SerializeField]
+    private LoadoutSelector loadoutSelector;
+    [SerializeField]
     private PracticeSelector practiceSelector;
     [SerializeField]
     private InertPanel manualPanel;
-    [SerializeField, Range(0, 1)]
-    private int shotType = 1;
 
     private Vector2 RIGHT_HINGE = new Vector2(STG.Constant.CAM_BORDER_RIGHT, 0f);
     private Vector2 LEFT_HINGE = new Vector2(STG.Constant.CAM_BORDER_LEFT, 0f);
@@ -36,6 +37,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         EVConfirmHomeMenuResult += ResolveHomeMenu;
         EVConfirmPlayerSelect += ResolvePlayerData;
         RequestSetPracticePattern += ResolveSetPracticePattern;
+        EVConfirmLoadoutSelect += ResolveLoadout;
     }
 
     private void OnDisable()
@@ -44,6 +46,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         EVConfirmHomeMenuResult -= ResolveHomeMenu;
         EVConfirmPlayerSelect -= ResolvePlayerData;
         RequestSetPracticePattern -= ResolveSetPracticePattern;
+        EVConfirmLoadoutSelect -= ResolveLoadout;
     }
 
     protected override void Awake()
@@ -131,9 +134,20 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         {
             return;
         }
-        RuntimeGameData.SelectedShot = DefaultGameData.AllShots[shotType];
         RuntimeGameData.SelectedPlayerData = selectedPlayerData;
         SFXPlayer.EVPlayConfirmSound?.Invoke();
+        PushNextSelector(loadoutSelector);
+    }
+
+    private void ResolveLoadout(AbstractShot shot, int bomb)
+    {
+        if (!shouldRespondToInput)
+        {
+            return;
+        }
+        RuntimeGameData.SelectedShot = shot;
+        SFXPlayer.EVPlayConfirmSound?.Invoke();
+        loadoutSelector.enabled = false;
         SceneUtil.LoadSceneAsync("Stage");
         shouldRespondToInput = false;
     }

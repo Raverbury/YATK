@@ -55,7 +55,7 @@ public class Nonspell12 : AbstractSingle
             rotation = (rotation + spread) % 360f;
             counter = (counter + 1) % batchCount;
             yield return Timing.WaitForOneFrame;
-            loopCount = (loopCount + 1) % 300;
+            loopCount = (loopCount + 1) % 200;
             if (loopCount == 0)
             {
                 batchCount = Mathf.Max(3, batchCount - 1);

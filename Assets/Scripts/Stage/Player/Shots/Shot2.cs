@@ -11,7 +11,6 @@ public class Shot2 : AbstractShot
     private int shootFrames = 0;
     private const int SHOOT_FRAMES = 30;
     private int shotInterval = 6;
-    private float shotDamage = 6;
 
     private int timeBetweenShot = 0;
     private int currentLevel = 0;
@@ -62,16 +61,17 @@ public class Shot2 : AbstractShot
         {
             if (timeBetweenShot >= shotInterval)
             {
-                float baseAmuletDamage = 0.9f * shotDamage;
-                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 15, player.transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 100f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 15, player.transform.position.y, baseAmuletDamage, 20, isFocused ? 90f : 80f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 10, player.transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 10, player.transform.position.y, baseAmuletDamage, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                float baseShotDamage = player.playerData.Attack.GetFinalStat();
+                shotInterval = ROFScaling.GetFramesBetweenShot((int)player.playerData.RateOfFire.GetFinalStat());
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 15, player.transform.position.y, baseShotDamage * 0.4f, 20, isFocused ? 90f : 100f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 15, player.transform.position.y, baseShotDamage * 0.4f, 20, isFocused ? 90f : 80f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 10, player.transform.position.y, baseShotDamage * 0.4f, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 10, player.transform.position.y, baseShotDamage * 0.4f, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                 if (isFocused)
                 {
                     foreach (var orb in weaponOrbs)
                     {
-                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 25, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, baseShotDamage * 0.45f, 25, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
                     }
                 }
                 else
@@ -81,7 +81,7 @@ public class Shot2 : AbstractShot
                     for (int i = 0; i < weaponOrbs.Count; i++)
                     {
                         var orb = weaponOrbs[i];
-                        Entity entity = ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, shotDamage, 8, 90f + halfFanSpread - spread * i, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                        Entity entity = ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, baseShotDamage * 0.3f, 8, 90f + halfFanSpread - spread * i, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
                         CoroutineUtil.RunEntityBoundCoroutine(_DoHoming(entity), entity);
                     }
                 }
@@ -155,5 +155,20 @@ public class Shot2 : AbstractShot
     public override AbstractShot Clone()
     {
         return new Shot2();
+    }
+
+    public override string ShotName()
+    {
+        return "Bewitching Amulet";
+    }
+
+    public override string ShotDescription()
+    {
+        return "Homing and direct shot";
+    }
+
+    public override Color ShotColor()
+    {
+        return new Color(255 / 255, 51f / 255f, 51f / 255);
     }
 }

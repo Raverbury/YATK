@@ -38,7 +38,7 @@ public class Nonspell10 : AbstractSingle
         yield return WaitForFrames.WaitWrapper(30);
 
         const int BURSTS = 3;
-        int branches = 50;
+        int branches = 60;
         // int i = 0;
         float branchRotation = 360f / branches;
         float halfBranchRotation = branchRotation / 2f;
@@ -53,14 +53,15 @@ public class Nonspell10 : AbstractSingle
                     enemy.transform.position.x - Player.instance.transform.position.x
                 );
             }
-            for (int i = 0; i < branches; i++)
+            for (int i = 0; i < BURSTS; i++)
             {
-                for (int j = 0; j < BURSTS; j++)
+                int r = Random.Range(0, 2);
+                for (int j = 0; j < branches; j++)
                 {
-                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, 4f + 1.5f * j, halfBranchRotation * j + angleToPlayer + branchRotation * i, EnemyBulletType.ICE_PURPLE, 10);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(enemy.gameObject.transform.position, 4f + 1.5f * i, halfBranchRotation * r + angleToPlayer + branchRotation * j, EnemyBulletType.ICE_PURPLE, 10);
                 }
             }
-            branches = Mathf.Min(branches + 1, 80);
+            branches = Mathf.Min(branches + 1, 70);
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(90)));
         }
     }

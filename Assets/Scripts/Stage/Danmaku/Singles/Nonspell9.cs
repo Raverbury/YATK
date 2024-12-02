@@ -39,12 +39,12 @@ public class Nonspell9 : AbstractSingle
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return WaitForFrames.WaitWrapper(30);
 
-        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_BLUE, 4, 180, 0f, 0.4f, 0f));
-        yield return WaitForFrames.WaitWrapper(60 * 8);
+        CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_BLUE, 4, 180, 0f, 0.7f, 0f));
+        yield return WaitForFrames.WaitWrapper(60 * 7);
         CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_GREEN, 3, 190, 0.12f, -0.3f, -0.12f));
-        yield return WaitForFrames.WaitWrapper(60 * 8);
+        yield return WaitForFrames.WaitWrapper(60 * 6);
         CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_RED, 4, 195, 0f, 0f, 0.22f));
-        yield return WaitForFrames.WaitWrapper(60 * 8);
+        yield return WaitForFrames.WaitWrapper(60 * 6);
         CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_YELLOW, 7, 170, 0.14f, 0.1f, -0.2f));
 
         while (true)
