@@ -33,7 +33,7 @@ public class LoadoutSelector : AbstractHomeSelector
 
     private void Awake()
     {
-        SetLoadoutDetails(DefaultGameData.AllShots[currentShotOption]);
+        SetLoadoutDetails(DefaultGameData.AllShots[currentShotOption], DefaultGameData.AllBombs[currentBombOption]);
     }
 
     private void Update()
@@ -79,26 +79,26 @@ public class LoadoutSelector : AbstractHomeSelector
         // change bomb
         else if (Input.GetButtonDown("Up"))
         {
-            SelectBombChoice((currentBombOption - 1).Modulus(DefaultGameData.AllShots.Count()));
+            SelectBombChoice((currentBombOption - 1).Modulus(DefaultGameData.AllBombs.Count()));
         }
         else if (Input.GetButton("Up"))
         {
             keyHeldForFrames++;
             if (keyHeldForFrames == 30 || (keyHeldForFrames > 30 && (keyHeldForFrames - 30) % (PANEL_SWITCH_DURATION + 1) == 0))
             {
-                SelectBombChoice((currentBombOption - 1).Modulus(DefaultGameData.AllShots.Count()));
+                SelectBombChoice((currentBombOption - 1).Modulus(DefaultGameData.AllBombs.Count()));
             }
         }
         else if (Input.GetButtonDown("Down"))
         {
-            SelectBombChoice((currentBombOption + 1).Modulus(DefaultGameData.AllShots.Count()));
+            SelectBombChoice((currentBombOption + 1).Modulus(DefaultGameData.AllBombs.Count()));
         }
         else if (Input.GetButton("Down"))
         {
             keyHeldForFrames++;
             if (keyHeldForFrames == 30 || (keyHeldForFrames > 30 && (keyHeldForFrames - 30) % (PANEL_SWITCH_DURATION + 1) == 0))
             {
-                SelectBombChoice((currentBombOption + 1).Modulus(DefaultGameData.AllShots.Count()));
+                SelectBombChoice((currentBombOption + 1).Modulus(DefaultGameData.AllBombs.Count()));
             }
         }
         // end
@@ -120,11 +120,14 @@ public class LoadoutSelector : AbstractHomeSelector
         Timing.RunCoroutine(_SwitchPanel(currentShotOption, nextBombOption, RotateDir.Vertical));
     }
 
-    private void SetLoadoutDetails(AbstractShot shot)
+    private void SetLoadoutDetails(AbstractShot shot, AbstractBombWeapon bomb)
     {
         shotName.text = shot.ShotName();
         shotName.color = shot.ShotColor();
         shotDescription.text = shot.ShotDescription();
+        bombName.text = bomb.BombName();
+        bombName.color = bomb.BombColor();
+        bombDescription.text = bomb.BombDescription();
     }
 
     private IEnumerator<float> _SwitchPanel(int nextShotOption, int nextBombOption, RotateDir dir)
@@ -138,7 +141,7 @@ public class LoadoutSelector : AbstractHomeSelector
         {
             if (i == PANEL_SWITCH_DURATION / 2)
             {
-                SetLoadoutDetails(DefaultGameData.AllShots[currentShotOption]);
+                SetLoadoutDetails(DefaultGameData.AllShots[currentShotOption], DefaultGameData.AllBombs[currentBombOption]);
             }
             if (i >= PANEL_SWITCH_DURATION / 2)
             {
@@ -170,7 +173,7 @@ public class LoadoutSelector : AbstractHomeSelector
 
     private void ConfirmChoice()
     {
-        HomeManager.EVConfirmLoadoutSelect?.Invoke(DefaultGameData.AllShots[currentShotOption], 0);
+        HomeManager.EVConfirmLoadoutSelect?.Invoke(DefaultGameData.AllShots[currentShotOption], DefaultGameData.AllBombs[currentBombOption]);
     }
 
     private enum RotateDir

@@ -125,6 +125,7 @@ namespace STG
     {
         MASTER_SPARK_LASER = 0,
         MASTER_SPARK_LASER_RAGE = 1,
+        FANTASY_ORB = 2,
     }
 
     public static class Lifecycle

@@ -105,17 +105,6 @@ public class Nonspell6 : AbstractSingle
         }
     }
 
-    // private void Bounce(EnemyBullet enemyBullet)
-    // {
-    //     if (enemyBullet.transform.position.y <= Constant.GAME_BORDER_BOTTOM)
-    //     {
-    //         enemyBullet.transform.eulerAngles = new Vector3(0f, 0f, 90f);
-    //         (var sprite, var radius, var hitbox, var _1, var _2, var _3) = ShotSheet.GetEnemyBulletData((int)EnemyBulletType.BUBBLE_DARK_YELLOW);
-    //         enemyBullet.SetGraphic(sprite, radius, hitbox);
-    //         enemyBullet.speed *= 2f;
-    //     }
-    // }
-
     protected override void DropRewards(Vector2 targetPos)
     {
         base.DropRewards(targetPos);

@@ -9,7 +9,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
     public static UnityAction EVCancel;
     public static UnityAction<HomeMenuSelector.HomeMenuResult> EVConfirmHomeMenuResult;
     public static UnityAction<PlayerData> EVConfirmPlayerSelect;
-    public static UnityAction<AbstractShot, int> EVConfirmLoadoutSelect;
+    public static UnityAction<AbstractShot, AbstractBombWeapon> EVConfirmLoadoutSelect;
     public static UnityAction<AbstractSingle> RequestSetPracticePattern;
 
     private List<AbstractHomeSelector> homeSelectors = new();
@@ -139,13 +139,14 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         PushNextSelector(loadoutSelector);
     }
 
-    private void ResolveLoadout(AbstractShot shot, int bomb)
+    private void ResolveLoadout(AbstractShot shot, AbstractBombWeapon bomb)
     {
         if (!shouldRespondToInput)
         {
             return;
         }
         RuntimeGameData.SelectedShot = shot;
+        RuntimeGameData.SelectedBomb = bomb;
         SFXPlayer.EVPlayConfirmSound?.Invoke();
         loadoutSelector.enabled = false;
         SceneUtil.LoadSceneAsync("Stage");

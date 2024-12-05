@@ -10,12 +10,12 @@ using UnityEngine.Events;
 public class Player : PausableMono
 {
     public static UnityAction PlayerShoot;
-    public static UnityAction<bool> PlayerBomb;
+    public static UnityAction<bool> PlayerUseBomb;
     public static UnityAction<bool> PlayerSetFocus;
 
     public static UnityAction<float> PlayerIsInvulnerable;
     public static UnityAction<int> PlayerSetLife;
-    public static UnityAction<int> PlayerSetBomb;
+    public static UnityAction<int> EVPlayerSetRemainingBombAmount;
     public static UnityAction<int> PlayerSetGraze;
     public static UnityAction<int> PlayerSetPower;
     public static UnityAction PlayerAutoCollectItem;
@@ -24,6 +24,9 @@ public class Player : PausableMono
     public static UnityAction PlayerCollectItem;
     public static UnityAction PlayerPowerUp;
     public static UnityAction EVPlayerGraze;
+    /// <summary>
+    /// An event that fires after using a bomb, first int is iframe duration, second int is how many bombs is consumed.
+    /// </summary>
     public static UnityAction<int, int> EVBombActivate;
 
     public static UnityAction ResultPlayerExtend;
@@ -67,8 +70,8 @@ public class Player : PausableMono
         }
         set
         {
-            PlayerSetBomb?.Invoke(value);
             bomb = value;
+            EVPlayerSetRemainingBombAmount?.Invoke(value);
         }
     }
 
@@ -237,7 +240,7 @@ public class Player : PausableMono
             {
                 if (canBomb)
                 {
-                    PlayerBomb?.Invoke(shouldMiss);
+                    PlayerUseBomb?.Invoke(shouldMiss);
                 }
             }
         }

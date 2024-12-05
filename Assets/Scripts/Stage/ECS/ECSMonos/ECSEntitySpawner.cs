@@ -269,7 +269,7 @@ public class ECSEntitySpawner : MonoBehaviour
         entityManager.SetComponentData(entity, bulletTransform);
 
         // set spawn cloud sprite
-        (Sprite realSprite, float _1, float realHitboxRadius, Sprite spawnCloudSprite, float _2, float _3) = ShotSheet.GetEnemyBulletData((int)bulletType);
+        (Sprite realSprite, float _1, float realHitboxRadius, Sprite spawnCloudSprite, float _2, float _3) = ShotSheet.GetEnemyBulletData(bulletType);
         SpriteRenderer spriteRenderer = entityManager.GetComponentObject<SpriteRenderer>(entity);
         spriteRenderer.sprite = spawnCloudSprite;
 
@@ -402,7 +402,7 @@ public class ECSEntitySpawner : MonoBehaviour
         entityManager.SetComponentData(entity, bulletTransform);
 
         // set sprite
-        ShotData playerShotData = ShotSheet.GetPlayerShotData((int)playerShotType);
+        ShotData playerShotData = ShotSheet.GetPlayerShotData(playerShotType);
         SpriteRenderer spriteRenderer = entityManager.GetComponentObject<SpriteRenderer>(entity);
         spriteRenderer.sprite = playerShotData.SPRITES[0];
 

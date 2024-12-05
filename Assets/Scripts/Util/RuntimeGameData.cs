@@ -4,6 +4,7 @@ public static class RuntimeGameData
 {
     public static PlayerData SelectedPlayerData;
     public static AbstractShot SelectedShot;
+    public static AbstractBombWeapon SelectedBomb;
     public static List<AbstractSingle> SelectedPatterns;
 
     public static bool IsPractice = false;

@@ -52,7 +52,7 @@ public class Enemy : PausableMono
     [SerializeField, HideInInspector]
     private SpriteRenderer spriteRenderer;
 
-    private Dictionary<Bomb, bool> touchingBombs = new();
+    private Dictionary<FriendlyDamageArea, bool> touchingBombs = new();
 
     private void OnValidate()
     {
@@ -72,7 +72,7 @@ public class Enemy : PausableMono
         // }
         if (STG.Constant.LAYER_PLAYER_BOMB == other.gameObject.layer)
         {
-            if (other.gameObject.TryGetComponent(out Bomb bomb))
+            if (other.gameObject.TryGetComponent(out FriendlyDamageArea bomb))
             {
                 touchingBombs.Add(bomb, true);
 
@@ -84,7 +84,7 @@ public class Enemy : PausableMono
     {
         if (STG.Constant.LAYER_PLAYER_BOMB == other.gameObject.layer)
         {
-            if (other.gameObject.TryGetComponent(out Bomb bomb))
+            if (other.gameObject.TryGetComponent(out FriendlyDamageArea bomb))
             {
                 touchingBombs.Remove(bomb);
             }
@@ -95,7 +95,7 @@ public class Enemy : PausableMono
     {
         foreach (var kvp in touchingBombs)
         {
-            Bomb bomb = kvp.Key;
+            FriendlyDamageArea bomb = kvp.Key;
             float damage = Mathf.Clamp(bomb.damage, 0f, HP);
             TakeDamage(damage);
         }

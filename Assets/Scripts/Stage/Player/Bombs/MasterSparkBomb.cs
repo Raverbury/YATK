@@ -5,27 +5,23 @@ using UnityEngine;
 
 public class MasterSparkBomb : AbstractBombWeapon
 {
-    [SerializeField]
-    private GameObject bombZone;
-
-    public override void Bomb(bool isDeathBomb)
+    public override void Bomb(Player player, bool isDeathBomb, BombPrefabs bombPrefabs)
     {
-        Timing.RunCoroutine(_FireMasterSpark(isDeathBomb));
-        Player.EVBombActivate?.Invoke(IFrameDuration(), isDeathBomb? 2 : 1);
+        Timing.RunCoroutine(_FireMasterSpark(player, isDeathBomb, bombPrefabs));
         SFXPlayer.EVPlayMasterSparkSound?.Invoke();
     }
 
-    private IEnumerator<float> _FireMasterSpark(bool isDeathBomb)
+    private IEnumerator<float> _FireMasterSpark(Player player, bool isDeathBomb, BombPrefabs bombPrefabs)
     {
         if (!isDeathBomb)
         {
             player.playerData.focusedSpeed.AddMultiplier("bomb", -0.5f);
             player.playerData.unfocusedSpeed.AddMultiplier("bomb", -0.5f);
-            GameObject masterSparkLaser = Instantiate(bombZone, transform);
+            GameObject masterSparkLaser = GameObject.Instantiate(bombPrefabs.PolygonalFDA, player.transform);
             masterSparkLaser.transform.localPosition = new(0f, 0.25f, 0f);
             masterSparkLaser.transform.localEulerAngles = new(0f, 0f, 90f);
             masterSparkLaser.transform.localScale = new(0f, 0.05f, 0f);
-            if (masterSparkLaser.TryGetComponent(out Bomb bomb))
+            if (masterSparkLaser.TryGetComponent(out FriendlyDamageArea bomb))
             {
                 bomb.SetBombData(BombType.MASTER_SPARK_LASER, 10f);
             }
@@ -55,7 +51,7 @@ public class MasterSparkBomb : AbstractBombWeapon
                 yield return Timing.WaitForOneFrame;
             }
 
-            Destroy(masterSparkLaser);
+            GameObject.Destroy(masterSparkLaser);
 
             // yield return WaitForFrames.WaitWrapper(60);
             player.playerData.focusedSpeed.RemoveMultiplier("bomb");
@@ -65,20 +61,20 @@ public class MasterSparkBomb : AbstractBombWeapon
         {
             player.playerData.focusedSpeed.AddMultiplier("bomb", -0.5f);
             player.playerData.unfocusedSpeed.AddMultiplier("bomb", -0.5f);
-            GameObject masterSparkLaserLeft = Instantiate(bombZone, transform);
+            GameObject masterSparkLaserLeft = GameObject.Instantiate(bombPrefabs.PolygonalFDA, player.transform);
             masterSparkLaserLeft.transform.localPosition = new(-0.15f, 0.25f, 0f);
             masterSparkLaserLeft.transform.localEulerAngles = new(0f, 0f, 95f);
             masterSparkLaserLeft.transform.localScale = new(0f, 0.05f, 0f);
-            if (masterSparkLaserLeft.TryGetComponent(out Bomb bombLeft))
+            if (masterSparkLaserLeft.TryGetComponent(out FriendlyDamageArea bombLeft))
             {
                 bombLeft.SetBombData(BombType.MASTER_SPARK_LASER_RAGE, 10f);
             }
 
-            GameObject masterSparkLaserRight = Instantiate(bombZone, transform);
+            GameObject masterSparkLaserRight = GameObject.Instantiate(bombPrefabs.PolygonalFDA, player.transform);
             masterSparkLaserRight.transform.localPosition = new(0.15f, 0.25f, 0f);
             masterSparkLaserRight.transform.localEulerAngles = new(0f, 0f, 85f);
             masterSparkLaserRight.transform.localScale = new(0f, 0.05f, 0f);
-            if (masterSparkLaserRight.TryGetComponent(out Bomb bombRight))
+            if (masterSparkLaserRight.TryGetComponent(out FriendlyDamageArea bombRight))
             {
                 bombRight.SetBombData(BombType.MASTER_SPARK_LASER_RAGE, 10f);
             }
@@ -111,8 +107,8 @@ public class MasterSparkBomb : AbstractBombWeapon
                 yield return Timing.WaitForOneFrame;
             }
 
-            Destroy(masterSparkLaserLeft);
-            Destroy(masterSparkLaserRight);
+            GameObject.Destroy(masterSparkLaserLeft);
+            GameObject.Destroy(masterSparkLaserRight);
 
             // yield return WaitForFrames.WaitWrapper(60);
             player.playerData.focusedSpeed.RemoveMultiplier("bomb");
@@ -125,8 +121,23 @@ public class MasterSparkBomb : AbstractBombWeapon
         return 270;
     }
 
-    protected override void PausableUpdate()
+    public override AbstractBombWeapon Clone()
     {
+        return new MasterSparkBomb();
+    }
 
+    public override string BombName()
+    {
+        return "Master Spark";
+    }
+
+    public override string BombDescription()
+    {
+        return "A giant laser short of anything but power";
+    }
+
+    public override Color BombColor()
+    {
+        return new Color(255f / 255, 204f / 255f, 0f);
     }
 }

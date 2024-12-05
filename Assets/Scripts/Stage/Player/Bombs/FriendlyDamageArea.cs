@@ -1,8 +1,8 @@
 using STG;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D), typeof(PolygonCollider2D))]
-public class Bomb : MonoBehaviour
+[RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D), typeof(Collider2D))]
+public class FriendlyDamageArea : MonoBehaviour
 {
     public float damage = 1f;
 

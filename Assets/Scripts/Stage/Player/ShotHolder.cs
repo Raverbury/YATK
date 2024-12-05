@@ -3,15 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public class ShotHolder : PausableMono
 {
-    [SerializeField, HideInInspector]
-    private Player player;
     private AbstractShot shot;
 
     public GameObject weaponOrbPrefab;
-
-    private void OnValidate() {
-        player = GetComponent<Player>();
-    }
 
     private void Awake()
     {
@@ -44,11 +38,13 @@ public class ShotHolder : PausableMono
 
     private void SetPower(int power)
     {
+        Player player = GetComponent<Player>();
         shot.SetPower(power, player, weaponOrbPrefab);
     }
 
     protected override void PausableUpdate()
     {
+        Player player = GetComponent<Player>();
         shot.Tick(player);
     }
 }

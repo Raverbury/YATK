@@ -28,7 +28,9 @@ public class SFXPlayer : MonoBehaviour
     public AudioClip SFX_TIMEOUT_1;
     public AudioClip SFX_PLAYER_EXTEND;
     public AudioClip SFX_MASTER_SPARK;
+    public AudioClip SFX_TAN00;
     public AudioClip SFX_TAN01;
+    public AudioClip SFX_GUN00;
 
     public AudioClip SFX_PAUSE;
     public AudioClip SFX_CONFIRM;
@@ -50,6 +52,8 @@ public class SFXPlayer : MonoBehaviour
     public static UnityAction EVPlayMasterSparkSound;
     public static UnityAction RequestPlayInvalidSound;
     public static UnityAction RequestPlayTan1Sound;
+    public static UnityAction RequestPlayTan0Sound;
+    public static UnityAction RequestPlayGun0Sound;
 
     private void Awake()
     {
@@ -95,6 +99,8 @@ public class SFXPlayer : MonoBehaviour
         EVPlayMasterSparkSound += PlayMasterSparkSound;
         RequestPlayInvalidSound += PlayValidSound;
         RequestPlayTan1Sound += PlayTan1Sound;
+        RequestPlayTan0Sound += PlayTan0Sound;
+        RequestPlayGun0Sound += PlayGun0Sound;
     }
 
     private void OnDisable()
@@ -119,6 +125,18 @@ public class SFXPlayer : MonoBehaviour
         EVPlayMasterSparkSound -= PlayMasterSparkSound;
         RequestPlayInvalidSound -= PlayValidSound;
         RequestPlayTan1Sound -= PlayTan1Sound;
+        RequestPlayTan0Sound -= PlayTan0Sound;
+        RequestPlayGun0Sound -= PlayGun0Sound;
+    }
+
+    private void PlayGun0Sound()
+    {
+        PlayAudio(SFX_GUN00);
+    }
+
+    private void PlayTan0Sound()
+    {
+        PlayAudio(SFX_TAN00);
     }
 
     private void PlayPauseSound()

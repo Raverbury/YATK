@@ -38,4 +38,9 @@ public static class DefaultGameData
         new Shot2(),
         new MarisaShot1(),
     };
+
+    public static AbstractBombWeapon[] AllBombs = new AbstractBombWeapon[] {
+        new MasterSparkBomb(),
+        new FantasyOrbBomb(),
+    };
 }

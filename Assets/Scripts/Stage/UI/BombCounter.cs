@@ -16,12 +16,12 @@ public class BombCounter : MonoBehaviour
 
     private void OnEnable()
     {
-        Player.PlayerSetBomb += UpdateBombCounter;
+        Player.EVPlayerSetRemainingBombAmount += UpdateBombCounter;
     }
 
     private void OnDisable()
     {
-        Player.PlayerSetBomb -= UpdateBombCounter;
+        Player.EVPlayerSetRemainingBombAmount -= UpdateBombCounter;
     }
 
     private void UpdateBombCounter(int bomb = 2)

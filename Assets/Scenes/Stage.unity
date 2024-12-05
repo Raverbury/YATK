@@ -830,6 +830,7 @@ MonoBehaviour:
   bombs:
   - {fileID: 21300000, guid: dfcb5630345e6294d96772df4aab37e7, type: 3}
   - {fileID: 21300000, guid: 85d01b42135cd824ead80cb650fba876, type: 3}
+  - {fileID: 21300000, guid: 5aa0df9aadbbc9345ae709d58bf9ab8e, type: 3}
 --- !u!1 &353955842
 GameObject:
   m_ObjectHideFlags: 0
@@ -3897,8 +3898,8 @@ GameObject:
   - component: {fileID: 1969762547}
   - component: {fileID: 1969762546}
   - component: {fileID: 1969762551}
-  - component: {fileID: 1969762552}
   - component: {fileID: 1969762553}
+  - component: {fileID: 1969762554}
   m_Layer: 21
   m_Name: Player
   m_TagString: Untagged
@@ -4048,19 +4049,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.04
---- !u!114 &1969762552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1969762545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c71a9390af4dc2f40ade66c35db04431, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bombZone: {fileID: 3552278810015129840, guid: 7f2543150808dc84b8e105da8e66c156, type: 3}
 --- !u!114 &1969762553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4075,6 +4063,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1969762549}
   weaponOrbPrefab: {fileID: 5152321037105530819, guid: e5228d1c3728456499a3cf8ef03fd5ab, type: 3}
+--- !u!114 &1969762554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969762545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30a1238808a17204f879f7db6c8d972e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1969762549}
+  polygonalFDA: {fileID: 3552278810015129840, guid: 7f2543150808dc84b8e105da8e66c156, type: 3}
+  circularFDA: {fileID: 3552278810015129840, guid: 96952d9247c6c79489e6f916831cb0b9, type: 3}
 --- !u!1 &1981396431
 GameObject:
   m_ObjectHideFlags: 0
