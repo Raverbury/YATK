@@ -18,23 +18,58 @@ public class Nonspell7 : AbstractSingle
         return "Tetra Assault";
     }
 
-    public override int GetScore()
+    protected override int GetScore()
     {
         return 0;
     }
 
-    public override int GetTimer()
+    protected override int GetTimer()
     {
         return 60;
     }
 
-    public override bool IsTimeout()
+    protected override bool IsTimeout()
     {
         return true;
     }
 
-    protected override IEnumerator<float> _Loop(Enemy enemy)
+    protected override bool IsSpellCard()
     {
+        return true;
+    }
+
+    protected override bool IsBossAttack()
+    {
+        return true;
+    }
+
+    protected override void CleanUp()
+    {
+        if (enemy)
+        {
+            enemy.SetEmptyHpCircle();
+        }
+        for (int i = 0; i < 20; i++)
+        {
+            ECSEntitySpawner.SpawnItemI1(new Vector2(192f, -80f), ItemType.POWER_ITEM);
+        }
+    }
+
+    protected override bool SingleIsDoneOutsideOfTimer()
+    {
+        bool res = enemy && enemy.IsDead();
+        if (res)
+        {
+            enemy.SetEmptyHpCircle();
+        }
+        return res;
+    }
+
+    private Enemy enemy;
+
+    protected override IEnumerator<float> _Loop()
+    {
+        enemy = SpawnNamedBossEnemyUtil(ShotSheet.GetBossEnemyData(BossType.MOKOU), new());
         yield return WaitForFrames.WaitWrapper(30);
         yield return WaitForFrames.WaitWrapper(30);
         Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, 100), 60));

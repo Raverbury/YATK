@@ -15,30 +15,57 @@ public class Nonspell4 : AbstractSingle
         return "Collapse Matrix";
     }
 
-    public override int GetScore()
+    protected override int GetScore()
     {
         return 0;
     }
 
-    public override int GetTimer()
+    protected override int GetTimer()
     {
         return 50;
     }
 
-    public override bool IsTimeout()
+    protected override bool IsTimeout()
     {
         return false;
     }
 
-    protected override IEnumerator<float> _Loop(Enemy enemy)
+    protected override bool IsSpellCard()
     {
-        int wait = 60;
+        return true;
+    }
+
+    protected override bool IsBossAttack()
+    {
+        return true;
+    }
+
+    protected override void CleanUp()
+    {
+        if (enemy) {
+            enemy.SetEmptyHpCircle();
+        }
+    }
+
+    protected override bool SingleIsDoneOutsideOfTimer()
+    {
+        return enemy && enemy.IsDead();
+    }
+
+    private Enemy enemy;
+
+    protected override IEnumerator<float> _Loop()
+    {
+        enemy = SpawnNamedBossEnemyUtil(ShotSheet.GetBossEnemyData(BossType.MOKOU), new(){
+            new ItemStack(ItemType.POWER_ITEM, 13),
+        });
         Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return WaitForFrames.WaitWrapper(30);
 
         enemy.SetAnimState(Enemy.AnimState.Attack);
+        int wait = 60;
         while (true)
         {
             Vector2 pos = (Player.instance == null) ? new Vector2(STG.Constant.GAME_CENTER_X, STG.Constant.GAME_CENTER_Y) : Player.instance.transform.position;

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using MEC;
 using STG;
 using Unity.Entities;
-using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
 public class Nonspell3 : AbstractSingle
@@ -17,19 +16,26 @@ public class Nonspell3 : AbstractSingle
         return "Field Sign [Bloom Scatter]";
     }
 
-    public override int GetScore()
+    protected override int GetScore()
     {
         return 0;
     }
 
-    public override int GetTimer()
+    protected override int GetTimer()
     {
         return 50;
     }
 
-    public override bool IsTimeout()
+    protected override bool IsTimeout()
     {
         return false;
+    }
+
+    protected override void CleanUp()
+    {
+        if (enemy) {
+            enemy.SetEmptyHpCircle();
+        }
     }
 
     const int FLOWERS = 40;
@@ -37,8 +43,14 @@ public class Nonspell3 : AbstractSingle
     const float FLOWER_RING_RADIUS = 90f;
     const float PETAL_DISTANCE = 8f;
 
-    protected override IEnumerator<float> _Loop(Enemy enemy)
+    private Enemy enemy;
+
+    protected override IEnumerator<float> _Loop()
     {
+        enemy = SpawnNamedBossEnemyUtil(ShotSheet.GetBossEnemyData(BossType.MOKOU), new(){
+            new ItemStack(ItemType.POWER_ITEM, 6),
+            new ItemStack(ItemType.BIG_POWER_ITEM, 1),
+        });
         Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
 
@@ -130,5 +142,20 @@ public class Nonspell3 : AbstractSingle
         {
             ECSEntitySpawner.SetBulletSpeed(entity, 2.7f);
         }
+    }
+
+    protected override bool IsSpellCard()
+    {
+        return true;
+    }
+
+    protected override bool IsBossAttack()
+    {
+        return true;
+    }
+
+    protected override bool SingleIsDoneOutsideOfTimer()
+    {
+        return enemy && enemy.IsDead();
     }
 }

@@ -17,23 +17,45 @@ public class Nonspell9 : AbstractSingle
         return "Illusion [Necker's Dimension]";
     }
 
-    public override int GetScore()
+    protected override int GetScore()
     {
         return 0;
     }
 
-    public override int GetTimer()
+    protected override int GetTimer()
     {
         return 90;
     }
 
-    public override bool IsTimeout()
+    protected override bool IsTimeout()
     {
         return false;
     }
 
-    protected override IEnumerator<float> _Loop(Enemy enemy)
+    protected override bool IsSpellCard()
     {
+        return true;
+    }
+
+    protected override bool IsBossAttack()
+    {
+        return true;
+    }
+
+    protected override bool SingleIsDoneOutsideOfTimer()
+    {
+        bool res = enemy && enemy.IsDead();
+        if (res) {
+            enemy.SetEmptyHpCircle();
+        }
+        return res;
+    }
+
+    private Enemy enemy;
+
+    protected override IEnumerator<float> _Loop()
+    {
+        enemy = SpawnNamedBossEnemyUtil(ShotSheet.GetBossEnemyData(BossType.MOKOU), new());
         Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);

@@ -8,4 +8,6 @@ public static class RuntimeGameData
     public static List<AbstractSingle> SelectedPatterns;
 
     public static bool IsPractice = false;
+
+    public static int EnemyNaturalRewardDropCount = 0;
 }

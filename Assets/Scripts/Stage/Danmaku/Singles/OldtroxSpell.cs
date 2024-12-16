@@ -10,7 +10,7 @@ public class OldtroxSpell : AbstractSingle
 {
     public int GetHP()
     {
-        return 7000;
+        return 3400;
     }
 
     public override string GetName()
@@ -18,23 +18,52 @@ public class OldtroxSpell : AbstractSingle
         return "Dark Kin [Dark Flight of Torments]";
     }
 
-    public override int GetScore()
+    protected override int GetScore()
     {
         return 0;
     }
 
-    public override int GetTimer()
+    protected override int GetTimer()
     {
         return 60;
     }
 
-    public override bool IsTimeout()
+    protected override bool IsTimeout()
     {
         return false;
     }
 
-    protected override IEnumerator<float> _Loop(Enemy enemy)
+    protected override bool IsSpellCard()
     {
+        return true;
+    }
+
+    protected override bool IsBossAttack()
+    {
+        return true;
+    }
+
+    protected override bool SingleIsDoneOutsideOfTimer()
+    {
+        return enemy && enemy.IsDead();
+    }
+
+    protected override void CleanUp()
+    {
+        if (enemy) {
+            enemy.SetEmptyHpCircle();
+        }
+    }
+
+    private Enemy enemy;
+
+    protected override IEnumerator<float> _Loop()
+    {
+        enemy = SpawnNamedBossEnemyUtil(ShotSheet.GetBossEnemyData(BossType.MOKOU), new(){
+            new ItemStack(ItemType.POWER_ITEM, 7),
+            new ItemStack(ItemType.LIFE_ITEM, 1),
+            new ItemStack(ItemType.BIG_POWER_ITEM, 1),
+        });
         Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);

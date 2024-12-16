@@ -23,7 +23,7 @@ public class PracticeSelector : AbstractHomeSelector
 
     private void Awake()
     {
-        availablePatterns = DefaultGameData.AllPatterns;
+        availablePatterns = new(DefaultGameData.AllPatterns);
         SetPatternDescription(availablePatterns[currentOption]);
     }
 

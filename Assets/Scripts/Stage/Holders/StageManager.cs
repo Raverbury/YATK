@@ -14,14 +14,16 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     [SerializeField]
     private GameObject sidebarBottom;
 
-    public EnemyData enemyData;
-
+    /// <summary>
+    /// Event used to trigger bullet clearing. First bool is for if cleared bullets should drop star items, second bool is if this is a force clear
+    /// </summary>
     public static UnityAction<bool, bool> ClearEnemyBullet;
     public static UnityAction<bool> SetPause;
     public static UnityAction EVStageDestroy;
     public static UnityAction RequestPlayerRunOutOfLife;
 
-    private Dictionary<string, GameObject> enemies = new();
+    private readonly Dictionary<string, GameObject> namedEnemies = new();
+    private readonly HashSet<GameObject> allEnemies = new();
 
     private List<AbstractSingle> stageSingles;
 
@@ -31,13 +33,14 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     private bool shouldRespondToInput = true;
     private int currentSingleIndex = 0;
 
-    public bool isFinished = false;
+    private bool isFinished = false;
 
     protected override void Awake()
     {
         base.Awake();
         TogglePause(false);
         stageSingles = RuntimeGameData.SelectedPatterns;
+        RuntimeGameData.EnemyNaturalRewardDropCount = 0;
     }
 
     private void Start()
@@ -48,14 +51,12 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
 
     private void OnEnable()
     {
-        ClearEnemyBullet += KillBulletSpawningCoroutines;
         AbstractSingle.SingleFinish += StartNextAvailableSingle;
         RequestPlayerRunOutOfLife += PlayerRunOutOfLife;
     }
 
     private void OnDisable()
     {
-        ClearEnemyBullet -= KillBulletSpawningCoroutines;
         AbstractSingle.SingleFinish -= StartNextAvailableSingle;
         RequestPlayerRunOutOfLife -= PlayerRunOutOfLife;
     }
@@ -65,11 +66,6 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
         base.OnDestroy();
         Timing.KillCoroutines();
         EVStageDestroy?.Invoke();
-    }
-
-    private void KillBulletSpawningCoroutines(bool _, bool _2)
-    {
-        // Timing.KillCoroutines("enemyBulletSpawning");
     }
 
     private void PlayerDefeatAllPatterns()
@@ -98,7 +94,7 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
             return;
         }
         activeSingle = stageSingles[currentSingleIndex];
-        activeSingle.StartSingle(enemyData);
+        activeSingle.StartSingle();
         currentSingleIndex += 1;
     }
 
@@ -110,11 +106,18 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
 
     public static bool DestroyNamedEnemy(string name)
     {
-        if (instance.enemies.ContainsKey(name))
+        if (instance.namedEnemies.ContainsKey(name))
         {
-            Destroy(instance.enemies[name]);
+            DestroyEnemy(instance.namedEnemies[name].GetComponent<Enemy>());
         }
-        return instance.enemies.Remove(name);
+        return instance.namedEnemies.Remove(name);
+    }
+
+    public static bool DestroyEnemy(Enemy enemy)
+    {
+        bool result = instance.allEnemies.Remove(enemy.gameObject);
+        Destroy(enemy.gameObject);
+        return result;
     }
 
     /// <summary>
@@ -126,27 +129,31 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     /// <param name="y"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static bool SpawnNamedEnemy(out GameObject gameObject, float x, float y, string name, bool hasMarker = true)
+    public static bool SpawnNamedEnemy(out GameObject enemyGameObject, float x, float y, string name, List<ItemStack> rewards, bool isBossEnemy = true)
     {
-        if (instance.enemies.ContainsKey(name))
+        if (instance.namedEnemies.ContainsKey(name))
         {
-            gameObject = instance.enemies[name];
+            enemyGameObject = instance.namedEnemies[name];
+            enemyGameObject.GetComponent<Enemy>().InitEnemy(rewards, isBossEnemy);
             return false;
         }
-        gameObject = SpawnEnemy(x, y, hasMarker);
-        instance.enemies.Add(name, gameObject);
+        enemyGameObject = SpawnEnemy(x, y, rewards, isBossEnemy);
+        instance.namedEnemies.Add(name, enemyGameObject);
         return true;
     }
 
-    public static GameObject SpawnEnemy(float x, float y, bool hasMarker = true)
+    public static GameObject SpawnEnemy(float x, float y, List<ItemStack> rewards, bool isBossEnemy = false)
     {
         GameObject enemyGameObject = Instantiate(instance.enemyPrefab);
         enemyGameObject.transform.position = new Vector3(x, y, 0);
-        if (hasMarker)
+        instance.allEnemies.Add(enemyGameObject);
+
+        if (isBossEnemy)
         {
             GameObject enemyMarkerGO = Instantiate(instance.enemyMarkerPrefab, instance.sidebarBottom.transform);
             enemyMarkerGO.GetComponent<EnemyMarker>().enemy = enemyGameObject.GetComponent<Enemy>();
         }
+        enemyGameObject.GetComponent<Enemy>().InitEnemy(rewards, isBossEnemy);
         return enemyGameObject;
     }
 
@@ -156,13 +163,13 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
     /// <returns></returns>
     public GameObject GetFirstEnemy()
     {
-        if (enemies.Count == 0)
+        if (allEnemies.Count == 0)
         {
             return null;
         }
         try
         {
-            return enemies.First().Value;
+            return allEnemies.First();
         }
         catch (InvalidOperationException)
         {
@@ -172,13 +179,13 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
 
     public GameObject[] GetTargetableEnemies()
     {
-        if (enemies.Count == 0)
+        if (allEnemies.Count == 0)
         {
             return new GameObject[] { };
         }
         try
         {
-            return enemies.Select(kvp => kvp.Value).ToArray();
+            return allEnemies.ToArray();
         }
         catch (InvalidOperationException)
         {

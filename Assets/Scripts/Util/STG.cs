@@ -128,6 +128,19 @@ namespace STG
         FANTASY_ORB = 2,
     }
 
+    public enum BossType : ushort
+    {
+        MOKOU = 0,
+    }
+
+    public enum FairyType : ushort
+    {
+        FAIRY_BLUE = 0,
+        FAIRY_RED = 1,
+        FAIRY_GREEN = 2,
+        FAIRY_YELLOW = 3,
+    }
+
     public static class Lifecycle
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

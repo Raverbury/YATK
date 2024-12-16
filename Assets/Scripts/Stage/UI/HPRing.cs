@@ -32,8 +32,8 @@ public class HPRing : MonoBehaviour
 
     private void UpdateHPRing(float currentHP, float maxHP)
     {
-        currentHP = Mathf.Max(currentHP, 0);
         image.enabled = enemy.showHP;
+        currentHP = Mathf.Max(currentHP, 0);
         image.fillAmount = currentHP / maxHP;
     }
 }

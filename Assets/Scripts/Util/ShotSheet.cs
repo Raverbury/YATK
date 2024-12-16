@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using STG;
-using TMPro;
 using UnityEngine;
 
 public class ShotSheet : OverwritableMonoSingleton<ShotSheet>
@@ -15,25 +14,37 @@ public class ShotSheet : OverwritableMonoSingleton<ShotSheet>
     #region enemy bullet
     [Header("Enemy bullets")]
     [SerializeField]
-    private List<ShotData> enemyBullets;
+    private ShotData[] enemyBullets;
     #endregion
 
     #region player weapons
     [Header("Player weapons")]
     [SerializeField]
-    private List<ShotData> playerWeapons;
+    private ShotData[] playerWeapons;
     #endregion
 
     #region items
     [Header("Items")]
     [SerializeField]
-    private List<Sprite> items;
+    private Sprite[] items;
     #endregion
 
     #region bombs
     [Header("Bombs")]
     [SerializeField]
-    private List<Sprite> bombs;
+    private Sprite[] bombs;
+    #endregion
+
+    #region boss
+    [Header("Boss enemies")]
+    [SerializeField]
+    private EnemyBossData[] bosses;
+    #endregion
+
+    #region fairy
+    [Header("Enemy fairies")]
+    [SerializeField]
+    private EnemyData[] fairies;
     #endregion
 
     public static (Sprite, float, float, Sprite, float, float) GetEnemyBulletData(EnemyBulletType enemyBulletType)
@@ -44,8 +55,6 @@ public class ShotSheet : OverwritableMonoSingleton<ShotSheet>
         int spawnCloudIndex = color;
         try
         {
-
-
             ShotData data = instance.enemyBullets[type];
             ShotData spawnClouds = instance.spawnClouds;
             if (data.SPRITES.Count == 16)
@@ -113,6 +122,28 @@ public class ShotSheet : OverwritableMonoSingleton<ShotSheet>
         catch (ArgumentOutOfRangeException)
         {
             throw new Exception($"ArgumentOutOfRangeException, did you forget to assign a sprite for {bombType}");
+        }
+    }
+
+    public static EnemyBossData GetBossEnemyData(BossType bossType) {
+        try
+        {
+            return instance.bosses[(int)bossType];
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            throw new Exception($"ArgumentOutOfRangeException, did you forget to assign a sprite for {bossType}");
+        }
+    }
+
+    public static EnemyData GetFairyEnemyData(FairyType fairyType) {
+        try
+        {
+            return instance.fairies[(int)fairyType];
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            throw new Exception($"ArgumentOutOfRangeException, did you forget to assign a sprite for {fairyType}");
         }
     }
 }

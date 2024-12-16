@@ -168,7 +168,7 @@ public class Player : PausableMono
         // set player data/stats
         SetPlayerData(RuntimeGameData.SelectedPlayerData);
 
-        // PLAN: register passive/ability or smth
+        // TODO: register passive/ability or smth
     }
 
     private void SetPlayerData(PlayerData playerData)
@@ -179,7 +179,7 @@ public class Player : PausableMono
         deathBombFrames = (int)playerData.deathBombWindow.GetFinalStat();
         circleCollider2D.radius = (float)playerData.hitboxRadius.GetFinalStat() / 100;
         RemainingLife = playerData.initialLife;
-        initialBomb = playerData.initialBomb; // PLAN: also add from bomb's stat if implemented
+        initialBomb = playerData.initialBomb; // TODO: also add from bomb's stat if implemented
         RemainingBomb = initialBomb;
         Focus = false;
         // change anims

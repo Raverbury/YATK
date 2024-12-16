@@ -15,23 +15,48 @@ public class Nonspell12 : AbstractSingle
         return "Nonspell 5";
     }
 
-    public override int GetScore()
+    protected override int GetScore()
     {
         return 0;
     }
 
-    public override int GetTimer()
+    protected override int GetTimer()
     {
         return 60;
     }
 
-    public override bool IsTimeout()
+    protected override bool IsTimeout()
     {
         return false;
     }
 
-    protected override IEnumerator<float> _Loop(Enemy enemy)
+    protected override bool IsSpellCard()
     {
+        return false;
+    }
+
+    protected override bool IsBossAttack()
+    {
+        return true;
+    }
+
+    protected override bool SingleIsDoneOutsideOfTimer()
+    {
+        return enemy && enemy.IsDead();
+    }
+
+    protected override void CleanUp()
+    {
+        if (enemy) {
+            enemy.SetEmptyHpCircle();
+        }
+    }
+
+    private Enemy enemy;
+
+    protected override IEnumerator<float> _Loop()
+    {
+        enemy = SpawnNamedBossEnemyUtil(ShotSheet.GetBossEnemyData(BossType.MOKOU), new());
         Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);

@@ -48,8 +48,9 @@ public class ECSPlayerBulletController : PausableMono
                 float3 enemyPos = enemyGOs[j].transform.position;
 
                 float distance = math.distance(localTransform.Position, enemyPos);
+                Enemy enemy = enemyGOs[j].GetComponent<Enemy>();
                 // TODO: maybe add enemy hurtbox radius here kappa
-                if (distance <= 50f)
+                if (distance <= (enemy.IsBoss ? 50f : 20f))
                 {
                     enemyGOs[j].GetComponent<Enemy>().TakeDamage(playerBulletComponent.Damage);
                     hitSomething = true;

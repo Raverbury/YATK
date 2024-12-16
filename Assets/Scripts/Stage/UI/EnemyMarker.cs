@@ -29,7 +29,7 @@ public class EnemyMarker : MonoBehaviour
         else
         {
             image.rectTransform.localPosition = new Vector2(enemy.transform.position.x - Constant.GAME_CENTER_X, 0f);
-            if (enemy.HasRefilledHP && enemy.HP < enemy.MaxHP * 0.1f && enemy.HP > 0)
+            if (enemy.IsNearDeath())
             {
                 image.sprite = enemyMarkerNearDeath;
             }

@@ -38,7 +38,7 @@ public class BGMPlayer : MonoBehaviour
         RequestPlayStageBGM -= PlayStageBGM;
         RequestPlayGameoverBGM -= PlayGameoverBGM;
 
-        RequestStopBGM += StopBGM;
+        RequestStopBGM -= StopBGM;
     }
 
     private void StopBGM()

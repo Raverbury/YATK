@@ -54,6 +54,7 @@ public class SFXPlayer : MonoBehaviour
     public static UnityAction RequestPlayTan1Sound;
     public static UnityAction RequestPlayTan0Sound;
     public static UnityAction RequestPlayGun0Sound;
+    public static UnityAction RequestPlayExplodeSound;
 
     private void Awake()
     {
@@ -87,7 +88,7 @@ public class SFXPlayer : MonoBehaviour
         Player.PlayerPowerUp += PlayPowerUpSound;
         RequestPlaySpellStartSound += PlaySpellStartSound;
         Player.PlayerShoot += PlayPlayerShootSound;
-        AbstractSingle.SingleExplode += PlaySingleExplodeSound;
+        RequestPlayExplodeSound += PlaySingleExplodeSound;
         Player.PlayerCollectItem += PlayGenericItemCollectSound;
         Player.EVPlayerGraze += PlayGrazeSound;
         AbstractSingle.PatternTimerSecondTick += PlayTimeoutSound;
@@ -113,7 +114,7 @@ public class SFXPlayer : MonoBehaviour
         Player.PlayerPowerUp -= PlayPowerUpSound;
         RequestPlaySpellStartSound -= PlaySpellStartSound;
         Player.PlayerShoot -= PlayPlayerShootSound;
-        AbstractSingle.SingleExplode -= PlaySingleExplodeSound;
+        RequestPlayExplodeSound -= PlaySingleExplodeSound;
         Player.PlayerCollectItem -= PlayGenericItemCollectSound;
         Player.EVPlayerGraze -= PlayGrazeSound;
         AbstractSingle.PatternTimerSecondTick -= PlayTimeoutSound;

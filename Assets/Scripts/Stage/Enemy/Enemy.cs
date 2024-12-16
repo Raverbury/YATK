@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Assets.Scripts.Util;
+using Unity.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,6 +15,7 @@ public class Enemy : PausableMono
         Attack,
     }
 
+    [DontSerialize, HideInInspector]
     public bool showHP = true;
     private float _maxHP = 0;
     public float MaxHP
@@ -41,8 +43,11 @@ public class Enemy : PausableMono
             _hp = value;
         }
     }
-    public bool IsInvulnerable = true;
-    public bool HasRefilledHP = false;
+    private bool isInvulnerable = true;
+    private bool hasRefilledHP = false;
+    private bool shouldDieOnHPDepletion = false;
+    private List<ItemStack> customItemDrops = new();
+    public bool IsBoss = true;
 
     public UnityAction<float, float> EntitySetHP;
     public UnityAction EntityDie;
@@ -51,6 +56,9 @@ public class Enemy : PausableMono
     private Animator animator;
     [SerializeField, HideInInspector]
     private SpriteRenderer spriteRenderer;
+
+    [SerializeField]
+    private SpriteRenderer atuneRingSpriteRenderer;
 
     private Dictionary<FriendlyDamageArea, bool> touchingBombs = new();
 
@@ -62,20 +70,11 @@ public class Enemy : PausableMono
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // if (STG.Constant.LAYER_PLAYER_BULLET == other.gameObject.layer)
-        // {
-        //     if (other.gameObject.TryGetComponent(out PlayerBullet playerBullet))
-        //     {
-        //         TakeDamage(playerBullet.damage);
-        //     }
-        //     other.gameObject.SetActive(false);
-        // }
         if (STG.Constant.LAYER_PLAYER_BOMB == other.gameObject.layer)
         {
             if (other.gameObject.TryGetComponent(out FriendlyDamageArea bomb))
             {
                 touchingBombs.Add(bomb, true);
-
             }
         }
     }
@@ -96,24 +95,55 @@ public class Enemy : PausableMono
         foreach (var kvp in touchingBombs)
         {
             FriendlyDamageArea bomb = kvp.Key;
-            float damage = Mathf.Clamp(bomb.damage, 0f, HP);
-            TakeDamage(damage);
+            TakeDamage(bomb.damage);
+            if (IsDead()) {
+                return;
+            }
         }
     }
 
     public void TakeDamage(float damage)
     {
-        if (IsInvulnerable)
+        if (isInvulnerable)
         {
             return;
         }
         damage = Mathf.Clamp(damage, 0f, HP);
+        if (damage == 0f)
+        {
+            return;
+        }
         HP -= damage;
+        if (IsDead())
+        {
+            DropRewards();
+            if (shouldDieOnHPDepletion)
+            {
+                StageManager.DestroyEnemy(this);
+            }
+            else {
+                SFXPlayer.RequestPlayExplodeSound?.Invoke();
+            }
+        }
     }
 
     public bool IsDead()
     {
-        return HP == 0;
+        return HP == 0 && hasRefilledHP;
+    }
+
+    public bool IsNearDeath()
+    {
+        return hasRefilledHP && HP < MaxHP * 0.1f && HP > 0f;
+    }
+
+    public void InitEnemy(List<ItemStack> dropRewards, bool isBossEnemy)
+    {
+        customItemDrops = dropRewards;
+        shouldDieOnHPDepletion = !isBossEnemy;
+        showHP = isBossEnemy;
+        IsBoss = isBossEnemy;
+        atuneRingSpriteRenderer.gameObject.SetActive(isBossEnemy);
     }
 
     public void SetAnimState(AnimState state)
@@ -129,8 +159,9 @@ public class Enemy : PausableMono
 
     public void SetEmptyHpCircle()
     {
-        EntitySetHP?.Invoke(-1, 1);
-        HasRefilledHP = false;
+        hasRefilledHP = false;
+        isInvulnerable = true;
+        HP = 0;
     }
 
     /// <summary>
@@ -161,6 +192,42 @@ public class Enemy : PausableMono
     }
 
     /// <summary>
+    /// Move an enemy to destination over some frames, setting anims automatically.<br/>
+    /// If already at destination on call, then don't move/wait at all.<br/>
+    /// Identical to _MoveEnemyToOver, except use fairy animation style
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <param name="destination"></param>
+    /// <param name="durationInFrames"></param>
+    /// <returns></returns>
+    public IEnumerator<float> _MoveEnemyToOverFairyStyle(Vector2 destination, int durationInFrames)
+    {
+        Vector2 initialPos = transform.position;
+        float initialDistance = Vector2.Distance(initialPos, destination);
+        float maxSpeed = initialDistance / durationInFrames;
+        float angle = Mathf.Abs(initialPos.AngleTo(destination));
+        if (Vector2.Distance(destination, initialPos) > 1f)
+        {
+            // moving up/down, use idle/forward
+            if (angle > 45f && angle < 135f) {
+                SetAnimState(AnimState.Idle);
+            }
+            // else use side
+            else {
+                SetAnimState(AnimState.Move);
+            }
+            for (int i = 0; i < durationInFrames; i++)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, destination, maxSpeed);
+                spriteRenderer.flipX = (transform.position.x > destination.x) || transform.position.x >= destination.x && spriteRenderer.flipX;
+
+                yield return 1;
+            }
+        }
+        SetAnimState(AnimState.Idle);
+    }
+
+    /// <summary>
     /// Refill the HP circle over some frames (for cinematic purposes), HP starts from 0
     /// Enemy is invulnerable while doing so
     /// </summary>
@@ -170,7 +237,7 @@ public class Enemy : PausableMono
     /// <returns></returns>
     public IEnumerator<float> _RefillHPOver(int maxHP, int durationInFrames)
     {
-        IsInvulnerable = true;
+        isInvulnerable = true;
         MaxHP = maxHP;
         float hpStep = (float)maxHP / (durationInFrames - 1);
         for (int i = 0; i < durationInFrames; i++)
@@ -179,8 +246,29 @@ public class Enemy : PausableMono
 
             yield return 1;
         }
-        IsInvulnerable = false;
-        HasRefilledHP = true;
+        isInvulnerable = false;
+        hasRefilledHP = true;
+    }
+
+    /// <summary>
+    /// Non-coroutine version of function to refill/set max HP, best used on enemies without a visible HP ring
+    /// </summary>
+    /// <param name="maxHP"></param>
+    public void RefillHP(int maxHP)
+    {
+        MaxHP = maxHP;
+        HP = maxHP;
+        isInvulnerable = false;
+        hasRefilledHP = true;
+    }
+
+    public void ChangeSprites(EnemyBossData enemyBossData)
+    {
+        AnimatorOverrideController aoc = new(animator.runtimeAnimatorController);
+        aoc["enemy_front"] = enemyBossData.idleAnimation;
+        aoc["enemy_side"] = enemyBossData.sideAnimation;
+        aoc["enemy_attack"] = enemyBossData.attackAnimation;
+        animator.runtimeAnimatorController = aoc;
     }
 
     public void ChangeSprites(EnemyData enemyData)
@@ -188,11 +276,65 @@ public class Enemy : PausableMono
         AnimatorOverrideController aoc = new(animator.runtimeAnimatorController);
         aoc["enemy_front"] = enemyData.idleAnimation;
         aoc["enemy_side"] = enemyData.sideAnimation;
-        aoc["enemy_attack"] = enemyData.attackAnimation;
-        // aoc.ApplyOverrides(new List<KeyValuePair<AnimationClip, AnimationClip>>(){
-        //     new(aoc["front"], playerData.frontAnimation),
-        //     new(aoc["side"], playerData.sideAnimation),
-        // });
+        aoc["enemy_attack"] = enemyData.idleAnimation;
         animator.runtimeAnimatorController = aoc;
+    }
+
+    public void DropRewards()
+    {
+        if (customItemDrops.Count == 0)
+        {
+            RuntimeGameData.EnemyNaturalRewardDropCount = (RuntimeGameData.EnemyNaturalRewardDropCount + 1) % 22;
+            switch (RuntimeGameData.EnemyNaturalRewardDropCount)
+            {
+                // small power item if player not at max power, else point item
+                case 0:
+                case 1:
+                case 2:
+                case 5:
+                case 7:
+                case 9:
+                case 11:
+                case 12:
+                case 17:
+                case 18:
+                case 19:
+                    ECSEntitySpawner.SpawnItemI1(gameObject, Player.instance.Power < 128 ? STG.ItemType.POWER_ITEM : STG.ItemType.POINT_ITEM);
+                    break;
+                // point item
+                case 3:
+                case 6:
+                case 8:
+                case 10:
+                case 14:
+                case 15:
+                    ECSEntitySpawner.SpawnItemI1(gameObject, STG.ItemType.POINT_ITEM);
+                    break;
+                // small power item or point item, randomly
+                case 4:
+                case 16:
+                    ECSEntitySpawner.SpawnItemI1(gameObject, Random.Range(0, 2) == 0 ? STG.ItemType.POWER_ITEM : STG.ItemType.POINT_ITEM);
+                    break;
+                // big power item
+                case 21:
+                    ECSEntitySpawner.SpawnItemI1(gameObject, STG.ItemType.BIG_POWER_ITEM);
+                    break;
+                // the rest is no drop
+                default:
+                    break;
+            }
+        }
+        for (int i = 0; i < customItemDrops.Count; i++)
+        {
+            ItemStack reward = customItemDrops[i];
+            for (int j = 0; j < reward.Count; j++)
+            {
+                ECSEntitySpawner.SpawnItemI1(
+                gameObject.transform.position.x + Random.Range(-50f, 50f),
+                gameObject.transform.position.y + Random.Range(-30f, 30f),
+                reward.ItemType);
+            }
+        }
+        customItemDrops.Clear();
     }
 }

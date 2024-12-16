@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d28b2e2c3aa54438fccbbf0ab5d598, type: 3}
+  m_Name: EnemyData_FairyBlue
+  m_EditorClassIdentifier: 
+  idleAnimation: {fileID: 7400000, guid: 93154fc9db57b334484bdf191d77c39d, type: 2}
+  sideAnimation: {fileID: 7400000, guid: 3f001d7fe6cff2f439537b1f35ee1fe5, type: 2}

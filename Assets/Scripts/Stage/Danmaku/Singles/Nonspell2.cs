@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using MEC;
 using STG;
 using UnityEngine;
@@ -16,23 +15,56 @@ public class Nonspell2 : AbstractSingle
         return "Nonspell 1";
     }
 
-    public override int GetScore()
+    protected override int GetScore()
     {
         return 0;
     }
 
-    public override int GetTimer()
+    protected override int GetTimer()
     {
         return 35;
     }
 
-    public override bool IsTimeout()
+    protected override bool IsBossAttack()
+    {
+        return true;
+    }
+
+    protected override bool IsSpellCard()
     {
         return false;
     }
 
-    protected override IEnumerator<float> _Loop(Enemy enemy)
+    protected override bool IsTimeout()
     {
+        return false;
+    }
+
+    protected override void CleanUp()
+    {
+        if (enemy) {
+            enemy.SetEmptyHpCircle();
+        }
+    }
+
+    protected override bool SingleIsDoneOutsideOfTimer()
+    {
+        bool res = enemy && enemy.IsDead();
+        if (res) {
+            enemy.DropRewards();
+        }
+        return res;
+    }
+
+    private Enemy enemy;
+
+    protected override IEnumerator<float> _Loop()
+    {
+        enemy = SpawnNamedBossEnemyUtil(ShotSheet.GetBossEnemyData(BossType.MOKOU), new(){
+            new ItemStack(ItemType.POWER_ITEM, 4),
+            new ItemStack(ItemType.POINT_ITEM, 5),
+            new ItemStack(ItemType.BIG_POWER_ITEM, 1),
+        });
         Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, -90), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
         enemy.SetAnimState(Enemy.AnimState.Attack);
