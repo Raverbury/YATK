@@ -1,4 +1,3 @@
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LoopableBGM", menuName = "ScriptableObjects/LoopableBGM", order = 0)]

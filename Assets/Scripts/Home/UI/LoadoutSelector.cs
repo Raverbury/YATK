@@ -48,7 +48,7 @@ public class LoadoutSelector : AbstractHomeSelector
         }
         else if (Input.GetButtonDown("Bomb") || Input.GetButtonDown("Pause"))
         {
-            SFXPlayer.EVPlayCancelSound?.Invoke();
+            SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CANCEL, 1f);
             HomeManager.EVCancel?.Invoke();
         }
         // change shot
@@ -110,13 +110,13 @@ public class LoadoutSelector : AbstractHomeSelector
 
     private void SelectShotChoice(int nextShotOption)
     {
-        SFXPlayer.EVPlaySelectSound?.Invoke();
+        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_SELECT, 1f);
         Timing.RunCoroutine(_SwitchPanel(nextShotOption, currentBombOption, RotateDir.Horizontal));
     }
 
     private void SelectBombChoice(int nextBombOption)
     {
-        SFXPlayer.EVPlaySelectSound?.Invoke();
+        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_SELECT, 1f);
         Timing.RunCoroutine(_SwitchPanel(currentShotOption, nextBombOption, RotateDir.Vertical));
     }
 

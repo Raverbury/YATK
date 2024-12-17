@@ -20,7 +20,7 @@ public class MarisaShot1 : AbstractShot
         level = Mathf.Clamp(level, 0, 4);
         if (level != currentLevel)
         {
-            Player.PlayerPowerUp?.Invoke();
+            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_POWERUP, 1f);
             currentLevel = level;
         }
     }
@@ -50,6 +50,7 @@ public class MarisaShot1 : AbstractShot
                         ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x, player.transform.position.y - 2f, baseShotDamage * 0.2f, 20f, 90f - halfFanSpread + SPREAD * i, STG.PlayerShotType.IN_MARISA_MISSILE_RED, 0);
                     }
                 }
+                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_SHOOT, 1f);
                 shotCooldown = shotInterval;
             }
             if (missileCooldown <= 0)

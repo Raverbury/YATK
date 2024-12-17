@@ -40,6 +40,11 @@ public class Nonspell12 : AbstractSingle
         return true;
     }
 
+    protected override LoopableBGM SingleBGM()
+    {
+        return RuntimeGameData.Registry.BGM_08_MOKOU;
+    }
+
     protected override bool SingleIsDoneOutsideOfTimer()
     {
         return enemy && enemy.IsDead();

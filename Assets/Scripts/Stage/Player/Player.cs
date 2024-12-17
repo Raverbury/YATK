@@ -22,7 +22,6 @@ public class Player : PausableMono
     public static UnityAction PlayerSetMiss;
 
     public static UnityAction PlayerCollectItem;
-    public static UnityAction PlayerPowerUp;
     public static UnityAction EVPlayerGraze;
     /// <summary>
     /// An event that fires after using a bomb, first int is iframe duration, second int is how many bombs is consumed.
@@ -294,6 +293,7 @@ public class Player : PausableMono
         shouldMiss = true;
         isInvulnerable = true;
         PlayerSetMiss?.Invoke();
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_MISS, 1f);
         framesLeftToDeathBomb = deathBombFrames;
         if (RemainingBomb == 0)
         {
@@ -324,11 +324,13 @@ public class Player : PausableMono
     {
         Graze += 1;
         EVPlayerGraze?.Invoke();
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_GRAZE, 1f);
     }
 
     public void PlayerExtend()
     {
         RemainingLife += 1;
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_EXTEND, 1f);
         ResultPlayerExtend?.Invoke();
     }
 

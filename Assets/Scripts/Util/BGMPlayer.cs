@@ -7,15 +7,9 @@ public class BGMPlayer : MonoBehaviour
     [SerializeField]
     private AudioSource originalAudioSource;
 
-    public LoopableBGM BGM_HOME;
-    public LoopableBGM BGM_STAGE;
-    public LoopableBGM BGM_GAMEOVER;
-
     private LoopableBGM activeBgm = null;
 
-    public static UnityAction RequestPlayHomeBGM;
-    public static UnityAction RequestPlayStageBGM;
-    public static UnityAction RequestPlayGameoverBGM;
+    public static UnityAction<LoopableBGM> RequestPlayBGM;
 
     public static UnityAction RequestStopBGM;
 
@@ -23,10 +17,7 @@ public class BGMPlayer : MonoBehaviour
     {
         StageManager.SetPause += OnPause;
 
-        RequestPlayHomeBGM += PlayHomeBGM;
-        RequestPlayStageBGM += PlayStageBGM;
-        RequestPlayGameoverBGM += PlayGameoverBGM;
-
+        RequestPlayBGM += PlayBGM;
         RequestStopBGM += StopBGM;
     }
 
@@ -34,10 +25,7 @@ public class BGMPlayer : MonoBehaviour
     {
         StageManager.SetPause -= OnPause;
 
-        RequestPlayHomeBGM -= PlayHomeBGM;
-        RequestPlayStageBGM -= PlayStageBGM;
-        RequestPlayGameoverBGM -= PlayGameoverBGM;
-
+        RequestPlayBGM -= PlayBGM;
         RequestStopBGM -= StopBGM;
     }
 
@@ -46,23 +34,11 @@ public class BGMPlayer : MonoBehaviour
         originalAudioSource.Stop();
     }
 
-    private void PlayGameoverBGM()
-    {
-        PlayBGM(BGM_GAMEOVER);
-    }
-
-    private void PlayStageBGM()
-    {
-        PlayBGM(BGM_STAGE);
-    }
-
-    private void PlayHomeBGM()
-    {
-        PlayBGM(BGM_HOME);
-    }
-
     private void PlayBGM(LoopableBGM loopableBGM)
     {
+        if (originalAudioSource.clip == loopableBGM.bgmClip) {
+            return;
+        }
         originalAudioSource.clip = loopableBGM.bgmClip;
         activeBgm = loopableBGM;
         originalAudioSource.Play();

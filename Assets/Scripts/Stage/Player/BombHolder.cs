@@ -30,6 +30,7 @@ public class BombHolder : PausableMono
     {
         Player player = GetComponent<Player>();
         Player.EVBombActivate?.Invoke(bomb.IFrameDuration(), isDeathBomb ? bomb.BombConsumedOnDeathBomb() : bomb.BombConsumedOnNormalBomb());
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_SPELL_START, 1f);
         bomb.Bomb(player, isDeathBomb, bombPrefabs);
     }
 

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,50 +13,31 @@ public class SFXPlayer : MonoBehaviour
 
     [SerializeField]
     private AudioSource originalAudioSource;
-
-    public AudioClip SFX_PLAYER_MISS;
-    public AudioClip SFX_PLAYER_POWERUP;
-    public AudioClip SFX_PLAYER_SHOOT;
-    public AudioClip SFX_SPELL_START;
-    public AudioClip SFX_EXPLODE;
-    public AudioClip SFX_ITEM_0;
-    public AudioClip SFX_ITEM_1;
-    public AudioClip SFX_PLAYER_GRAZE;
-    public AudioClip SFX_TIMEOUT_0;
-    public AudioClip SFX_TIMEOUT_1;
-    public AudioClip SFX_PLAYER_EXTEND;
-    public AudioClip SFX_MASTER_SPARK;
-    public AudioClip SFX_TAN00;
-    public AudioClip SFX_TAN01;
-    public AudioClip SFX_GUN00;
-
-    public AudioClip SFX_PAUSE;
-    public AudioClip SFX_CONFIRM;
-    public AudioClip SFX_SELECT;
-    public AudioClip SFX_CANCEL;
-    public AudioClip SFX_INVALID;
+    [SerializeField]
+    private uint numbersToClone = 63;
+    [SerializeField]
+    private uint numbersToCloneAlt = 8;
+    private const float DEFAULT_SFX_VOLUME = 0.15f;
 
     private int internalIndex = 0;
 
     private Dictionary<AudioClip, ushort> audioWaitMap = new();
 
-    public static UnityAction RequestPlayPauseSound;
+    /// <summary>
+    /// Request any available SFXPlayer instance to play an AudioClip at float volume 0~1. This AudioClip is normally active only during non-pause.<br/>
+    /// Used for standard game sound effects.
+    /// </summary>
+    public static UnityAction<AudioClip, float> RequestPlaySound;
+    /// <summary>
+    /// Request any available SFXPlayer instance to play an AudioClip at float volume 0~1. This AudioClip is normally active only during pause.
+    /// Used for navigation sound effects during pause menu or just UI sfxs in general.
+    /// </summary>
+    public static UnityAction<AudioClip, float> RequestPlaySoundWithPause;
 
-    public static UnityAction RequestPlaySpellStartSound;
-    public static UnityAction EVPlayConfirmSound;
-    public static UnityAction EVPlaySelectSound;
-    public static UnityAction EVPlayCancelSound;
-
-    public static UnityAction EVPlayMasterSparkSound;
-    public static UnityAction RequestPlayInvalidSound;
-    public static UnityAction RequestPlayTan1Sound;
-    public static UnityAction RequestPlayTan0Sound;
-    public static UnityAction RequestPlayGun0Sound;
-    public static UnityAction RequestPlayExplodeSound;
 
     private void Awake()
     {
-        for (int i = 0; i < 63; i++)
+        for (int i = 0; i < numbersToClone; i++)
         {
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.volume = originalAudioSource.volume;
@@ -67,7 +46,7 @@ public class SFXPlayer : MonoBehaviour
             audioSource.playOnAwake = false;
             audioSources.Add(audioSource);
         }
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < numbersToCloneAlt; i++)
         {
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.volume = originalAudioSource.volume;
@@ -81,88 +60,21 @@ public class SFXPlayer : MonoBehaviour
     private void OnEnable()
     {
         StageManager.SetPause += OnPause;
-        RequestPlayPauseSound += PlayPauseSound;
 
-        Player.PlayerSetMiss += PlayMissSound;
-        Player.ResultPlayerExtend += PlayExtendSound;
-        Player.PlayerPowerUp += PlayPowerUpSound;
-        RequestPlaySpellStartSound += PlaySpellStartSound;
-        Player.PlayerShoot += PlayPlayerShootSound;
-        RequestPlayExplodeSound += PlaySingleExplodeSound;
-        Player.PlayerCollectItem += PlayGenericItemCollectSound;
-        Player.EVPlayerGraze += PlayGrazeSound;
-        AbstractSingle.PatternTimerSecondTick += PlayTimeoutSound;
-        EVPlayCancelSound += PlayCancelSound;
-        EVPlayConfirmSound += PlayConfirmSound;
-        EVPlaySelectSound += PlaySelectSound;
+        RequestPlaySound += PlayAudio;
+        RequestPlaySoundWithPause += PlayAudioAlt;
+
         StageManager.EVStageDestroy += ClearPausedSounds;
-        Player.EVBombActivate += PlaySpellStartSound2;
-        EVPlayMasterSparkSound += PlayMasterSparkSound;
-        RequestPlayInvalidSound += PlayValidSound;
-        RequestPlayTan1Sound += PlayTan1Sound;
-        RequestPlayTan0Sound += PlayTan0Sound;
-        RequestPlayGun0Sound += PlayGun0Sound;
     }
 
     private void OnDisable()
     {
         StageManager.SetPause -= OnPause;
-        RequestPlayPauseSound -= PlayPauseSound;
 
-        Player.PlayerSetMiss -= PlayMissSound;
-        Player.ResultPlayerExtend -= PlayExtendSound;
-        Player.PlayerPowerUp -= PlayPowerUpSound;
-        RequestPlaySpellStartSound -= PlaySpellStartSound;
-        Player.PlayerShoot -= PlayPlayerShootSound;
-        RequestPlayExplodeSound -= PlaySingleExplodeSound;
-        Player.PlayerCollectItem -= PlayGenericItemCollectSound;
-        Player.EVPlayerGraze -= PlayGrazeSound;
-        AbstractSingle.PatternTimerSecondTick -= PlayTimeoutSound;
-        EVPlayCancelSound -= PlayCancelSound;
-        EVPlayConfirmSound -= PlayConfirmSound;
-        EVPlaySelectSound -= PlaySelectSound;
+        RequestPlaySound -= PlayAudio;
+        RequestPlaySoundWithPause -= PlayAudioAlt;
+
         StageManager.EVStageDestroy -= ClearPausedSounds;
-        Player.EVBombActivate -= PlaySpellStartSound2;
-        EVPlayMasterSparkSound -= PlayMasterSparkSound;
-        RequestPlayInvalidSound -= PlayValidSound;
-        RequestPlayTan1Sound -= PlayTan1Sound;
-        RequestPlayTan0Sound -= PlayTan0Sound;
-        RequestPlayGun0Sound -= PlayGun0Sound;
-    }
-
-    private void PlayGun0Sound()
-    {
-        PlayAudio(SFX_GUN00);
-    }
-
-    private void PlayTan0Sound()
-    {
-        PlayAudio(SFX_TAN00);
-    }
-
-    private void PlayPauseSound()
-    {
-        PlayAudioAlt(SFX_PAUSE);
-    }
-
-    private void PlayTan1Sound()
-    {
-        PlayAudio(SFX_TAN01);
-    }
-
-    private void PlayValidSound()
-    {
-        PlayAudioAlt(SFX_INVALID);
-    }
-
-    private void PlayExtendSound()
-    {
-        PlayAudio(SFX_PLAYER_EXTEND);
-    }
-
-    private void PlayMasterSparkSound()
-    {
-        PlayAudio(SFX_MASTER_SPARK);
     }
 
     private void ClearPausedSounds()
@@ -170,99 +82,20 @@ public class SFXPlayer : MonoBehaviour
         pausedAudioSources.Clear();
     }
 
-    private void PlaySelectSound()
+    private void PlayAudio(AudioClip audioClip, float volume)
     {
-        PlayAudioAlt(SFX_SELECT);
-    }
-
-    private void PlayConfirmSound()
-    {
-        PlayAudioAlt(SFX_CONFIRM);
-    }
-
-    private void PlayCancelSound()
-    {
-        PlayAudioAlt(SFX_CANCEL);
-    }
-
-    private void PlayTimeoutSound(ushort secondsLeft)
-    {
-        if (secondsLeft < 11)
-        {
-            PlayAudio(SFX_TIMEOUT_1);
-        }
-    }
-
-    private void PlayMissSound()
-    {
-        PlayAudio(SFX_PLAYER_MISS);
-    }
-
-    private void PlayPowerUpSound()
-    {
-        PlayAudio(SFX_PLAYER_POWERUP);
-    }
-
-    private void PlaySpellStartSound()
-    {
-        PlayAudio(SFX_SPELL_START);
-    }
-
-    private void PlaySpellStartSound2(int _, int _2)
-    {
-        PlayAudio(SFX_SPELL_START);
-    }
-
-    private void PlayPlayerShootSound()
-    {
-        PlayAudio(SFX_PLAYER_SHOOT);
-    }
-
-    private void PlaySingleExplodeSound()
-    {
-        PlayAudio(SFX_EXPLODE);
-    }
-
-    private void PlayGenericItemCollectSound()
-    {
-        PlayAudio(SFX_ITEM_0);
-    }
-
-    private void PlayGrazeSound()
-    {
-        PlayAudio(SFX_PLAYER_GRAZE);
-    }
-
-    private void PlayAudio(AudioClip audioClip)
-    {
-        // foreach (var kvp in audioWaitMap)
-        // {
-        //     Debug.Log($"{kvp.Key}, {kvp.Value}");
-        // }
         if (audioWaitMap.ContainsKey(audioClip) && audioWaitMap[audioClip] > 0)
         {
             return;
         }
-        // AudioSource audioSource;
-        // int i = 0;
-        // do
-        // {
-        //     if (i >= audioSources.Count)
-        //     {
-        //         return;
-        //     }
-        //     audioSource = GetNextAudioSource();
-        //     i++;
-        // }
-        // while (audioSource.isPlaying);
         AudioSource audioSource = GetNextAudioSource(audioSources);
-        // Debug.Log($"Playing {audioClip.name}");
         audioSource.clip = audioClip;
+        audioSource.volume = DEFAULT_SFX_VOLUME * volume;
         audioSource.Play();
-        audioWaitMap[audioClip] = (ushort)(audioClip == SFX_PLAYER_SHOOT ? 9 : 1);
+        audioWaitMap[audioClip] = (ushort)(audioClip == RuntimeGameData.Registry.SFX_PLAYER_SHOOT ? 4 : 1);
     }
 
-    private void PlayAudioAlt(AudioClip audioClip)
+    private void PlayAudioAlt(AudioClip audioClip, float volume)
     {
         if (audioWaitMap.ContainsKey(audioClip) && audioWaitMap[audioClip] > 0)
         {
@@ -270,8 +103,9 @@ public class SFXPlayer : MonoBehaviour
         }
         AudioSource audioSource = GetNextAudioSource(altAudioSources);
         audioSource.clip = audioClip;
+        audioSource.volume = DEFAULT_SFX_VOLUME * volume;
         audioSource.Play();
-        audioWaitMap[audioClip] = (ushort)(audioClip == SFX_PLAYER_SHOOT ? 9 : 1);
+        audioWaitMap[audioClip] = (ushort)(audioClip == RuntimeGameData.Registry.SFX_PLAYER_SHOOT ? 4 : 1);
     }
 
     private AudioSource GetNextAudioSource(List<AudioSource> audioSources)

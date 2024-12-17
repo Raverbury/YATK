@@ -120,9 +120,11 @@ public class Enemy : PausableMono
             if (shouldDieOnHPDepletion)
             {
                 StageManager.DestroyEnemy(this);
+                // TODO: swap this for enep01 sound
+                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_EXPLODE, 1f);
             }
             else {
-                SFXPlayer.RequestPlayExplodeSound?.Invoke();
+                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_EXPLODE, 1f);
             }
         }
     }

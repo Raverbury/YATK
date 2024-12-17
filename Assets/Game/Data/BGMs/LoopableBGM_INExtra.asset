@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f559ead8c1f11e74eb46e310bd4d3ff0, type: 3}
-  m_Name: LoopableBGM_Stage
+  m_Name: LoopableBGM_INExtra
   m_EditorClassIdentifier: 
-  bgmClip: {fileID: 8300000, guid: 7276fad58947d924ea95e63eaff60483, type: 3}
-  loopStartPoint: 333704
-  loopEndPoint: 7796196
+  bgmClip: {fileID: 8300000, guid: f906142ef92fa4e448ae509c52b279f8, type: 3}
+  loopStartPoint: 220320
+  loopEndPoint: 7003936

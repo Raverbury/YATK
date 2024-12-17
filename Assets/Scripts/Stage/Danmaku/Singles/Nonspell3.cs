@@ -31,6 +31,11 @@ public class Nonspell3 : AbstractSingle
         return false;
     }
 
+    protected override LoopableBGM SingleBGM()
+    {
+        return RuntimeGameData.Registry.BGM_08_MOKOU;
+    }
+
     protected override void CleanUp()
     {
         if (enemy) {

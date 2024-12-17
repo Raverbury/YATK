@@ -265,26 +265,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originalAudioSource: {fileID: 608494941}
-  SFX_PLAYER_MISS: {fileID: 8300000, guid: c9e5777424eb13e47ae1459879b1cb36, type: 3}
-  SFX_PLAYER_POWERUP: {fileID: 8300000, guid: 445b389e09880e844abb97d28656bfab, type: 3}
-  SFX_PLAYER_SHOOT: {fileID: 8300000, guid: 2186778f08cb1c14784f15b49da4cf3b, type: 3}
-  SFX_SPELL_START: {fileID: 8300000, guid: 5b731182115765a4f96793ddbccc645b, type: 3}
-  SFX_EXPLODE: {fileID: 8300000, guid: 06ae20e00bea39e4f87cb909a9ba8870, type: 3}
-  SFX_ITEM_0: {fileID: 8300000, guid: e22aad4cb12a42941898a80cf5b87a32, type: 3}
-  SFX_ITEM_1: {fileID: 8300000, guid: 4fb2e885e1c5c4247a486e8854a3a3da, type: 3}
-  SFX_PLAYER_GRAZE: {fileID: 8300000, guid: 3b1d6880bacf61a4b9eb13c6e2480528, type: 3}
-  SFX_TIMEOUT_0: {fileID: 8300000, guid: b6bd1e17f398bf2459c33a4650af5678, type: 3}
-  SFX_TIMEOUT_1: {fileID: 8300000, guid: dae4d8c8f97da0342ab895d25c17b5e0, type: 3}
-  SFX_PLAYER_EXTEND: {fileID: 8300000, guid: de51349ca7a135b45bcb9641f58a5faf, type: 3}
-  SFX_MASTER_SPARK: {fileID: 8300000, guid: caeabd012f6502d4aac380bb3166c8af, type: 3}
-  SFX_TAN00: {fileID: 8300000, guid: 3b3225277e51c6c4996987496db5af89, type: 3}
-  SFX_TAN01: {fileID: 8300000, guid: 87053bca6aa394c4bb03ee47bc6720c2, type: 3}
-  SFX_GUN00: {fileID: 8300000, guid: 40d896dc760215f45962c1b2c946cef5, type: 3}
-  SFX_PAUSE: {fileID: 8300000, guid: 27249f49974350242ad8c6e394e57efe, type: 3}
-  SFX_CONFIRM: {fileID: 8300000, guid: cc5c914e55967644898aaf1dac35e674, type: 3}
-  SFX_SELECT: {fileID: 8300000, guid: 240305b00e8c9124388b3ffe2cce6964, type: 3}
-  SFX_CANCEL: {fileID: 8300000, guid: ad60ba62b0672604e8d26e80201b8c2d, type: 3}
-  SFX_INVALID: {fileID: 8300000, guid: d6d46e737b884744ea4d8ced0d531099, type: 3}
+  numbersToClone: 63
+  numbersToCloneAlt: 8
 --- !u!1 &634771141
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,9 +576,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originalAudioSource: {fileID: 1163098485}
-  BGM_HOME: {fileID: 11400000, guid: ca0bd0b707612404ebe834d856aca1ff, type: 2}
-  BGM_STAGE: {fileID: 11400000, guid: 0c236578a62723e48a7a2ff0abb1b472, type: 2}
-  BGM_GAMEOVER: {fileID: 11400000, guid: 2d876343deb309c40a27c7373f567bd8, type: 2}
 --- !u!1 &1670299488
 GameObject:
   m_ObjectHideFlags: 0
@@ -793,6 +772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7072d837a1401394b8c82f4fb0ea9403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Registry: {fileID: 11400000, guid: cb7308455cd7c1b44b378148c806c714, type: 2}
 --- !u!1 &2029975529
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class BootstrapManager : MonoBehaviour
 {
+    public Registry Registry;
+
     private void Awake()
     {
 #if UNITY_EDITOR
@@ -10,9 +12,9 @@ public class BootstrapManager : MonoBehaviour
 #endif
     }
 
-    // Start is called before the first frame update
     private void Start()
     {
+        RuntimeGameData.Registry = Instantiate(Registry);
         SceneUtil.LoadSceneAsync("Home");
     }
 }

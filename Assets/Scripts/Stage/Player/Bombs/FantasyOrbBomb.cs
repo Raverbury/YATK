@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using MEC;
 using STG;
-using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
 public class FantasyOrbBomb : AbstractBombWeapon
@@ -23,7 +22,7 @@ public class FantasyOrbBomb : AbstractBombWeapon
     public override void Bomb(Player player, bool isDeathBomb, BombPrefabs bombPrefabs)
     {
         Timing.RunCoroutine(_Bomb(player, isDeathBomb, bombPrefabs));
-        SFXPlayer.RequestPlayGun0Sound?.Invoke();
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_GUN00, 1f);
     }
 
     private IEnumerator<float> _Bomb(Player player, bool isDeathBomb, BombPrefabs bombPrefabs)
@@ -77,7 +76,7 @@ public class FantasyOrbBomb : AbstractBombWeapon
             }
             if (framesElapsed == ORB_EXPAND_DURATION + ORB_ORBIT_DURATION + ORB_HOME_DURATION)
             {
-                SFXPlayer.RequestPlayTan0Sound?.Invoke();
+                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 1f);
                 orbs1.ForEach(orb =>
                 {
                     if (orb.TryGetComponent(out FriendlyDamageArea bombArea))

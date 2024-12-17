@@ -21,6 +21,7 @@ public class Shot1 : AbstractShot
         level = Mathf.Clamp(level, 0, 4);
         if (currentLevel != level)
         {
+            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_POWERUP, 1f);
             ConstructOrbs(level, player, weaponOrbPrefab);
             currentLevel = level;
         }
@@ -28,7 +29,6 @@ public class Shot1 : AbstractShot
 
     private void ConstructOrbs(int level, Player player, GameObject weaponOrbPrefab)
     {
-        Player.PlayerPowerUp?.Invoke();
         weaponOrbs.ForEach(orb => GameObject.Destroy(orb));
         weaponOrbs.Clear();
         for (int i = 0; i < level; i++)
@@ -83,6 +83,7 @@ public class Shot1 : AbstractShot
                     }
                 }
                 timeBetweenShot = 0;
+                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_SHOOT, 1f);
             }
             shootFrames -= 1;
         }

@@ -10,4 +10,6 @@ public static class RuntimeGameData
     public static bool IsPractice = false;
 
     public static int EnemyNaturalRewardDropCount = 0;
+
+    public static Registry Registry;
 }

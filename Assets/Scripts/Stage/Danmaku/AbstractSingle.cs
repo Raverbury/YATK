@@ -12,6 +12,7 @@ public abstract class AbstractSingle
     protected abstract bool IsTimeout();
     protected abstract bool IsSpellCard();
     protected abstract bool IsBossAttack();
+    protected abstract LoopableBGM SingleBGM();
     protected virtual void CleanUp() { }
 
     /// <summary>
@@ -38,6 +39,7 @@ public abstract class AbstractSingle
         // prepare
         ToggleShowSingleDetails?.Invoke(IsBossAttack());
         framesLeft = (ushort)(GetTimer() * 60);
+        BGMPlayer.RequestPlayBGM?.Invoke(SingleBGM());
         CoroutineUtil.StartSingleLoopCRT(_Loop());
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(_CheckDone()));
         // clean up
@@ -91,6 +93,9 @@ public abstract class AbstractSingle
                 if (IsBossAttack())
                 {
                     PatternTimerSecondTick?.Invoke(secondsLeft);
+                    if (secondsLeft < 11) {
+                        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TIMEOUT_1, 1f);
+                    }
                 }
             }
             framesLeft -= 1;
@@ -117,7 +122,7 @@ public abstract class AbstractSingle
             EnemySpellcardBackgroundImage.RequestSetBackgroundImage(enemyBossData.enemySpellcardBackgroundImage);
             EnemySpellcardBackgroundEffect.RequestSetBackgroundEffect(enemyBossData.enemySpellcardBackgroundEffect);
             SpellcardName.RequestSetSpellcardName(GetName());
-            SFXPlayer.RequestPlaySpellStartSound?.Invoke();
+            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_SPELL_START, 1f);
         }
         enemy.SetEmptyHpCircle();
         return enemy;

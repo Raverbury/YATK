@@ -8,7 +8,7 @@ public class MasterSparkBomb : AbstractBombWeapon
     public override void Bomb(Player player, bool isDeathBomb, BombPrefabs bombPrefabs)
     {
         Timing.RunCoroutine(_FireMasterSpark(player, isDeathBomb, bombPrefabs));
-        SFXPlayer.EVPlayMasterSparkSound?.Invoke();
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_MASTER_SPARK, 1f);
     }
 
     private IEnumerator<float> _FireMasterSpark(Player player, bool isDeathBomb, BombPrefabs bombPrefabs)

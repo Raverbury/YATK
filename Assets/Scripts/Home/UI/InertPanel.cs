@@ -14,7 +14,7 @@ public class InertPanel : AbstractHomeSelector
         }
         else if (Input.GetButtonDown("Bomb") || Input.GetButtonDown("Pause"))
         {
-            SFXPlayer.EVPlayCancelSound?.Invoke();
+            SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CANCEL, 1f);
             HomeManager.EVCancel?.Invoke();
         }
     }

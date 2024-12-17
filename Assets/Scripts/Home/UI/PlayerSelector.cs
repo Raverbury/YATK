@@ -52,7 +52,7 @@ public class PlayerSelector : AbstractHomeSelector
         }
         else if (Input.GetButtonDown("Bomb") || Input.GetButtonDown("Pause"))
         {
-            SFXPlayer.EVPlayCancelSound?.Invoke();
+            SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CANCEL, 1f);
             HomeManager.EVCancel?.Invoke();
         }
         else if (Input.GetButtonDown("Left") || Input.GetButtonDown("Up"))
@@ -87,7 +87,7 @@ public class PlayerSelector : AbstractHomeSelector
 
     private void SelectChoice(int nextOption, int dir)
     {
-        SFXPlayer.EVPlaySelectSound?.Invoke();
+        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_SELECT, 1f);
         Timing.RunCoroutine(_SwitchPanel(nextOption, dir));
     }
 

@@ -1,7 +1,6 @@
 using STG;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Entities.UniversalDelegates;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
@@ -85,6 +84,7 @@ public class ECSItemController : PausableMono
 
     private void CollectItem(Player player, ItemType itemType)
     {
+        Player.PlayerCollectItem?.Invoke();
         switch (itemType)
         {
             case ItemType.POWER_ITEM:
@@ -127,24 +127,26 @@ public class ECSItemController : PausableMono
     private void CollectPowerItem(Player player)
     {
         player.Power += 1;
-        Player.PlayerCollectItem?.Invoke();
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_ITEM_0, 1f);
     }
 
     private void CollectPointItem(Player player)
     {
-        Player.PlayerCollectItem?.Invoke();
+        // TODO: point?
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_ITEM_0, 1f);
     }
 
     private void CollectBigPowerItem(Player player)
     {
         player.Power += 10;
-        Player.PlayerCollectItem?.Invoke();
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_ITEM_0, 1f);
     }
 
     private void CollectBombItem(Player player)
     {
         player.RemainingBomb += 1;
-        Player.PlayerCollectItem?.Invoke();
+        // TODO: change bomb collect sfx?
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_ITEM_0, 1f);
     }
 
     private void CollectLifeItem(Player player)

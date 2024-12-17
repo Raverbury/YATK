@@ -45,7 +45,6 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
 
     private void Start()
     {
-        BGMPlayer.RequestPlayStageBGM?.Invoke();
         StartNextAvailableSingle();
     }
 
@@ -203,7 +202,7 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
                 {
                     if (!isPaused)
                     {
-                        SFXPlayer.RequestPlayPauseSound?.Invoke();
+                        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_PAUSE, 1f);
                     }
                     TogglePause();
                 }
@@ -240,16 +239,16 @@ public class StageManager : OverwritableMonoSingleton<StageManager>
             switch (pauseResult)
             {
                 case PauseMenu.PauseResult.Resume:
-                    SFXPlayer.EVPlayConfirmSound?.Invoke();
+                    SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 1f);
                     TogglePause();
                     break;
                 case PauseMenu.PauseResult.Restart:
-                    SFXPlayer.EVPlayConfirmSound?.Invoke();
+                    SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 1f);
                     instance.shouldRespondToInput = false;
                     SceneUtil.LoadSceneAsync("Stage");
                     break;
                 case PauseMenu.PauseResult.Quit:
-                    SFXPlayer.EVPlayCancelSound?.Invoke();
+                    SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CANCEL, 1f);
                     instance.shouldRespondToInput = false;
                     SceneUtil.LoadSceneAsync("Home");
                     break;

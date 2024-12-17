@@ -42,7 +42,7 @@ public class HomeMenuSelector : AbstractHomeSelector
         // disable pressing X to jump to quit choice in editor/webgl
         else if (Input.GetButtonDown("Bomb") || Input.GetButtonDown("Pause"))
         {
-            SFXPlayer.EVPlayCancelSound?.Invoke();
+            SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CANCEL, 1f);
             choiceSelector.CurrentChoice = (int)HomeMenuResult.Quit;
         }
 #endif
@@ -88,7 +88,7 @@ public class HomeMenuSelector : AbstractHomeSelector
         {
             choiceSelector.GetPreviousChoice();
         }
-        SFXPlayer.EVPlaySelectSound?.Invoke();
+        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_SELECT, 1f);
     }
 
     private void HighlightChoice()

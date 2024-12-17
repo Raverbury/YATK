@@ -40,6 +40,11 @@ public class Stage1Chapter1 : AbstractSingle
         return false;
     }
 
+    protected override LoopableBGM SingleBGM()
+    {
+        return RuntimeGameData.Registry.BGM_08_EXTRA;
+    }
+
     protected override bool SingleIsDoneOutsideOfTimer()
     {
         for (int i = 0; i < enemies.Count; i++)
