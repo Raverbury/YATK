@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Assets.Scripts.Util;
+using MEC;
 using Unity.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
@@ -120,8 +121,8 @@ public class Enemy : PausableMono
             if (shouldDieOnHPDepletion)
             {
                 StageManager.DestroyEnemy(this);
-                // TODO: swap this for enep01 sound
-                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_EXPLODE, 1f);
+                // TODO: swap this for enep01 sound for boss?
+                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_EXPLODE, 0.5f);
             }
             else {
                 SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_EXPLODE, 1f);
@@ -227,6 +228,21 @@ public class Enemy : PausableMono
             }
         }
         SetAnimState(AnimState.Idle);
+    }
+
+    public IEnumerator<float> _MoveEnemyCircular(float startingAngleDegrees, float angularVelocityDegrees, float velocity, int durationFrames) {
+        // transform.eulerAngles = new Vector3(0f, 0f, startingAngleDegrees);
+        // TODO: return immediately if angular vel = 0?
+        if (angularVelocityDegrees == 0f) {
+            yield break;
+        }
+        float currentAngle = startingAngleDegrees + (angularVelocityDegrees > 0f? 90f : -90f);
+        for (int i = 0; i < durationFrames; i++) {
+            Quaternion rot = Quaternion.Euler(0f, 0f, currentAngle);
+            transform.position += rot * Vector3.right * velocity;
+            currentAngle += angularVelocityDegrees;
+            yield return Timing.WaitForOneFrame;
+        }
     }
 
     /// <summary>

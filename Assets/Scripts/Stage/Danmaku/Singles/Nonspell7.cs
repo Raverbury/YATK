@@ -75,12 +75,10 @@ public class Nonspell7 : AbstractSingle
     protected override IEnumerator<float> _Loop()
     {
         enemy = SpawnNamedBossEnemyUtil(ShotSheet.GetBossEnemyData(BossType.MOKOU), new());
-        yield return WaitForFrames.WaitWrapper(30);
-        yield return WaitForFrames.WaitWrapper(30);
+        yield return WaitForFrames.WaitWrapper(60);
         Timing.RunCoroutine(enemy._MoveEnemyToOver(new Vector2(192, 100), 60));
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
-        // yield return Timing.WaitUntilDone(Timing.RunCoroutine(enemy._RefillHPOver(GetHP(), 60)));
-        StageManager.DestroyNamedEnemy("mokou");
+        StageManager.DestroyNamedEnemy(ShotSheet.GetBossEnemyData(BossType.MOKOU).enemyName);
 
         float[] xPositions = { 48, 144, 240, 336 };
         EnemyBulletType[] bulletTypes = {
