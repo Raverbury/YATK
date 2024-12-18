@@ -3,6 +3,8 @@ public static class DefaultGameData
     public static readonly AbstractSingle[] AllPatterns = new AbstractSingle[]
     {
         new Stage1Chapter1(),
+        new StageExChapter2(),
+        new StageExChapter3(),
 
         new Nonspell2(),
         new Pattern01(),
@@ -35,14 +37,14 @@ public static class DefaultGameData
 
     public static readonly AbstractShot[] AllShots = new AbstractShot[]
     {
-        new Shot1(),
         new Shot2(),
+        new Shot1(),
         new MarisaShot1(),
     };
 
     public static readonly AbstractBombWeapon[] AllBombs = new AbstractBombWeapon[]
     {
-        new MasterSparkBomb(),
         new FantasyOrbBomb(),
+        new MasterSparkBomb(),
     };
 }

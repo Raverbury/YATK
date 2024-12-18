@@ -12,7 +12,7 @@ public class Stage1Chapter1 : AbstractSingle
 
     public override string GetName()
     {
-        return "Dream Sign [Fickling Embrace]";
+        return "EX C1";
     }
 
     protected override int GetScore()
@@ -22,7 +22,7 @@ public class Stage1Chapter1 : AbstractSingle
 
     protected override int GetTimer()
     {
-        return 20;
+        return 19;
     }
 
     protected override bool IsTimeout()
@@ -48,45 +48,32 @@ public class Stage1Chapter1 : AbstractSingle
     protected override bool SingleIsDoneOutsideOfTimer()
     {
         return false;
-        if (!hasSpawnedFairies)
-        {
-            return false;
-        }
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            Enemy fairy = enemies[i];
-            if (fairy && !fairy.IsDead())
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
     protected override void CleanUp()
     {
-        StageManager.ClearEnemyBullet(true, true);
+        // StageManager.ClearEnemyBullet(true, true);
     }
 
     private List<Enemy> enemies = new();
     private bool hasSpawnedFairies = false;
 
     const int FAIRY_COUNT = 10;
-    const int GAP = 20;
-    const float HALF_WIDTH = GAP * (FAIRY_COUNT - 1) / 2f;
+    const float SIDE_X_OFFSET = 150f;
 
     protected override IEnumerator<float> _Loop()
     {
         enemies = new();
         hasSpawnedFairies = false;
         yield return WaitForFrames.WaitWrapper(420);
-        for (int i = 0; i < 10; i++)
+        int side = 1;
+        for (int i = 0; i < 3; i++)
         {
-            Enemy fairyEnemy = SpawnFairyEnemyUtil(ShotSheet.GetFairyEnemyData(FairyType.FAIRY_RED), 5, new(), 192 - 150, -500f);
-            enemies.Add(fairyEnemy);
-            CoroutineUtil.StartSingleLoopCRT(_LoopFairy(fairyEnemy, 1).CancelWith(fairyEnemy.gameObject));
-            yield return WaitForFrames.WaitWrapper(10);
+            CoroutineUtil.StartSingleLoopCRT(_SpawnFairy(side));
+            yield return WaitForFrames.WaitWrapper(185);
+            side *= -1;
         }
+
         hasSpawnedFairies = true;
         yield return WaitForFrames.WaitWrapper(30);
 
@@ -96,20 +83,39 @@ public class Stage1Chapter1 : AbstractSingle
         }
     }
 
-    private IEnumerator<float> _LoopFairy(Enemy fairy, int side)
+    private IEnumerator<float> _SpawnFairy(int side)
     {
-        yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(fairy._MoveEnemyToOverFairyStyle(new Vector2(192 - 150 * side, -180), 90).CancelWith(fairy.gameObject)));
-        CoroutineUtil.StartSingleLoopCRT(_FairyShoot(fairy).CancelWith(fairy.gameObject));
-        yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(fairy._MoveEnemyCircular(180f, -270f / 210, 270f / 210 * Mathf.Deg2Rad * 150f, 210).CancelWith(fairy.gameObject)));
-        yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(fairy._MoveEnemyToOverFairyStyle(new Vector2(192 + 300, -300), 250).CancelWith(fairy.gameObject)));
+        for (int i = 0; i < FAIRY_COUNT; i++)
+        {
+            Enemy fairyEnemy = SpawnFairyEnemyUtil(ShotSheet.GetFairyEnemyData(FairyType.FAIRY_RED), 5, new(), 192 + side * SIDE_X_OFFSET, -500f);
+            enemies.Add(fairyEnemy);
+            Timing.RunCoroutine(_FairyMove(fairyEnemy, side).CancelWith(fairyEnemy.gameObject));
+            yield return WaitForFrames.WaitWrapper(10);
+        }
+    }
 
-        // yield return Timing.WaitUntilDone(Timing.RunCoroutine(fairy._MoveEnemyToOverFairyStyle(fairy.transform.position + new Vector3(0f, 120f), 90).CancelWith(fairy.gameObject)));
+    private IEnumerator<float> _FairyMove(Enemy fairy, int side)
+    {
+        const float ARC = 270f;
+        const int CIRCLE_DURATION = 210;
+        const float ANGULAR_VEL = ARC / CIRCLE_DURATION;
+        const float SPEED = ANGULAR_VEL * Mathf.Deg2Rad * SIDE_X_OFFSET;
+
+        // move up from bottom of screen
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(fairy._MoveEnemyToOverFairyStyle(new Vector2(192 + SIDE_X_OFFSET * side, -180f), (int)(320 / SPEED)).CancelWith(fairy.gameObject)));
+        // start shooting
+        Timing.RunCoroutine(_FairyShoot(fairy).CancelWith(fairy.gameObject));
+        // do a 270deg arc
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(fairy._MoveEnemyCircular(90f - 90f * side, ANGULAR_VEL * side, SPEED, 210).CancelWith(fairy.gameObject)));
+        // continue moving straight out of screen
+        yield return Timing.WaitUntilDone(Timing.RunCoroutine(fairy._MoveEnemyToOverFairyStyle(new Vector2(fairy.transform.position.x + 300f * side, fairy.transform.position.y), (int)(300 / SPEED)).CancelWith(fairy.gameObject)));
+
         StageManager.DestroyEnemy(fairy);
     }
 
     private IEnumerator<float> _FairyShoot(Enemy fairy)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
             if (Player.instance != null)
             {
@@ -119,21 +125,21 @@ public class Stage1Chapter1 : AbstractSingle
                         Player.instance.transform.position.y - fairy.transform.position.y,
                         Player.instance.transform.position.x - fairy.transform.position.x
                     );
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4.9f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4.8f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4.7f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4.6f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4.5f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4.4f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4.3f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4.2f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4.1f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4f, angleToPlayer, EnemyBulletType.BALL2_BLUE, 5);
-                    SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.5f);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 6f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5.9f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5.8f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5.7f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5.6f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5.5f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5.4f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5.3f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5.2f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5.1f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 5f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.15f);
                 }
             }
-            yield return WaitForFrames.WaitWrapper(55);
+            yield return WaitForFrames.WaitWrapper(25);
         }
     }
 }

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Util;
 using MEC;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -16,7 +18,7 @@ public class Shot2 : AbstractShot
     private int currentLevel = 0;
 
     readonly List<GameObject> weaponOrbs = new();
-
+    
     public override void SetPower(int power, Player player, GameObject weaponOrbPrefab)
     {
         int level = power / 25;
@@ -69,9 +71,11 @@ public class Shot2 : AbstractShot
                 ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 10, player.transform.position.y, baseShotDamage * 0.4f, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                 if (isFocused)
                 {
-                    foreach (var orb in weaponOrbs)
+                    for (int i = 0; i < weaponOrbs.Count; i++)
                     {
-                        ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, baseShotDamage * 0.45f, 25, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                        var orb = weaponOrbs[i];
+                        Entity entity = ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, baseShotDamage * 0.3f, 8, 90f, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
+                        CoroutineUtil.RunEntityBoundCoroutine(_DoHoming(entity, player), entity);
                     }
                 }
                 else
@@ -82,7 +86,7 @@ public class Shot2 : AbstractShot
                     {
                         var orb = weaponOrbs[i];
                         Entity entity = ECSEntitySpawner.SpawnPlayerBulletP1(orb.transform.position.x, orb.transform.position.y, baseShotDamage * 0.3f, 8, 90f + halfFanSpread - spread * i, STG.PlayerShotType.IN_REIMU_AMULET_BLUE, 0);
-                        CoroutineUtil.RunEntityBoundCoroutine(_DoHoming(entity), entity);
+                        CoroutineUtil.RunEntityBoundCoroutine(_DoHoming(entity, player), entity);
                     }
                 }
                 timeBetweenShot = 0;
@@ -107,15 +111,19 @@ public class Shot2 : AbstractShot
         }
     }
 
-    IEnumerator<float> _DoHoming(Entity entity)
+    IEnumerator<float> _DoHoming(Entity entity, Player player)
     {
         EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         int t = 0;
+        bool alreadyHome = false;
+        GameObject homingTarget = null;
         while (!ECSEntitySpawner.EntityIsDisabled(entity))
         {
-            GameObject homingTarget = StageManager.instance.GetFirstEnemy();
+            GameObject[] enemies = StageManager.instance.GetTargetableEnemies();
+            float shortestDistance = 10000f;
             if (homingTarget != null)
             {
+                alreadyHome = true;
                 LocalTransform localTransform = entityManager.GetComponentData<LocalTransform>(entity);
                 float angle = math.degrees(math.Euler(localTransform.Rotation).z);
                 float homingAngle = Mathf.Rad2Deg * Mathf.Atan2(
@@ -147,6 +155,28 @@ public class Shot2 : AbstractShot
                 localTransform.Rotation = quaternion.EulerXYZ(new float3(0f, 0f, math.radians(angle)));
                 entityManager.SetComponentData(entity, localTransform);
             }
+            else
+            {
+                if (!alreadyHome)
+                {
+                    if (enemies.Count() == 1)
+                    {
+                        homingTarget = enemies[0];
+                    }
+                    else
+                    {
+                        for (int i = 0; i < enemies.Count(); i++)
+                        {
+                            float distance = Vector2.Distance(enemies[i].transform.position, entity.Position());
+                            if (distance < shortestDistance)
+                            {
+                                shortestDistance = distance;
+                                homingTarget = enemies[i];
+                            }
+                        }
+                    }
+                }
+            }
             yield return Timing.WaitForOneFrame;
             t += 1;
         }
@@ -165,7 +195,7 @@ public class Shot2 : AbstractShot
 
     public override string ShotDescription()
     {
-        return "Homing and direct shot";
+        return "Homing shot";
     }
 
     public override Color ShotColor()

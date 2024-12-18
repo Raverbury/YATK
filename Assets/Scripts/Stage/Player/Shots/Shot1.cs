@@ -116,7 +116,7 @@ public class Shot1 : AbstractShot
 
     public override string ShotName()
     {
-        return "Phantasmic Boundary";
+        return "Apparition Phantasm";
     }
 
     public override string ShotDescription()

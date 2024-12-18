@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originalAudioSource: {fileID: 608494941}
-  numbersToClone: 63
+  numbersToClone: 80
   numbersToCloneAlt: 8
 --- !u!1 &634771141
 GameObject:
