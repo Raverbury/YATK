@@ -49,11 +49,20 @@ namespace Assets.Scripts.Util
             }
         }
 
-        public static float AngleTo(this Vector2 from, Vector2 to)
+        public static float AngleTo(this Vector3 from, Vector3 to)
         {
             return Mathf.Rad2Deg * Mathf.Atan2(
                 to.y - from.y,
                 to.x - from.x
+            );
+        }
+
+        public static Vector3 RotateBy(this Vector3 v, float degrees)
+        {
+            float rad = degrees * Mathf.Deg2Rad;
+            return new Vector3(
+                v.x * Mathf.Cos(rad) - v.y * Mathf.Sin(rad),
+                v.x * Mathf.Sin(rad) + v.y * Mathf.Cos(rad)
             );
         }
 

@@ -70,6 +70,7 @@ public class Stage1Chapter1 : AbstractSingle
         for (int i = 0; i < 3; i++)
         {
             CoroutineUtil.StartSingleLoopCRT(_SpawnFairy(side));
+            CoroutineUtil.StartSingleLoopCRT(_SpawnFairy(-side));
             yield return WaitForFrames.WaitWrapper(185);
             side *= -1;
         }

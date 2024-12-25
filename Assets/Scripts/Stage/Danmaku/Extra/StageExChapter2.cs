@@ -97,9 +97,9 @@ public class StageExChapter2 : AbstractSingle
         const float IN_PLACE_X_OFFSET = 80f;
 
         // move diagonal from side into screen
-        yield return Timing.WaitUntilDone(Timing.RunCoroutine(fairy._MoveEnemyToOverFairyStyle(new Vector2(192 - IN_PLACE_X_OFFSET * side, -150f), 50).CancelWith(fairy.gameObject)));
+        Timing.WaitUntilDone(Timing.RunCoroutine(fairy._MoveEnemyToOverFairyStyle(new Vector2(192 - IN_PLACE_X_OFFSET * side, -150f), 50).CancelWith(fairy.gameObject)));
         // start shooting
-        Timing.RunCoroutine(_FairyShoot(fairy, side).CancelWith(fairy.gameObject));
+        Timing.RunCoroutine(_FairyShoot(fairy).CancelWith(fairy.gameObject));
         // move up and despawn
         yield return WaitForFrames.WaitWrapper(240);
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(fairy._MoveEnemyToOverFairyStyle(new Vector2(fairy.transform.position.x, 240), 80).CancelWith(fairy.gameObject)));
@@ -107,7 +107,7 @@ public class StageExChapter2 : AbstractSingle
         StageManager.DestroyEnemy(fairy);
     }
 
-    private IEnumerator<float> _FairyShoot(Enemy fairy, int side)
+    private IEnumerator<float> _FairyShoot(Enemy fairy)
     {
         float angleToPlayer = 270f;
         if (Player.instance != null)
@@ -136,16 +136,16 @@ public class StageExChapter2 : AbstractSingle
                 {
                     for (int j = 0; j < BRANCHES; j++)
                     {
-                        ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 3f, angle + 45f + GAP * j, EnemyBulletType.AMULET_DARK_BLUE, 5);
+                        ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 2.4f, angle + 45f + GAP * j, EnemyBulletType.AMULET_DARK_BLUE, 5);
                     }
                     for (int j = 0; j < BRANCHES; j++)
                     {
-                        ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 3f, 180 - angle - 45f + GAP * j, EnemyBulletType.AMULET_DARK_RED, 5);
+                        ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 2.4f, 180 - angle - 45f + GAP * j, EnemyBulletType.AMULET_DARK_RED, 5);
                     }
                     SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.15f);
                 }
             }
-            yield return WaitForFrames.WaitWrapper(10);
+            yield return WaitForFrames.WaitWrapper(11);
             angle += 8.3f;
         }
     }
@@ -153,7 +153,7 @@ public class StageExChapter2 : AbstractSingle
     const int SIDEWAY_X_OFFSET = 200;
     private IEnumerator<float> _SpawnSidewayFairy(int side)
     {
-        const int FAIRY_COUNT = 10;
+        const int FAIRY_COUNT = 15;
         for (int i = 0; i < FAIRY_COUNT; i++)
         {
             Enemy fairyEnemy1 = SpawnFairyEnemyUtil(ShotSheet.GetFairyEnemyData(FairyType.FAIRY_GREEN), 5, new(), 192 + side * SIDEWAY_X_OFFSET, -50);
@@ -177,7 +177,7 @@ public class StageExChapter2 : AbstractSingle
     private IEnumerator<float> _SidewayFairyShoot(Enemy fairy)
     {
         yield return WaitForFrames.WaitWrapper(5);
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 1; i++)
         {
             if (Player.instance != null)
             {
@@ -187,9 +187,11 @@ public class StageExChapter2 : AbstractSingle
                         Player.instance.transform.position.y - fairy.transform.position.y,
                         Player.instance.transform.position.x - fairy.transform.position.x
                     );
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 2.6f, angleToPlayer, EnemyBulletType.BALL2_DARK_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 2.6f, angleToPlayer + 1f, EnemyBulletType.BALL2_DARK_BLUE, 5);
-                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 2.6f, angleToPlayer - 1f, EnemyBulletType.BALL2_DARK_BLUE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4f, angleToPlayer, EnemyBulletType.RICE_ORANGE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4f, angleToPlayer + 1f, EnemyBulletType.RICE_ORANGE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4f, angleToPlayer - 1f, EnemyBulletType.RICE_ORANGE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4f, angleToPlayer + 30f, EnemyBulletType.RICE_ORANGE, 5);
+                    ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position, 4f, angleToPlayer - 30f, EnemyBulletType.RICE_ORANGE, 5);
                     SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.15f);
                 }
             }

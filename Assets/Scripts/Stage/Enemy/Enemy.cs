@@ -205,7 +205,7 @@ public class Enemy : PausableMono
     /// <returns></returns>
     public IEnumerator<float> _MoveEnemyToOverFairyStyle(Vector2 destination, int durationInFrames)
     {
-        Vector2 initialPos = transform.position;
+        Vector3 initialPos = transform.position;
         float initialDistance = Vector2.Distance(initialPos, destination);
         float maxSpeed = initialDistance / durationInFrames;
         float angle = Mathf.Abs(initialPos.AngleTo(destination));
