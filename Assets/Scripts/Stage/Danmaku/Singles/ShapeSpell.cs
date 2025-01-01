@@ -135,9 +135,9 @@ public class ShapeSpell : AbstractSingle
         float baseSpeed = Random.Range(2f, 3.5f) * speedScale;
         for (int i = 0; i < TOTAL_BULLETS; i++)
         {
-            float facing = rotation + SPREAD * i;
+            float facing = SPREAD * i;
             float speed = baseSpeed / Mathf.Cos(((facing + 45f) % 90f - 45f) * Mathf.Deg2Rad);
-            ECSEntitySpawner.SpawnEnemyBulletE1(pos, speed, facing, EnemyBulletType.ARROW_BLUE, 5);
+            ECSEntitySpawner.SpawnEnemyBulletE1(pos, speed, facing + rotation, EnemyBulletType.ARROW_BLUE, 5);
         }
     }
 

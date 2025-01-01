@@ -153,9 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GenericEntityPrefab: {fileID: 7197914987545117293, guid: 3951d058d1662ba4d9bf48bdd4ffa817, type: 3}
-  AmountOfEnemyBulletsToAdd: 500
+  AmountOfEnemyBulletsToAdd: 1000
   AmountOfPlayerBulletsToAdd: 200
-  AmountOfItemsToAdd: 500
+  AmountOfItemsToAdd: 1000
 --- !u!4 &1496145243
 Transform:
   m_ObjectHideFlags: 0

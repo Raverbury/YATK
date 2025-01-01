@@ -5,6 +5,7 @@ public static class DefaultGameData
         new Stage1Chapter1(),
         new StageExChapter2(),
         new StageExChapter3(),
+        new StageExChapter4(),
 
         new Nonspell2(),
         new Pattern01(),

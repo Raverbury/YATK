@@ -156,9 +156,9 @@ public class StageExChapter2 : AbstractSingle
         const int FAIRY_COUNT = 15;
         for (int i = 0; i < FAIRY_COUNT; i++)
         {
-            Enemy fairyEnemy1 = SpawnFairyEnemyUtil(ShotSheet.GetFairyEnemyData(FairyType.FAIRY_GREEN), 5, new(), 192 + side * SIDEWAY_X_OFFSET, -50);
+            Enemy fairyEnemy1 = SpawnFairyEnemyUtil(ShotSheet.GetFairyEnemyData(FairyType.FAIRY_GREEN), 2, new(), 192 + side * SIDEWAY_X_OFFSET, -224 - 50 + 40 * Mathf.Cos(i * 0.45f));
             CoroutineUtil.StartSingleLoopCRT(_SidewayFairyMove(fairyEnemy1, side).CancelWith(fairyEnemy1.gameObject));
-            Enemy fairyEnemy2 = SpawnFairyEnemyUtil(ShotSheet.GetFairyEnemyData(FairyType.FAIRY_YELLOW), 5, new(), 192 - side * SIDEWAY_X_OFFSET, -398);
+            Enemy fairyEnemy2 = SpawnFairyEnemyUtil(ShotSheet.GetFairyEnemyData(FairyType.FAIRY_YELLOW), 2, new(), 192 - side * SIDEWAY_X_OFFSET, -224 + 50 + 40 * Mathf.Sin(i * 0.45f));
             CoroutineUtil.StartSingleLoopCRT(_SidewayFairyMove(fairyEnemy2, -side).CancelWith(fairyEnemy2.gameObject));
             yield return WaitForFrames.WaitWrapper(25);
         }

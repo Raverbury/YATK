@@ -15,7 +15,7 @@ public class Nonspell7 : AbstractSingle
 
     public override string GetName()
     {
-        return "Tetra Assault";
+        return "Phase Sign [World in Turmoil]";
     }
 
     protected override int GetScore()
