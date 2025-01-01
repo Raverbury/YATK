@@ -65,10 +65,10 @@ public class Shot2 : AbstractShot
             {
                 float baseShotDamage = player.playerData.Attack.GetFinalStat();
                 shotInterval = ROFScaling.GetFramesBetweenShot((int)player.playerData.RateOfFire.GetFinalStat());
-                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 15, player.transform.position.y, baseShotDamage * 0.4f, 20, isFocused ? 90f : 100f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 15, player.transform.position.y, baseShotDamage * 0.4f, 20, isFocused ? 90f : 80f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 10, player.transform.position.y, baseShotDamage * 0.4f, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
-                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 10, player.transform.position.y, baseShotDamage * 0.4f, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 15, player.transform.position.y, baseShotDamage * 0.6f, 20, isFocused ? 90f : 100f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 15, player.transform.position.y, baseShotDamage * 0.6f, 20, isFocused ? 90f : 80f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x - 10, player.transform.position.y, baseShotDamage * 0.5f, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
+                ECSEntitySpawner.SpawnPlayerBulletP1(player.transform.position.x + 10, player.transform.position.y, baseShotDamage * 0.5f, 20, 90f, STG.PlayerShotType.IN_REIMU_AMULET_RED, 0);
                 if (isFocused)
                 {
                     for (int i = 0; i < weaponOrbs.Count; i++)
