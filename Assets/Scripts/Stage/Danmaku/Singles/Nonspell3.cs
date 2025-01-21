@@ -8,12 +8,12 @@ public class Nonspell3 : AbstractSingle
 {
     public int GetHP()
     {
-        return 4000;
+        return 4700;
     }
 
     public override string GetName()
     {
-        return "Field Sign [Bloom Scatter]";
+        return "All-devouring Sea of Flowers";
     }
 
     protected override int GetScore()
@@ -105,7 +105,8 @@ public class Nonspell3 : AbstractSingle
                             2 => Mathf.Atan2(targetPos.y - pos.y, targetPos.x + (state == 2 ? -2 * i : 3.8f * (i > 30 ? 60 - i : i)) - pos.x) - 0.6f,
                             _ => Mathf.Atan2(targetPos.y - pos.y, targetPos.x + (state == 2 ? 1 : 1.7f) * i - pos.x) + 0.05f,
                         }) * Mathf.Rad2Deg;
-                        ECSEntitySpawner.SpawnEnemyBulletE1(pos, 9, angle, STG.EnemyBulletType.ARROW_SKY, 30);
+                        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
+                        ECSEntitySpawner.SpawnEnemyBulletE1(pos, 9, angle, STG.EnemyBulletType.ARROW_SKY, 3);
                         pos.x += 90;
                     }
                     yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(2)));
@@ -118,6 +119,7 @@ public class Nonspell3 : AbstractSingle
 
     private IEnumerator<float> _SpawnFlowerRing(Enemy enemy, int flowers, int direction, EnemyBulletType enemyBulletType)
     {
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_LAZER00, 0.2f);
         float rotation = 90f + direction * 90f;
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(10)));
@@ -145,6 +147,7 @@ public class Nonspell3 : AbstractSingle
         yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(120)));
         if (!ECSEntitySpawner.EntityIsDisabled(entity))
         {
+            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_KIRA00, 0.2f);
             ECSEntitySpawner.SetBulletSpeed(entity, 2.7f);
         }
     }

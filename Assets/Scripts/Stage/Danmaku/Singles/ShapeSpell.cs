@@ -7,7 +7,7 @@ public class ShapeSpell : AbstractSingle
 {
     public int GetHP()
     {
-        return 5000;
+        return 6000;
     }
 
     public override string GetName()
@@ -84,10 +84,13 @@ public class ShapeSpell : AbstractSingle
 
         while (true)
         {
+            SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             FireEquilateralTriangle(DrawFromPool(ref pool, 3), 1f - (60 - wait) * 0.01f);
             yield return WaitForFrames.WaitWrapper(wait);
+            SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             FireSquare(DrawFromPool(ref pool, 2), 1f - (60 - wait) * 0.01f);
             yield return WaitForFrames.WaitWrapper(wait);
+            SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             FireCircle(DrawFromPool(ref pool, 1), 1f - (60 - wait) * 0.01f);
             yield return WaitForFrames.WaitWrapper(wait);
             wait = Mathf.Max(20, wait - 1);

@@ -73,6 +73,7 @@ public class Nonspell4 : AbstractSingle
         int wait = 60;
         while (true)
         {
+            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             Vector2 pos = (Player.instance == null) ? new Vector2(STG.Constant.GAME_CENTER_X, STG.Constant.GAME_CENTER_Y) : Player.instance.transform.position;
             for (int i = 0; i < 2; i++)
             {

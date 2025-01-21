@@ -22,6 +22,12 @@ public class Registry : ScriptableObject {
     public AudioClip SFX_TAN00;
     public AudioClip SFX_TAN01;
     public AudioClip SFX_GUN00;
+    public AudioClip SFX_KIRA00;
+    public AudioClip SFX_LAZER00;
+    public AudioClip SFX_LAZER01;
+    public AudioClip SFX_SLASH;
+    public AudioClip SFX_POWER00;
+    public AudioClip SFX_POWER01;
 
     public AudioClip SFX_PAUSE;
     public AudioClip SFX_CONFIRM;

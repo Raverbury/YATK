@@ -8,7 +8,7 @@ public class Pattern01 : AbstractSingle
 {
     public int GetHP()
     {
-        return 2300;
+        return 4200;
     }
 
     public override string GetName()
@@ -79,6 +79,7 @@ public class Pattern01 : AbstractSingle
         while (true)
         {
             float r = Random.Range(0, 10);
+            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             for (int i = 0; i < BRANCHES; i++)
             {
                 // GameObject bullet = pool.SpawnBulletA1(192, -60, 2 + 3 * ((-1 * Mathf.Abs(i - BRANCHES / 2)) + BRANCHES / 2) / (BRANCHES / 2), 360f / (BRANCHES / 2) * i + r, 0.5f);

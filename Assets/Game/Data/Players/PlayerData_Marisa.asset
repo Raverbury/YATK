@@ -38,7 +38,7 @@ MonoBehaviour:
     baseStat: 17
     flatBonusStat: 0
   RateOfFire:
-    baseStat: 800
+    baseStat: 820
     flatBonusStat: 0
   CriticalHitRate:
     baseStat: 0

@@ -9,7 +9,7 @@ public class Nonspell9 : AbstractSingle
 {
     public int GetHP()
     {
-        return 17000;
+        return 22000;
     }
 
     public override string GetName()
@@ -50,7 +50,8 @@ public class Nonspell9 : AbstractSingle
     protected override bool SingleIsDoneOutsideOfTimer()
     {
         bool res = enemy && enemy.IsDead();
-        if (res) {
+        if (res)
+        {
             enemy.SetEmptyHpCircle();
         }
         return res;
@@ -66,17 +67,31 @@ public class Nonspell9 : AbstractSingle
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return WaitForFrames.WaitWrapper(30);
 
+        SFXPlayer.RequestPlaySound(RuntimeGameData.Registry.SFX_TAN00, 0.3f);
         CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_BLUE, 4, 180, 0f, 0.7f, 0f));
         yield return WaitForFrames.WaitWrapper(60 * 7);
+        SFXPlayer.RequestPlaySound(RuntimeGameData.Registry.SFX_TAN00, 0.3f);
         CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_GREEN, 3, 190, 0.12f, -0.3f, -0.12f));
         yield return WaitForFrames.WaitWrapper(60 * 6);
+        SFXPlayer.RequestPlaySound(RuntimeGameData.Registry.SFX_TAN00, 0.3f);
         CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_RED, 4, 195, 0f, 0f, 0.22f));
         yield return WaitForFrames.WaitWrapper(60 * 6);
+        SFXPlayer.RequestPlaySound(RuntimeGameData.Registry.SFX_TAN00, 0.3f);
         CoroutineUtil.StartSingleLoopCRT(_SpawnCube(new Vector2(Constant.GAME_CENTER_X, Constant.GAME_CENTER_Y), EnemyBulletType.BALL2_YELLOW, 7, 170, 0.14f, 0.1f, -0.2f));
 
+        yield return WaitForFrames.WaitWrapper(60 * 10);
+        int branches = 10;
         while (true)
         {
-            yield return Timing.WaitForOneFrame;
+            SFXPlayer.RequestPlaySound(RuntimeGameData.Registry.SFX_TAN00, 0.3f);
+            float random = UnityEngine.Random.Range(0f, 360f);
+            for (int i = 0; i < branches; i++)
+            {
+                ECSEntitySpawner.SpawnEnemyBulletE1(enemy.transform.position, 2f, random + 360f / branches * i + 2f, EnemyBulletType.ARROW_BLACK, 2);
+                ECSEntitySpawner.SpawnEnemyBulletE1(enemy.transform.position, 2f, random + 360f / branches * i - 2f, EnemyBulletType.ARROW_WHITE, 2);
+            }
+            yield return WaitForFrames.WaitWrapper(120);
+            branches = Mathf.Min(15, branches + 1);
         }
     }
 
@@ -139,6 +154,7 @@ public class Nonspell9 : AbstractSingle
             yield return Timing.WaitForOneFrame;
         }
         yield return WaitForFrames.WaitWrapper(90);
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_KIRA00, 0.2f);
         while (true)
         {
             cubeCenterTransform.eulerAngles += new Vector3(xSpinRate, ySpinRate, zSpinRate);

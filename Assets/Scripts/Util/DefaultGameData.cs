@@ -34,6 +34,8 @@ public static class DefaultGameData
         new Nonspell7(),
 
         new Nonspell9(),
+
+        new VirtueOfWindGodSpell(),
     };
 
     public static readonly AbstractShot[] AllShots = new AbstractShot[]

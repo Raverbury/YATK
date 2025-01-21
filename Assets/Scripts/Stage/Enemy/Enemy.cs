@@ -122,7 +122,7 @@ public class Enemy : PausableMono
             {
                 StageManager.DestroyEnemy(this);
                 // TODO: swap this for enep01 sound for boss?
-                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_EXPLODE, 0.5f);
+                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_EXPLODE, 0.3f);
             }
             else {
                 SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_EXPLODE, 1f);

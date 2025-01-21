@@ -23,6 +23,7 @@ public class TimerCounter : MonoBehaviour
 
     private void UpdateTimer(ushort secondsLeft)
     {
+        secondsLeft = secondsLeft > 99 ? (ushort)99 : secondsLeft;
         _text.text = secondsLeft.ToString();
     }
 }

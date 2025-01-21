@@ -90,7 +90,7 @@ public class Shot2 : AbstractShot
                     }
                 }
                 timeBetweenShot = 0;
-                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_SHOOT, 1f);
+                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_SHOOT, 0.6f);
             }
             shootFrames -= 1;
         }

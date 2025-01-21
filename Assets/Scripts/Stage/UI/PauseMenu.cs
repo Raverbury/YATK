@@ -134,7 +134,7 @@ public class PauseMenu : MonoBehaviour
         {
             choiceSelector.GetPreviousChoice();
         }
-        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_SELECT, 1f);
+        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_SELECT, 0.8f);
     }
 
     private void HighlightChoice()
@@ -170,7 +170,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (resumeIsDisabled && (PauseResult)choiceSelector.CurrentChoice == PauseResult.Resume)
         {
-            SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_INVALID, 1f);
+            SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_INVALID, 0.8f);
             return;
         }
         StageManager.ResolvePause((PauseResult)choiceSelector.CurrentChoice);

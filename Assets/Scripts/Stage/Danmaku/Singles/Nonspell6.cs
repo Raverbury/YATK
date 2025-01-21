@@ -82,6 +82,7 @@ public class Nonspell6 : AbstractSingle
         int count = xPositions.Count();
         while (true)
         {
+            SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             float randomX = Random.Range(-20f, 20f);
             Entity blade = ECSEntitySpawner.SpawnEnemyBulletE1(xPositions[i] + randomX, Constant.GAME_BORDER_TOP, 2.5f, 270f, EnemyBulletType.ARROW_YELLOW, 30);
             Entity blade2 = ECSEntitySpawner.SpawnEnemyBulletE1(xPositions[i] + randomX, Constant.GAME_BORDER_TOP + 13f, 2.5f, 270f, EnemyBulletType.ARROW_YELLOW, 30);
@@ -163,6 +164,7 @@ public class Nonspell6 : AbstractSingle
         yield return WaitForFrames.WaitWrapper(60);
         ECSEntitySpawner.SetBulletSpeed(subBulletEntity, 0f);
         float speed = 0f;
+        SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_KIRA00, 0.2f);
         while (!ECSEntitySpawner.EntityIsDisabled(subBulletEntity))
         {
             speed = Mathf.Min(speed + 0.1f, 2f);

@@ -10,7 +10,7 @@ public class OldtroxSpell : AbstractSingle
 {
     public int GetHP()
     {
-        return 3400;
+        return 3800;
     }
 
     public override string GetName()
@@ -82,9 +82,11 @@ public class OldtroxSpell : AbstractSingle
             yield return WaitForFrames.WaitWrapper(10);
             for (int i = 0; i < Mathf.Min(6, state / 2); i++)
             {
+                SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_SLASH, 0.6f);
                 FireBladesOfTorment(enemy.transform.position);
                 yield return WaitForFrames.WaitWrapper((100 + 5 * state) / state);
             }
+            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_SLASH, 0.6f);
             FireBladesOfTorment(enemy.transform.position);
             yield return WaitForFrames.WaitWrapper(Mathf.Max(20, 60 - 5 * state));
             Vector2 playerPos = new Vector2(192f, -360f);
@@ -95,16 +97,6 @@ public class OldtroxSpell : AbstractSingle
             yield return Timing.WaitUntilDone(CoroutineUtil.StartSingleLoopCRT(_CastDarkFlight(playerPos, enemy)));
             yield return WaitForFrames.WaitWrapper(Mathf.Max(0, 100 - 10 * state));
             state += 1;
-        }
-    }
-
-    private void FireRing(Vector2 pos, int branch)
-    {
-        float r = UnityEngine.Random.Range(0f, 360f);
-        float gap = 360f / branch;
-        for (int i = 0; i < branch; i++)
-        {
-            ECSEntitySpawner.SpawnEnemyBulletE1(pos, 6f, r + gap * i, EnemyBulletType.AMULET_DARK_BLUE, 10);
         }
     }
 
@@ -183,6 +175,7 @@ public class OldtroxSpell : AbstractSingle
         }
 
         // back away
+        SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_POWER01, 0.4f);
         Vector2 behindVector = new Vector2(enemy.transform.position.x, enemy.transform.position.y) - targetPos;
         behindVector.Normalize();
         Vector2 backPos = new Vector2(enemy.transform.position.x, enemy.transform.position.y) + (behindVector * 60f);
@@ -198,6 +191,7 @@ public class OldtroxSpell : AbstractSingle
         // spawn inner ring as impact effect
         const int INNER_COUNT = 10;
         gap = 360f / INNER_COUNT;
+        SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.4f);
         for (int j = 0; j < INNER_COUNT; j++)
         {
             float angle = 0f + gap * j;
@@ -219,6 +213,7 @@ public class OldtroxSpell : AbstractSingle
     {
         yield return WaitForFrames.WaitWrapper(waitDuration);
 
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN01, 0.2f);
         ECSEntitySpawner.SetBulletSpeed(entity, 1.4f);
     }
 }

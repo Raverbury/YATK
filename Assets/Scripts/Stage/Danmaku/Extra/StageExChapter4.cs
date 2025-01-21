@@ -102,7 +102,7 @@ public class StageExChapter4 : AbstractSingle
         {
             if (fairy && !fairy.IsDead())
             {
-                float currentRadius = 30f + ringRadius * Mathf.Cos(Mathf.PI * i / 450f);
+                float currentRadius = 30f + ringRadius * Mathf.Cos(Mathf.PI * i / 45f);
                 float redAngle = (270f + rot) % 360f;
                 float blueAngle = (270f - rot) % 360f;
                 ECSEntitySpawner.SpawnEnemyBulletE1(fairy.transform.position + new Vector3(currentRadius * Mathf.Cos(Mathf.Deg2Rad * redAngle), currentRadius * Mathf.Sin(Mathf.Deg2Rad * redAngle)), 1.5f, redAngle + 180f, EnemyBulletType.ICE_BLUE, 5);

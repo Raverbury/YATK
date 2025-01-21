@@ -7,7 +7,7 @@ public class Nonspell13 : AbstractSingle
 {
     public int GetHP()
     {
-        return 5000;
+        return 5200;
     }
 
     public override string GetName()
@@ -79,6 +79,7 @@ public class Nonspell13 : AbstractSingle
             r = Random.Range(0f, 360f);
             spawnPos = leftSpawn + Random.insideUnitCircle * 60f;
             speed = Random.Range(1.8f, 3f);
+            SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             for (int i = 0; i < BRANCHES; i++)
             {
                 ECSEntitySpawner.SpawnEnemyBulletE1(spawnPos, speed, r + SPREAD * i, EnemyBulletType.AMULET_RED, 5);
@@ -87,6 +88,7 @@ public class Nonspell13 : AbstractSingle
             r = Random.Range(0f, 360f);
             spawnPos = rightSpawn + Random.insideUnitCircle * 60f;
             speed = Random.Range(1.8f, 3f);
+            SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             for (int i = 0; i < BRANCHES; i++)
             {
                 ECSEntitySpawner.SpawnEnemyBulletE1(spawnPos, speed, r + SPREAD * i, EnemyBulletType.AMULET_PURPLE, 5);

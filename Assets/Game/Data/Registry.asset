@@ -31,6 +31,12 @@ MonoBehaviour:
   SFX_TAN00: {fileID: 8300000, guid: 3b3225277e51c6c4996987496db5af89, type: 3}
   SFX_TAN01: {fileID: 8300000, guid: 87053bca6aa394c4bb03ee47bc6720c2, type: 3}
   SFX_GUN00: {fileID: 8300000, guid: 40d896dc760215f45962c1b2c946cef5, type: 3}
+  SFX_KIRA00: {fileID: 8300000, guid: fc00e2a8aee5882428f8f4b27a9b8455, type: 3}
+  SFX_LAZER00: {fileID: 8300000, guid: 5024b6a08cf7dbc4e975a258c3cba093, type: 3}
+  SFX_LAZER01: {fileID: 8300000, guid: cdb7fde7b0b8c30439f9da2032992aef, type: 3}
+  SFX_SLASH: {fileID: 8300000, guid: 85f6f440b4ddf0e44ae2e823a2b6cb9b, type: 3}
+  SFX_POWER00: {fileID: 8300000, guid: 6e1e6fa159a989e468a95bd69b24b341, type: 3}
+  SFX_POWER01: {fileID: 8300000, guid: e4da7beda34c3364aa681cac809e9278, type: 3}
   SFX_PAUSE: {fileID: 8300000, guid: 27249f49974350242ad8c6e394e57efe, type: 3}
   SFX_CONFIRM: {fileID: 8300000, guid: cc5c914e55967644898aaf1dac35e674, type: 3}
   SFX_SELECT: {fileID: 8300000, guid: 240305b00e8c9124388b3ffe2cce6964, type: 3}

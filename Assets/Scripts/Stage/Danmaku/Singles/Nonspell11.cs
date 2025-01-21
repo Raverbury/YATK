@@ -7,7 +7,7 @@ public class Nonspell11 : AbstractSingle
 {
     public int GetHP()
     {
-        return 5000;
+        return 5400;
     }
 
     public override string GetName()
@@ -84,6 +84,7 @@ public class Nonspell11 : AbstractSingle
                     enemy.transform.position.x - Player.instance.transform.position.x
                 );
             }
+            SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             for (int i = 0; i < BRANCHES; i++)
             {
                 for (int j = 0; j < BURSTS; j++)
@@ -100,7 +101,7 @@ public class Nonspell11 : AbstractSingle
                     }, 10);
                 }
             }
-            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(40)));
+            yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(40 - state % 5 * 2)));
             if (state == 4 || state == 9)
             {
                 float targetX = ((Player.instance == null) ? 192f : Player.instance.gameObject.transform.position.x) + Random.Range(-20f, 20f);

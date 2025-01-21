@@ -19,6 +19,8 @@ public class ECSEntitySpawner : MonoBehaviour
 
     private bool shouldCreateEntities = true;
 
+    // private static EntityCommandBuffer entityCommandBuffer = new EntityCommandBuffer(Allocator.Persistent);
+
     private void OnEnable()
     {
         StageManager.ClearEnemyBullet += ClearActiveEnemyBullets;
@@ -138,6 +140,16 @@ public class ECSEntitySpawner : MonoBehaviour
         }
     }
 
+    // private void LateUpdate()
+    // {
+    //     if (entityCommandBuffer.ShouldPlayback)
+    //     {
+    //         entityCommandBuffer.Playback(entityManager);
+    //         entityCommandBuffer.Dispose();
+    //         entityCommandBuffer = new EntityCommandBuffer(Allocator.Persistent);
+    //     }
+    // }
+
     private static ComponentTypeSet GetEnemyBulletComponentTypeSet()
     {
         return new ComponentTypeSet(new[]{
@@ -167,6 +179,11 @@ public class ECSEntitySpawner : MonoBehaviour
 
     #region generic bullet
 
+    public static bool Exists(Entity entity)
+    {
+        return entityManager.Exists(entity);
+    }
+
     /// <summary>
     /// Sets the speed of the entity representing a bullet
     /// </summary>
@@ -175,6 +192,7 @@ public class ECSEntitySpawner : MonoBehaviour
     {
         BulletComponent bulletComponent = entityManager.GetComponentData<BulletComponent>(entity);
         bulletComponent.Speed = speed;
+        // entityCommandBuffer.SetComponent(entity, bulletComponent);
         entityManager.SetComponentData(entity, bulletComponent);
     }
 

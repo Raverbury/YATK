@@ -7,7 +7,7 @@ public class Nonspell12 : AbstractSingle
 {
     public int GetHP()
     {
-        return 5000;
+        return 5500;
     }
 
     public override string GetName()
@@ -75,6 +75,7 @@ public class Nonspell12 : AbstractSingle
         int counter = 0;
         int batchCount = 7;
         int loopCount = 0;
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
         while (true)
         {
             float spawnX = enemy.transform.position.x + Mathf.Cos(Mathf.Deg2Rad * rotation) * RADIUS;

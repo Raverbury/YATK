@@ -293,7 +293,7 @@ public class Player : PausableMono
         shouldMiss = true;
         isInvulnerable = true;
         PlayerSetMiss?.Invoke();
-        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_MISS, 1f);
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_MISS, 0.7f);
         framesLeftToDeathBomb = deathBombFrames;
         if (RemainingBomb == 0)
         {
@@ -324,7 +324,7 @@ public class Player : PausableMono
     {
         Graze += 1;
         EVPlayerGraze?.Invoke();
-        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_GRAZE, 1f);
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_PLAYER_GRAZE, 0.6f);
     }
 
     public void PlayerExtend()

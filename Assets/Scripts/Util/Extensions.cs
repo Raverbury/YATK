@@ -80,5 +80,9 @@ namespace Assets.Scripts.Util
                 throw e;
             }
         }
+
+        public static Vector2 ExtendBy(this Vector2 original, float distance, float directionDegrees) {
+            return distance * new Vector2(Mathf.Cos(Mathf.Deg2Rad * directionDegrees), Mathf.Sin(Mathf.Deg2Rad * directionDegrees)) + original;
+        }
     }
 }

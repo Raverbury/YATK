@@ -121,6 +121,7 @@ public class Nonspell7 : AbstractSingle
         EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         float speed = 6f;
         float slowDown = speed / 60f;
+        SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
         for (int i = 0; i < 60; i++)
         {
             speed -= slowDown;
@@ -129,6 +130,7 @@ public class Nonspell7 : AbstractSingle
         }
         ECSEntitySpawner.SetBulletSpeed(bulletEntity, 0f);
         yield return WaitForFrames.WaitWrapper(60);
+        SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_KIRA00, 0.2f);
         if (Player.instance != null)
         {
             LocalTransform bulletTransform = entityManager.GetComponentData<LocalTransform>(bulletEntity);

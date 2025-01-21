@@ -7,7 +7,7 @@ public class MokouNon1 : AbstractSingle
 {
     public int GetHP()
     {
-        return 3000;
+        return 3700;
     }
 
     public override string GetName()
@@ -76,6 +76,7 @@ public class MokouNon1 : AbstractSingle
 
         while (true)
         {
+            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             CoroutineUtil.StartSingleLoopCRT(_FireSeiranFan(
                 new Vector2(192, -90),
                 angle + Random.Range(-10f, 10f),
@@ -100,9 +101,10 @@ public class MokouNon1 : AbstractSingle
                             Player.instance.transform.position.y - enemy.transform.position.y,
                             Player.instance.transform.position.x - enemy.transform.position.x
                         );
-                        for (int i = 0; i < 1; i++)
+                        for (int i = 0; i < 3; i++)
                         {
-                            ECSEntitySpawner.SpawnEnemyBulletE1(enemy.transform.position, 1f - 0.2f * i, angleToPlayer, STG.EnemyBulletType.BUBBLE_DARK_YELLOW, 10);
+                            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN01, 0.2f);
+                            ECSEntitySpawner.SpawnEnemyBulletE1(enemy.transform.position, 1f + 0.1f * i, angleToPlayer, STG.EnemyBulletType.BUBBLE_DARK_YELLOW, 10 + 5 * i);
                         }
                     }
                 }

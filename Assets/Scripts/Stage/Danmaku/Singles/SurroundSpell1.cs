@@ -13,7 +13,7 @@ public class SurroundSpell1 : AbstractSingle
 
     public override string GetName()
     {
-        return "Dream Sign [Fickling Embrace]";
+        return "Dream Sign [Dream of Vivid Nightmare]";
     }
 
     protected override int GetScore()
@@ -97,6 +97,7 @@ public class SurroundSpell1 : AbstractSingle
         const float OUTER_RADIUS = 120f;
         const int OUTER_COUNT = 80;
         const float OUTER_SPREAD = 360f / OUTER_COUNT;
+        SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_KIRA00, 0.2f);
         for (int i = 0; i < OUTER_COUNT * 2; i++)
         {
             float facing = 90f + 90f * dir - OUTER_SPREAD * i * dir;
@@ -111,6 +112,7 @@ public class SurroundSpell1 : AbstractSingle
         const float INNER_RADIUS = 100f;
         const int INNER_COUNT = 80;
         const float INNER_SPREAD = 360f / OUTER_COUNT;
+        SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_KIRA00, 0.2f);
         for (int i = 0; i < INNER_COUNT * 2; i++)
         {
             float radius = INNER_RADIUS + 0.2f * i;
@@ -130,7 +132,6 @@ public class SurroundSpell1 : AbstractSingle
     IEnumerator<float> _Manipulate(Entity entity, float speed, int wait)
     {
         yield return WaitForFrames.WaitWrapper(wait);
-
         ECSEntitySpawner.SetBulletSpeed(entity, speed);
     }
 }

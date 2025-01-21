@@ -86,7 +86,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         {
             return;
         }
-        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CANCEL, 1f);
+        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CANCEL, 0.8f);
         PopSelector();
     }
 
@@ -99,26 +99,26 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         switch (homeMenuResult)
         {
             case HomeMenuSelector.HomeMenuResult.Start:
-                SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 1f);
+                SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 0.8f);
                 // set patterns to use all listed
                 RuntimeGameData.SelectedPatterns = new(DefaultGameData.AllPatterns);
                 RuntimeGameData.IsPractice = false;
                 PushNextSelector(playerSelector);
                 break;
             case HomeMenuSelector.HomeMenuResult.Practice:
-                SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 1f);
+                SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 0.8f);
                 RuntimeGameData.IsPractice = true;
                 PushNextSelector(practiceSelector);
                 break;
             case HomeMenuSelector.HomeMenuResult.Settings:
-                SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_INVALID, 1f);
+                SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_INVALID, 0.8f);
                 break;
             case HomeMenuSelector.HomeMenuResult.Manual:
-                SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 1f);
+                SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 0.8f);
                 PushNextSelector(manualPanel);
                 break;
             case HomeMenuSelector.HomeMenuResult.Quit:
-                SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CANCEL, 1f);
+                SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CANCEL, 0.8f);
 #if UNITY_EDITOR
                 Debug.Log("Can't quit in editor, idiot.");
 #else
@@ -135,7 +135,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
             return;
         }
         RuntimeGameData.SelectedPlayerData = selectedPlayerData;
-        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 1f);
+        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 0.8f);
         PushNextSelector(loadoutSelector);
     }
 
@@ -147,7 +147,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
         }
         RuntimeGameData.SelectedShot = shot;
         RuntimeGameData.SelectedBomb = bomb;
-        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 1f);
+        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 0.8f);
         loadoutSelector.enabled = false;
         SceneUtil.LoadSceneAsync("Stage");
         shouldRespondToInput = false;
@@ -160,7 +160,7 @@ public class HomeManager : OverwritableMonoSingleton<HomeManager>
             return;
         }
         RuntimeGameData.SelectedPatterns = new() { practicePattern };
-        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 1f);
+        SFXPlayer.RequestPlaySoundWithPause?.Invoke(RuntimeGameData.Registry.SFX_CONFIRM, 0.8f);
         PushNextSelector(playerSelector);
     }
 

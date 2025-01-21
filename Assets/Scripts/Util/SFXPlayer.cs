@@ -105,7 +105,7 @@ public class SFXPlayer : MonoBehaviour
         audioSource.clip = audioClip;
         audioSource.volume = DEFAULT_SFX_VOLUME * volume;
         audioSource.Play();
-        audioWaitMap[audioClip] = (ushort)(audioClip == RuntimeGameData.Registry.SFX_PLAYER_SHOOT ? 4 : 1);
+        audioWaitMap[audioClip] = (ushort)(audioClip == RuntimeGameData.Registry.SFX_PLAYER_SHOOT ? 4 : 3);
     }
 
     private AudioSource GetNextAudioSource(List<AudioSource> audioSources)

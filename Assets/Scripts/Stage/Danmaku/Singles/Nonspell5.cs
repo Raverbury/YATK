@@ -7,7 +7,7 @@ public class Nonspell5 : AbstractSingle
 {
     public int GetHP()
     {
-        return 5000;
+        return 5100;
     }
 
     public override string GetName()
@@ -77,6 +77,7 @@ public class Nonspell5 : AbstractSingle
         CoroutineUtil.StartSingleLoopCRT(_MoveEnemy(enemy));
         while (true)
         {
+            SFXPlayer.RequestPlaySound.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.1f);
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(8)));
             for (int i = 0; i < BRANCHES; i++)
             {

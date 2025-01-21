@@ -8,7 +8,7 @@ public class StarSpell1 : AbstractSingle
 {
     public int GetHP()
     {
-        return 8000;
+        return 6400;
     }
 
     public override string GetName()
@@ -101,6 +101,7 @@ public class StarSpell1 : AbstractSingle
 
         for (int i = 0; i < 5; i++)
         {
+            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_LAZER01, 0.2f);
             float centerToTipAngle = (facing - 144f * i) % 360f;
             float tipX = centerPos.x + Mathf.Cos(Mathf.Deg2Rad * centerToTipAngle) * centerToTipLength;
             float tipY = centerPos.y + Mathf.Sin(Mathf.Deg2Rad * centerToTipAngle) * centerToTipLength;
@@ -133,6 +134,7 @@ public class StarSpell1 : AbstractSingle
     {
         yield return WaitForFrames.WaitWrapper(wait);
 
+        SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_KIRA00, 0.2f);
         ECSEntitySpawner.SetBulletSpeed(entity, speed);
     }
 }

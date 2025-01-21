@@ -7,7 +7,7 @@ public class Nonspell2 : AbstractSingle
 {
     public int GetHP()
     {
-        return 1500;
+        return 4000;
     }
 
     public override string GetName()
@@ -75,7 +75,7 @@ public class Nonspell2 : AbstractSingle
         enemy.SetAnimState(Enemy.AnimState.Attack);
         yield return WaitForFrames.WaitWrapper(30);
 
-        const int BRANCHES = 3;
+        const int BRANCHES = 10;
         const int BURSTS = 5;
         const float SPEED = 3;
         int dir = 17;
@@ -84,7 +84,7 @@ public class Nonspell2 : AbstractSingle
         while (true)
         {
             yield return Timing.WaitUntilDone(Timing.RunCoroutine(WaitForFrames.Wait(25)));
-            // SFXPlayer.RequestPlayTan1Sound?.Invoke();
+            SFXPlayer.RequestPlaySound?.Invoke(RuntimeGameData.Registry.SFX_TAN00, 0.2f);
             for (int i = 0; i < BURSTS; i++)
             {
                 EnemyBulletType enemyBulletType = i switch
