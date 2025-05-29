@@ -79,20 +79,20 @@ public class VirtueOfWindGodSpell : AbstractSingle
         {
             CoroutineUtil.StartSingleLoopCRT(_SpawnDVOWGCircles(enemy.transform.position, 5, 30f, 40f, offset, EnemyBulletType.AMULET_RED, 4, 8, 70));
             yield return WaitForFrames.WaitWrapper(35);
-            CoroutineUtil.StartSingleLoopCRT(_SpawnDVOWGCircles(enemy.transform.position, 5, 45f, 60f, offset + 120f, EnemyBulletType.AMULET_BLUE, 4, 8, 70));
+            CoroutineUtil.StartSingleLoopCRT(_SpawnDVOWGCircles(enemy.transform.position, 5, 45f, 60f, offset + 36f, EnemyBulletType.AMULET_BLUE, 4, 8, 70));
             yield return WaitForFrames.WaitWrapper(35);
-            CoroutineUtil.StartSingleLoopCRT(_SpawnDVOWGCircles(enemy.transform.position, 5, 70f, 80f, offset + 240f, EnemyBulletType.AMULET_GREEN, 4, 8, 70));
+            CoroutineUtil.StartSingleLoopCRT(_SpawnDVOWGCircles(enemy.transform.position, 5, 70f, 80f, offset + 72f, EnemyBulletType.AMULET_GREEN, 4, 8, 70));
             yield return WaitForFrames.WaitWrapper(wait);
             offset = Random.Range(0f, 360f);
             wait = Mathf.Max(60, wait - 4);
-            CoroutineUtil.StartSingleLoopCRT(_SpawnDVOWGCircles(enemy.transform.position, 5, 70f, 80f, offset + 240f, EnemyBulletType.AMULET_YELLOW, 4, 8, 140));
+            CoroutineUtil.StartSingleLoopCRT(_SpawnDVOWGCircles(enemy.transform.position, 5, 70f, 80f, offset + 72f, EnemyBulletType.AMULET_YELLOW, 4, 8, 140));
             yield return WaitForFrames.WaitWrapper(35);
-            CoroutineUtil.StartSingleLoopCRT(_SpawnDVOWGCircles(enemy.transform.position, 5, 45f, 60f, offset + 120f, EnemyBulletType.AMULET_PURPLE, 4, 8, 70));
+            CoroutineUtil.StartSingleLoopCRT(_SpawnDVOWGCircles(enemy.transform.position, 5, 45f, 60f, offset + 36f, EnemyBulletType.AMULET_PURPLE, 4, 8, 70));
             yield return WaitForFrames.WaitWrapper(35);
             CoroutineUtil.StartSingleLoopCRT(_SpawnDVOWGCircles(enemy.transform.position, 5, 30f, 40f, offset, EnemyBulletType.AMULET_SKY, 4, 8, 0));
             yield return WaitForFrames.WaitWrapper(wait);
             offset = Random.Range(0f, 360f);
-            wait = Mathf.Max(60, wait - 4);
+            wait = Mathf.Max(120, wait - 12);
         }
     }
 
